@@ -1,0 +1,171 @@
+\title{Star Formation and Feedback in Stellar Clusters and Galaxies}
+
+\author{PI: Mordecai-Mark Mac Low, American Museum of Natural History, New York.\\
+        co-PIs: Andrew Emerick, Columbia University / AMNH, Joshua Wall, etc.}
+
+\documentclass[11pt]{article}
+
+\usepackage[letterpaper, margin=1in]{geometry}
+\usepackage{amsmath}
+
+\usepackage{natbib}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{array}
+\newcolumntype{L}{>{\centering\arraybackslash}m{2cm}}
+\newcolumntype{R}{>{\centering\arraybackslash}m{1.25cm}}
+
+\citestyle{aa}
+
+\newcommand {\apj}{ApJ}
+\newcommand {\aj}{AJ}
+\newcommand {\apjs}{ApJS}
+\newcommand {\apjl}{ApJL}
+\newcommand {\mnras}{MNRAS}
+\newcommand {\aap}{A\&A}
+\newcommand {\aapr}{A\&ARv}
+\newcommand {\araa}{ARA\&A}
+\newcommand {\pasj}{PASJ}
+\newcommand {\pasp}{PASP}
+\newcommand {\bain}{Bulletin of the Astronomical Institutes of the Netherlands}
+\newcommand {\fcp}{Fundamentals of Cosmic Physics}
+\newcommand {\nat}{Nature}
+\newcommand {\na}{New Astronomy}
+\newcommand{\eg}{e.g.,}
+
+\begin{document}
+\maketitle
+
+\section{Overview}
+
+\section{Star Formation, Feedback, and Chemodynamics of Galaxies}
+
+Recently, large scale, cosmological hydrodynamics simulations have been able to reproduce the observed properties of galaxies over a wide range of galaxy stellar masses and dark matter halo masses \citep[\eg][]{MUGS2010, MAGICC2013, Illustris1, Illustris2, OWLS, EAGLE, FIRE, APOSTLE, Latte}. Some of these works have made strides in reconciling outstanding disagreements between predictions from $\Lambda$CDM cosmology and observations of nearby dwarf galaxies. These successes are owed, in large part, to improvements in our understanding and implementation of baryonic physics, namely feedback, that self-regulates star formation in galaxies. These works demonstrate that a proper treatment of feedback is necessary to understand the formation and evolution of structure on all scales. However, due to computational constraints, including feedback physics in large scale cosmological simulations requires the use of sub-grid models. These models are often phenomenological, tuned to reproduce certain properties of galaxies at specific redshift(s), and have been shown to have uncertain convergence properties \citep[\eg][]{Rosdahl2016}. Clearly, a deeper understanding of feedback physics born out through high resolution, idealized simulations is needed. The chemical structure of galaxies and their gaseous halos remains one of the most sensitive and not well understood tests of the underlying feedback physics that shapes galaxy evolution. We propose to conduct high resolution simulations focusing on understanding feedback physics in detail through its affect on the chemical and dynamical evolution of small dwarf galaxies, following, for the first time in a galaxy scale simulation, stars on a star-by-star basis with individual particles. 
+
+Historically, feedback physics in galaxies meant the injection of purely thermal energy in a localized region -- often with tricks to prevent rapid, unphysical overcooling of gas -- to model the effects of supernovae explosions. It has become clear feedback physics has to be modeled in much greater detail than just injecting thermal energy from supernovae. In addition to core collapse and Type Ia supernovae, we will include the effects of 1) energy injection from the winds of both AGB stars and massive stars, 2) radiation feedback (photoionization, photoheating, and radiation pressure) from massive stars followed through adaptive ray tracing, 3) a model for photoelectric heating of dust grains due to stellar radiation, and 4) cosmic rays injected at supernova sites, which provide a non-thermal additional pressure in the interstellar medium (ISM).
+
+In general we have a fair understanding of the mean properties in the chemical evolution of galaxies, but models have difficulty in reproducing the observed scatter in both gas phase an stellar abundances. In particular, models of the chemical evolution of dwarf galaxies are often tuned to match the observed properties of a small number of observed galaxies. Self-consistently reproducing both the dynamic and chemical, or chemodynamics, properties of dwarf galaxies in hydrodynamics simulations remains a standing challenge for theoretical models. In addition, with one exception \citep{Few2012, Few2014}, all hydrodynamics simulations examining galactic chemodynamics have been implemented in smooth particle hydrodynamics (SPH) codes. Although historical problems with the SPH formalism have been improved substantially in recent years, they often still employ sub-grid mixing schemes to model mixing of spatially adjacent but chemically inhomogeneous gas \citep[\eg][]{ShenWadsleyStinson2010}. In part due to these methods, there are outstanding uncertainties in how much results depend on specific code implementations \citep{Revaz2016}. In addition, using star particles that represent clusters of stars becomes problematic at the high spatial and particle mass resolution needed for simulating low mass dwarf galaxies \citep{Revaz2016}. This motivates a new method for studying galactic chemical evolution in hydrodynamics simulations, including, for the first time, the full range of possible feedback physics while following individual stars. This is particularly exciting with recent or ongoing -- for example ANGST \citep{ANGST2009}, APOGEE \citep{APOGEE2010}, and GAIA -- and upcoming observational studies (e.g. APOGEE-2) that will obtain stellar abundance measurements in both our galaxy and nearby dwarfs, which will be the ideal comparison to our simulations of dwarf galaxies with individual, chemically tagged stars.
+
+We provide a discussion of the feedback physics and associated models we propose to include in our simulations. We seek to understand how each of these processes individually and together affect galactic dynamical and chemical structure. 
+
+\subsection{Discussion of Feedback Physics and Models}
+
+We will produce a series of controlled experiments of the effects of feedback on the evolution of an isolated, idealized low mass dwarf galaxy. Each of our simulations will have the same initial conditions and basic physics, varying only the feedback methods. In each case, our dwarf galaxy will be initialized in a semi-spherical gas distribution in hydrostatic equilibrium with a fixed, static dark matter gravitational potential. We initialize this gas distribution with small scale velocity perturbations to break spherical symmetry and precipitate collapse, mimicking the velocity distribution one would expect from cosmological gas accretion onto a dark matter halo. In every simulation, we use the \textsc{GRACKLE} code to include radiative heating and cooling using a 9 species (electrons and the various ionization states of H, He, and H$_{2}$), non-equilibrium primordial chemistry solver, with metal line cooling handled with CLOUDY lookup tables. We include heating from a static, uniform metagalactic UV background from \cite{HM2012}, accounting for approximate self-shielding following the methods outlined in \cite{Rahmati2013}. Additional radiative heating and ionizing rates from stellar sources, when included, are tied to the \textsc{GRACKLE} chemistry and heating/cooling routines as discussed below. We include gas self-gravity to follow the localized collapse of star forming regions. Star particles have mass, interacting gravitationally with each other and the hydrodynamics, and are evolved with an N-body solver (XX). At collapse, each of our simulations will diverge by turning on / off the included feedback physics, as discussed below.
+
+Stars form from collapsed, fragmented regions of self-gravitating, dense gas embedded in the background ISM. Following the full collapse of these regions down to the scales of individual stars is computationally infeasible on galaxy scales. Instead, we follow collapse to our highest resolution, 1 pc, and allow star formation in regions that surpass a density and Jeans mass threshold using a stochastic sampling method \citep{Goldbaum2015} to deposit star particles representing individual stars. These stars are selected from an input initial mass function \citep{Salpeter1955} with masses between 1 M$_{\odot}$ and 100 M$_{\odot}$. At birth, these stars are chemically tagged by the local gas abundances and metallicities. The star's initial mass and metallicity are used to interpolate on a grid of stellar evolution tracks \citep{Bressan2012} to assign a effective temperature and surface gravity, which are used later to assign radiative feedback properties, as discussed below. Depending on the included physics, these stars can inject feedback into the surrounding region, both polluting the galaxy with metals and affecting future star formation.
+
+Since they are intimately associated with the ejected stellar yields, our primary observable, each of our simulations will contain the same stellar wind and supernova feedback methods. Both stellar winds and supernova in our simulations are injected using a cloud-in-cell interpolation scheme \citep{Simpson2016}, whereby feedback is injected on the grid cells that overlap a 3x3 cell region centered on the particle. We improve over the methods in \cite{Simpson2016} by being able to handle feedback appropriately when particles are located at or near grid boundaries, without any additional communication overhead. Stellar winds are injected using momentum feedback only, with no thermal energy injection, with a constant mass loss rate over the lifetime of the winds, and velocities set by the STARBURST99 stellar wind models \citep{Leitherer1992}. The wind lifetime varies depending on particle mass. We assume massive stars, above 8 $M_{\odot}$, have winds that last throughout their lifetime, while stars below this threshold have AGB phase only winds, which occur at the end of their life as determined by the stellar evolution tracks used to set the initial stellar properties \citep{Bressan2012}. Core collapse supernovae occur at the end of life of massive (M > 8 $M_{\odot}$) stars with total mass ejecta set by the NuGrid stellar yields table. Each core collapse supernova is ejects 1.0E51 erg of purely thermal energy. In addition, we model Type Ia supernova by following the evolution of white dwarfs formed from 3 < M < 8 Msun stars. Only a few percent of these stars will explode as Type Ia supernova in a Hubble time; we use an observationally motivated DTD model to determine when (if at all) a given white dwarf will explode. We adopt Type Ia stellar yields from \cite{Thielemann1986}, which are injected also with 1.0E51 of thermal energy.
+
+Cosmic rays, generated from shocks injected through 
+
+Ionizing radiation from massive stars is an additional source of feedback which plays a global role in governing galaxy evolution. Although massive stars account for only a small fraction of the total number of stars in a stellar population, they dominate the amount of ionizing radiation within a given galaxy. We follow only the HI and HeI ionizing radiation from stars at M $>$ 8 M$_{\odot}$. This radiation is coupled to Grackle in the underlying chemistry and heating/cooling routines. The ionizing radiation couples directly to the hydrodynamics through HI radiation pressure. We compute the photon flux from massive stars by interpolating in mass, surface gravity, and effective temperature on the OSTAR2002 \citep{Lanz2003} grid of stellar atmospheres. For certain metallicities and stellar masses, the effective temperature of our stars is above or below the OSTAR2002 grid. 
+
+Far ultraviolet (FUV) stellar radiation is able to eject electrons from dust within the ISM, which can than heat the surrounding gas. This photoelectric heating can be a dominant source of heating within the neutral ISM, but is often ignored or modeled with a static, uniform heating rate. Recent works considering a spatially and temporally varying photoelectric heating rate from individual stellar sources show that this effect can be important, but disagree as to the significance of this effect \citep{Hu2016, Forbes2016}. In order to better understand this additional source of heating in the ISM, we use an optically thin approximation to compute the local FUV flux in each simulation cell from each star in the galaxy. We follow the local photoelectric heating rate using a density, temperature, and metallicity dependent method from \cite{BakesTielens1994, Wolfire2003}. As is done for the heating rates from the radiative transfer calculations and the UV background, this additional heating rate is tied to the underlying \textsc{GRACKLE} chemistry solver.
+
+\subsection{Computational Methods}
+
+Each of our dwarf galaxy simulations will be carried out using \textsc{Enzo}, an adaptive mesh refinement (AMR) hydrodynamics and N-body code. \textsc{Enzo} is an entirely open-source code (www.enzo-project.org) that is undergoing active development by many researchers across several institutions; its most recent stable release is version 2.5. This project involves a substantial amount of additional code development built on top of the development version of \textsc{Enzo} (version 2.X), and is also publicly available at www.bitbucket.org/aemerick/enzo-emerick. \textsc{Enzo} has been well tested and extensively used in a variety of applications, from XXX (Cite) to XXX (cite), including isolated galaxy simulations, as we propose here \citep[\eg][]{Goldbaum2015, Goldbaum2016, Forbes2016}. We outline the methods employed in \textsc{Enzo} as relevant to our proposal; a detailed description of these methods can be found in the \textsc{Enzo} method paper \citep{Enzo2014}. 
+
+Each dwarf galaxy is placed on a uniform $128^3$ cell mesh with physical dimensions of $16.384^3$ kpc, corresponding to a root grid resolution of 128 pc. Subsequent levels of refinement are applied if a given region meets a certain criteria, up to a maximum of 7 levels of refinement, or a physical resolution of 1 pc. The refinement criteria is fixed in each of our simulations, triggering refinement at strong density contrasts, requiring refinement to resolve the Jeans length by at least 16 cells (preventing spurious gas fragmentation), and in cells around star particles, so feedback is always deposited on the highest resolution grids. At the maximum level of refinement, we institute a pressure floor to prevent numerical fragmentation once the Jeans length is resolved by less than 10 cells. Each level of refinement is evolved independently with adaptive time steps, limiting unneeded computation on lower refinement levels. The time step size on each refinement level is set by the Courant-Friedrichs-Levy condition, as determined by the cell size and local sound speed and gas velocity in each cell. When cosmic rays are turned on, this maximum time step size is modified by a factor that depends on the diffusion coefficient and the square of the cell size; this is usually on order of XXX.
+
+We couple \textsc{ENZO} to the open-source \textsc{GRACKLE} chemistry and heating/cooling library, which operates cell-by-cell on each grid. \textsc{GRACKLE} sub-cycles through a non-equillibrium chemistry solver following methods first used in \cite{Anninos1997} and \cite{Abel1997} that solves for the correct densities and ionization states of each species (), while accounting for radiative cooling and heating from external radiation fields.
+
+We trace the HI and HeI ionizing radiation from massive star particles, which dominate the ionizing photon rate in a stellar population, using the direct ray tracing method developed in \cite{WiseAbel2011} and used previously in cosmological simulations of reionization \citep{Wise2012a, WiseAbel2012,Wise2014, Kim2013a, Kim2013b}. Direct ray tracing for radiative transfer is one of the most computationally expensive physics components in our simulations. However, \cite{WiseAbel2011} demonstrated that this implementation scales to $\mathcal{O}(10^{3})$ for large computational domains ($\sim 10^9$ cells) and modest source counts ($\sim10^4$). The number and spatial concentration of these sources have the greatest affect on the computational cost of the radiative transfer. However, given the size and mass of our galaxy, we estimate that our galaxy will generally have $10 - 10^3$ ionizing sources at any given time in a $\sim$10$^{XX}$ cell domain, both well below the limitations of the radiative transfer module.
+
+We follow cosmic rays using a two-fluid approximation \citep{SalemBryan2014, SalemBryanHummels, SalemBryanCorlies} whereby the CR's act as an additional non-thermal pressure term in the ISM. In this model, CR's diffuse isotropically as determined by a diffusion coefficient, $\kappa_{\rm CR}$. We inject CR's at supernova locations by instantaneously converting 10\% of the thermal energy into CR's. 
+
+\section{Justification of Resources}
+
+We request a total of XXX million SU's and XX TB of storage space, as explained below for each of our projects.
+
+\subsection{Feedback and Chemodynamics in Galaxies}
+
+Our primary objective is to test the role various feedback physics play in the structural, dynamical, and chemical evolution of low mass dwarf galaxies. These will ultimately be tied to observational distinctions in the star formation history of our galaxies, distribution and retention of chemical ejecta in our galaxies, and the spatial distribution and abundances of the individual star particles. We will conduct a series of controlled tests of the effect of each feedback process on the evolution of our dwarf galaxy, as outlined in Table XX. 
+
+\begin{table}
+ \centering
+ \footnotesize
+ \caption{Summary and estimated cost of dwarf galaxy simulations}
+ \begin{tabular}{| R | R | R | R | R | r | r | r | R |}
+ \hline
+ \multicolumn{1}{|m{1.5cm}|}{Model Number} & \multicolumn{1}{m{2cm}|}{Supernovae and Winds} & \multicolumn{1}{m{1.75cm}|}{Ionizing Radiation} & \multicolumn{1}{m{0.5cm}|}{Cosmic Rays} & \multicolumn{1}{m{1.25cm}|}{PE + LW Heating} & Resolution (pc) & 10$^{3}$ SU/Myr & Time & \multicolumn{1}{m{1.0cm}|}{Total SU (10$^{6}$)} \\
+ \hline
+
+  1 & Y  & N & N & N & 1.0 & 0.82 & 1.0 & 0.82 \\
+  2 & Y* & N & N & N & 1.0 & 0.7  & 1.0 & 0.7 \\
+  3 & Y  & Y & N & N & 1.0 & 2.0  & 1.0 & 2.0 \\
+  4 & Y  & N & Y & N & 1.0 & 1.2  & 1.0 & 1.2 \\
+  5 & Y  & N & N & Y & 1.0 & 0.9  & 1.0 & 0.9 \\
+  6 & Y  & Y & N & Y & 1.0 & 2.0  & 1.0 & 2.0 \\
+  7 & Y  & Y & Y & Y & 1.0 & 2.4  & 1.0 & 2.4 \\
+  8 & Y  & Y & Y & Y & 0.5 & 16.0 & 0.1 & 1.6  \\  
+  \hline
+  Total & - & - & - & - & - & - & - & 11.62  \\
+ \hline
+ \end{tabular}
+ \caption{Each of our planned simulations and the feedback physics varied in each case. All of our simulations, except for model 8, will be run for 1 Gyr at 1.0 pc resolution. We will perform a resolution study of our suite of feedback physics with model 8, which will be identical to model 7 but adding an additional level of refinement to model 7 500 Myr into its evolution and evolving for an additional 100 Myr.}
+\end{table}
+
+\begin{table}
+ \centering
+ \footnotesize
+ \caption{Summary and estimated cost of dwarf galaxy simulations}
+ \begin{tabular}{| R | R | R | R | R | R | R  | R }
+ \hline
+ \multicolumn{1}{|m{1.5cm}|}{Model Number} & \multicolumn{1}{m{1cm}|}{Number of Fields} & \multicolumn{1}{m{2.25 cm}|}{Number of Particle Fields} & \multicolumn{1}{m{2.0cm}|}{Memory Per Output (Gb)} & \multicolumn{1}{m{1.75 cm}|}{Short / Long Term Cadence (Myr)} & \multicolumn{1}{m{1.5cm}|}{Short Term Storage (TB)} & \multicolumn{1}{m{1.5cm}|}{Long Term Storage (TB)} \\
+ \hline
+
+  1 & 31 & 23 & 2.7 &  2.5 / 10 & 1.08 & 0.27  \\
+  2 & 31 & 23 & 2.7 &  2.5 / 10 & 1.08 & 0.27  \\  
+  3 & 38 & 23 & 3.2 &  2.5 / 10 & 1.28 & 0.32  \\
+  4 & 32 & 23 & 2.7 &  2.5 / 10 & 1.08 & 0.27  \\
+  5 & 33 & 23 & 2.8 &  2.5 / 10 & 1.12 & 0.28  \\
+  6 & 40 & 23 & 3.4 &  2.5 / 10 & 1.36 & 0.34  \\
+  7 & 41 & 23 & 3.5 &  2.5 / 10 & 1.40 & 0.35  \\
+  8 & 41 & 23 & 33  &  0.5 / 5  & 6.60  & 3.3  \\  
+  \hline
+  TOTAL & - & - & - & - & 15.0 & 5.40 \\
+ \hline
+ \end{tabular}
+ \caption{The estimated short and long term memory storage requirements for each of our simulations, and the total storage requested for this portion of our project. Each of the above grid and particle fields are stored as a 64 bit float. The above calculations are made assuming a typical grid cell count of $\sim 10^{7}$ and particle count of $\sim 10^{6}$. For our short, high resolution simulation (model 8) we expect on order of $\sim 10^{8}$ grid cells. Our 1 Gyr runs (models 1 - 7) will have a total of 400 short term and 100 long term outputs, and our high resolution will have 200 short term and 20 long term outputs.}
+\end{table}
+
+In each case, we only vary the included feedback physics themselves, while leaving all other free parameters in our model fixed. All of the simulations will have the same initial conditions and follow the same set of chemical species as both baryonic tracer fields and abundance tags in each star particle. We will follow a total of ten metal species abundances, focusing on those most readily constrained by observations: C, N, O, Mg, Si, S, Fe, Ni, Y, and Eu. These are in addition to a total metallicity field and the H and He abundances and ionization states followed for the 9 species chemistry solver. Supernovae (both core collapse and Type Ia) and stellar wind feedback are used in every simulation, as they are the sources of chemical enrichment. However, in model 2 we test the dynamical effect of stellar winds on galaxy scales by allowing stars to pollute their surroundings, but turning off the kinetic and thermal energy injection from winds. In the rest of the models, we focus on the role radiation feedback -- from ionizing radiation and local photoelectric heating -- and cosmic rays play in the global chemodynamical evolution of our dwarf galaxy by producing various runs turning on / off these effects.
+
+In all simulations, the size of each timestep greatly affects the SU/Myr cost of each model. Shorter timesteps are required by the CFL condition when high velocity ($10^{2} - 10^{3}$ km/s) or very hot ($>$ 10$^{6}$K) gas exists on the grid, as will inevitably occur in modelling stellar wind and supernova feedback. We anticipate timesteps on the order of 500 - 1000 years on the highest level of refinement once star formation and feedback are underway, increasing in size by factors of 2 or more for lower levels of refinement. Radiative transfer is the most expensive of the individual feedback methods we will test, but is highly dependent upon the number of ionizing sources within the simulation, which in turn depends on how star formation proceeds in our galaxy. This is challenging to estimate perfectly, but given our choice of IMF and typical star formation rates for observed dwarf galaxies, we expect a maximum of a few hundred ionizing sources at any given moment. This will lead to a noticeable increase in simulation cost, on order of a factor of 2 above simulations without radiative transfer. Cosmic rays, though computationally inexpensive in our model, decrease the timestep in the given simulation in a way that scales with the adopted diffusion coefficient. We estimate cosmic rays will increase the computational expense by $\sim$50\%.
+
+Radiative transfer with large particle counts and low timestep sizes that arise from the CFT timestep restrictions when gas is heated to millions of degrees during supernova explosions or from the diffusion requirements of the cosmic rays are the primary source of relatively high SU / Myr costs in each of these simulations.
+
+We plan to run each simulation for at least 1 Gyr, outputting data dumps every 2.5 Myr. We estimate that this cadence is necessary to provide access to on order of 1-3 restart dumps within a single job submission. Rapid analysis of this high cadence will allow us to understand the short timescale variance of dwarf galaxy chemodynamics; these will also be used to make high time resolution movies of our simulation set. Each output contains all of the information about the simulation at a single time. The memory required for each dump varies depending on the physics used as follows. Each simulation dump will contain 11 fields associated with the hydrodynamics and 20 fields associated with the primordial chemistry and metal abundances tracers, for a base total of 31. Radiative transfer (ionizing radiation) simulations will contain an additional 7, while photoelectric heating and Lyman Werner adds an additional 2. Cosmic rays only add a single additional field, for a total of 41 baryon fields in our full physics simulations. Each particle keeps track of 23 properties, 13 of which are abundances (metallicity, H, He, and metal tracers), while the rest include position (3), velocity (3), current mass, birth mass, lifetime, and formation time. From our tests, we expect on order of $10^{7}$ grid cells in our 1 pc resolution simulations, with the actual number varying depending on the active refinement, and on order of $10^{5} - 10^{6}$ stars. Given this, and our output cadence, we compute our total memory storage needs in Table~\ref{label:storage} for both short and long term data dumps. These calculations were all made assuming 10$^{6}$ particles in every dump, which is an overestimate as it will take time to form that many stars; however, this assumption only affects the storage requirements on the percent level, as the demand is dominated by the grid cell fields.
+
+
+
+\section{Project team qualifications}
+
+\textbf{PI: Mordecai-Mark Mac Low}...........
+
+\textbf{co-PI: Andrew Emerick} is a PhD student at Columbia University advised by both PI Mac Low and with collaborator Greg Bryan. Emerick is the developer of the new star formation and feedback models to be used in the star formation and feedback simulations of isolated dwarf galaxies in \textsc{Enzo}. He drafted this portion of the proposal, as it will comprise the bulk of his thesis research. Previously he has published research working with both \textsc{ENZO}, making synthetic absorption observations of gas in galaxy clusters \citep{Emerick2015}, and \textsc{FLASH}, studying gas stripping and feedback in low mass dwarf galaxy satellites \citep{Emerick2016}.
+
+\textbf{co-PI: Joshua Wall}.......
+
+\textbf{Collaborator: Greg Bryan} is a professor at Columbia University and {\bf title} at the Center for Computational Astrophysics at the Flatiron Institute. Bryan is the creator of the \textsc{Enzo} simulation code {\bf additional text / rewording TBD}.
+
+\section{Management}
+
+\subsection{Summary}
+
+Code development, production, and analysis of simulations of star formation, feedback, and chemodynamics of isolation galaxies in \textsc{Enzo} will be led by co-PI Emerick. The simulations of isolated dwarf galaxies will be supervised by PI Mac Low and collaborator Greg Bryan. {\bf is it worth mentioning that Brian O'Shea, Kathryn, and Mary are also involved?}
+
+\subsection{Local Computing Environment}
+
+Through the Department of Astronomy at Columbia University, co-PI Emerick has partial access to Yeti, a 2762 core (167 nodes with dual, 1.8 Ghz, 8 core processors) HPC cluster. A subset, 64, of these nodes are connected via Infiniband. Resources on this cluster are shared between several departments at Columbia on a department-by-department basis. The ease of access coupled with fairly short to no queue wait times makes this an ideal resource for code development, testing, and some analysis work. However, resource availability and ``fair-use'' principles make using Yeti for production level simulations prohibitive. Some short term memory storage is available on this cluster, but is severely limited; a total of 5 TB is shared between $\sim$ 50 users.
+
+{\bf available AMNH resources?}
+
+
+\bibliographystyle{apj}
+\bibliography{msbib}
+
+
+\end{document}
+This is never printed

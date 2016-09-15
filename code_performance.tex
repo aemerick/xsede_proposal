@@ -1,0 +1,36 @@
+\title{Star Formation and Feedback in Stellar Clusters and Galaxies.\\
+       Code performance and scaling.}
+
+\documentclass[12pt]{article}
+
+\usepackage[letterpaper, margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{natbib}
+\bibliographystyle{yahapj}
+\citestyle{aa}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+
+\subsection{\textsc{Enzo}}
+
+Our simulations of star formation and feedback in dwarf galaxies will utilize the well tested and publicly available \textsc{Enzo} \citep{Enzo-method}. \textsc{Enzo} is a community driven astrophysical simulation code with substantial active use and development, used in publications studying a wide variety of astrophysical processes, from isolated star clusters and galaxies to full cosmological simulations. In modifying this code to incorporate new models of star formation, feedback, and chemical evolution, we take advantage of a wealth of previously developed and tested methods included in the latest development version of \textsc{Enzo}. We outline pre-existing methods below, which dominate the performance budget of our simulations. 
+
+\textsc{Enzo} is an adaptive mesh refinement (AMR) hydrodynamics code with cosmological and magnetohydrodynamics capabilities. We use the direct-Eulerian piecewise parabolic method (PPM) \citep{ColellaWoodward1984, Bryan1995} to solve the equations of hydrodynamics on a spatially and temporally adaptive hierarchy of rectangular grids. \textsc{Enzo} allows for multi-level adaptive refinement of regions of interest, with independent timesteps for each level of refinement, minimizing the cost of resolving the large dynamic ranges required to accurately capture star formation and feedback in our galaxies. We couple \textsc{Enzo} to the \textsc{Grackle} chemistry and radiative cooling library to follow the non-equilibrium primordial chemistry network of 9 species with tabulated metal cooling rates from \textsc{Cloudy} (CITE). Additionally, this is coupled with a metagalctic UV background from \cite{HM2012} with an approximate self-shielding methods adapted from \cite{XX}.  
+
+Although a static, background dark matter gravitational potential is the globally dominant source of gravity in our isolated galaxy simulations, the gravitational potential of baryons and stars are locally important for star formation and feedback. We include gas self-gravity using a multigrid fast Fourier method for solving the Poisson equation \citp{HockneyEastwood1988}. The N-body dynamics of star particles, formed in high density regions of gas using methods extended from \cite{Goldbaum}, are followed via a drift-kick-drift algorithm \citep{HickneyEastwood1988} with timesteps set by the highest refined grid occupied by the particle. In order to adequately resolve the feedback physics originating from our star particles, each is considered a ``must refine'' particle, forcing refinement to the highest refinement level in the region around each particle. Initial star particle properties are modeled through interpolation on initial values from a stellar evolution track (REFERENCE), with radiation properties interpolated from the OSTAR2002 (CITE) grid of stellar models. Stars evolve over time through feedback as either stellar winds or in supernova explosions as determined from interpolating on the NuGrid data set of stellar yields (CITE). This feedback in both thermal and kinetic energy is applied to the physical regions around each star following the methods in (Simpson et al). We follow the resulting chemical evolution of our galaxy from ejected stellar yields using a total metallicity tracer field, along with tracer fields for (number) of individually selected elemental species. At formation, star particles additionally contain chemical tags of the metallicity and elemental abundances of the gas region where they formed.
+
+We use the direct ray tracing methods included in \textsc{Enzo} to track the ionizing radiation from massive stars in two energy bins, which is tied to the chemistry solver and is coupled to the hydrodynamics through radiation pressure feedback. We plan to additionally include cosmic rays in our simulation, a non-thermal source of feedback generated in shocks from supernova explosions, using the diffusive, two-fluid model of \cite{Salem}. This model was initially implemented in \textsc{ENZO}'s ZEUS hydrodynamics solver and is currently being adapted to the PPM solver used in this work. 
+
+\section{Performance and Scaling of Base Code}
+
+The technical aspects of our code are sufficiently developed to provide realistic weak scaling test of our full physics simulations to both production level resolution and near production level particle counts up to 512 processors. This is due in large part to our incorporation of previously proven methods for a majority of our included physics. 
+
+\bibliographystyle{apj}
+\bibliography{msbib}
+
+
+\end{document}
+This is never printed
