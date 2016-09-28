@@ -26,5 +26,11 @@ $(PERF).pdf: $(PERF).tex
 	$(LATEX) $(PERF) || true
 	rm -f $(PERF).blg $(PERF).log $(PERF).aux
 
+clean_performance:
+	rm -f *~ *.aux *.dvi *.gz *.out *.toc *.log *-temp.* *.blg $(PERF).ps $(PERF).bbl $(PERF).pdf
+
+clean_main:
+	rm -f *~ *.aux *.dvi *.gz *.out *.toc *.log *-temp.* *.blg $(MAIN).ps $(MAIN).bbl $(MAIN).pdf
+
 clean:
 	rm -f *~ *.aux *.dvi *.gz *.out *.toc *.log *-temp.* *.blg $(MAIN).ps $(PERF).ps $(MAIN).bbl $(PERF).bbl $(MAIN).pdf $(PERF).pdf
