@@ -12,6 +12,9 @@
 \usepackage{multirow}
 \usepackage{multicol}
 \usepackage{array}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\epstopdfsetup{update}
 \newcolumntype{L}{>{\centering\arraybackslash}m{2cm}}
 \newcolumntype{R}{>{\centering\arraybackslash}m{1.25cm}}
 
@@ -60,6 +63,17 @@ Since they are the sources of chemical enrichment in galaxies, our key observati
 Accounting for the effects of CRs in galaxy scale simulations has only been possible recently, yet has been shown to likely be a very important source of additional feedback in galaxies \citep[\eg][]{SalemBryan2014, SalemBryanHummels, SalemBryanCorlies, GirichidisCR, Pakmor2016, Simpson2016}. The role of CRs in low mass dwarf galaxies is still uncertain, though has been investigated recently in more massive dwarfs than those considered in this proposal \citep{Chen2016}. The implementation of CR feedback in \texttt{Enzo} \citep{SalemBryan2014} assumes both isotropic diffusion and ignores energy losses from interactions with an ordered magnetic field. Isotropic diffusion in very low mass dwarf galaxies may not be a poor assumption, as their lack of obvious disk structure may indicate that they lack the ability to create a global, ordered magnetic field that causes substantial anisotropies in CR behavior. We inject CR energy during supernova explosions at 10\% of the total energy injected, reducing the subsequent thermal / kinetic energy injection accordingly. CRs in our simulations are allowed to diffuse isotropically as controlled by a diffusion coefficient, and interacting with the hydrodynamics through an additional, non-thermal pressure term.
 
 Radiation from massive stars provides a substantial additional source of feedback in galaxies \citep[\eg][]{Agertz2013}. Including radiative feedback has been shown XXXX (sources). Radiation fluxes for each of our stars are computed using the \texttt{OSTAR2002} grid of stellar atmosphere models \citep{Lanz2003}; for stars with effective temperatures below those sampled on the \texttt{OSTAR2002} grid, we compute radiation rates assuming a black body spectrum, scaled to be consistent with the \texttt{OSTAR2002} models. In this proposal, we include radiative feedback in two distinct forms: 1) H and He ionizing radiation, dominated from massive stars, and 2) local FUV flux from all stars that contributes to photoelectric heating within the ISM. Separating these physics will allow us to directly address recent disagreement in the role of photoelectric heating in dwarf galaxies \citep{Hu2016, Forbes2016}. We use \texttt{Enzo}'s radiative transfer capabilities \citep{Wise2012a,WiseAbel2012,Wise2014} to track ionizing radiation directly, coupling the ionizing / heating rates to the \texttt{Grackle} chemistry solver, and accounting directly for effects of H radiation pressure. We assume the FUV radiation to be everywhere optically thin, using a photoelectric heating rate model from \cite{BakesTielens1994} and \cite{Wolfire2003} that scales with local density, temperature, and metallicity.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.45\linewidth]{number_density_slice}
+\includegraphics[width=0.45\linewidth]{temperature_slice}
+\vspace{0.1cm}
+\includegraphics[width=0.45\linewidth]{hi_radiation_slice}
+\includegraphics[width=0.45\linewidth]{c_projection}
+\caption{Example images from a proof of concept test of our dwarf galaxy model at low resolution (8 pc). Shown here are face-on slices of number density (top left), temperature (top right), and HI ionizing radiation (bottom left), along with an edge-on projection of total Carbon column density, illustrating yields ejected in metal enriched winds. This test was run with supernovae, stellar winds, radiative transfer, and photoelectric heating. Each black dot in the images is a star particle, which are often too clustered to distinguish between individual particles in these zoomed-out images. These images show the simulation $\sim$60 Myr after star formation, at which point there are 4324 star particles with total mass $1.2\times10^5$ M$_{\odot}$. 173 of these particles are ionizing sources.}
+\label{fig:levels}
+\end{figure}
 
 \subsection{Computational Methods}
 
