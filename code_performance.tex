@@ -39,7 +39,22 @@
 
 We determine the performance and scaling properties of \texttt{Enzo} in the context of the typical computational loads of our intended isolated dwarf galaxy simulations. In this situation, we are concerned with how \texttt{Enzo} scales in parallel with adaptive mesh refinement (AMR), ignoring its scaling properties for uniform, static grids, and presenting only weak scaling tests at our fiducial resolution. The more general properties of \texttt{Enzo} can be found in the recent method paper \citep{Enzo2014}. We use three case studies to determine the performance and scaling properties of \texttt{Enzo}, two of which are isolated dwarf galaxy simulations conducted at and just below our intended resolution, and the third is a lower resolution run intended to characterize how including radiative transfer affects performance. Each of these case studies were run with 128 processors (unless otherwise specified) on the TACC Stampede cluster, our proposed allocation resource.
 
-\subsection{Computational Methodology}
+\subsection{Computational Methodology and Algorithms}
+
+\texttt{Enzo} is a parallel, cosmological, AMR hydrodynamics + N-body code that has been well tested and used in a variety of applications. 
+
+Hydrodynamics solver and timestep size
+
+Gas self-gravity and the gravitational forces of the massive star particles are computed together to compute the gravitational acceleration on each cell and particle. On the root grid, we use a cloud-in-cell (CIC) \citep{HockneyEastwood1988} to map particles to a time-centered density field, including the effects of particles across sub-grids and neighboring domains; a similar time-centered density field is computed for the baryons in each grid cell. The gravitational potential is solved for using a fast Fourier transform (FFT) in isolated boundary conditions \citep{James1977}; accelerations are computed with a two-point centered difference scheme using the transformed real-space potential. For accuracy on sub-grids, we employ the seven-point, second-order finite difference approximation to Poisson's equation, solving the given Dirichlet boundary conditions with multigrid relaxation. Unwanted oscillations and errors across grids are reduced using expanded buffer zones around each grid, coupled with an iterative relaxation process between sibling grids. Particle accelerations are computed from the grid potential using linear CIC mapping. \texttt{Enzo} employs the particle-mesh N-body method from \cite{HockneyEastwood1988} to evolve the colissionless star particles.
+
+Radiation and radiative transfer
+
+grackle chemistry 
+
+\subsubsection{Grid Hierarchy and Timesteps}
+
+\texttt{Enzo} AMR simulations begin with a defined rectilinear root grid encompassing the computational domain. Additional levels of refinement take the form of child sub-grids nested within the root grid, generating a nested tree comprised of grid parents, children, and siblings; for our purposes, additional sub-grids increase resolution by a factor of two. Each grid is comprised of active zones and ghost zones that store boundary information from sibling grids. Each level in this tree is evolved on independent timesteps, reducing unneeded computation on lower levels of refinement. The time step 
+
 
 {\bf Do i need to go into details of methodology and algorithms here? Juan's and online examples do, but Greg's EX does not. May be redundant with some material in main text}
 Our dwarf galaxy scale simulations will each be performed with \texttt{Enzo}, a parallel, cosmological, AMR hyrdodynamics and N-body code. 
