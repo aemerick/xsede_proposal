@@ -1,0 +1,614 @@
+% set \longtrue to make a more detailed CV.
+% set \longfalse to make a shorter CV
+\newif\iflong
+\longtrue
+
+\newif\iflongexperience
+
+\iflong
+	\longexperiencetrue
+\fi
+\longfalse
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% Simple LaTeX CV Template %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[10pt]{article}
+
+% for Roman serrif font
+%\usepackage{times}
+%\renewcommand{\familydefault}{\sfdefault}
+% This is a helpful package that puts math inside length specifications
+\usepackage{calc}
+\usepackage{comment}
+
+% Simpler bibsection for CV sections
+% (thanks to natbib for inspiration)
+\makeatletter
+\newlength{\bibhang}
+\setlength{\bibhang}{1em} %1em}
+\newlength{\bibsep}
+ {\@listi \global\bibsep\itemsep \global\advance\bibsep by\parsep}
+\newenvironment{bibsection}%
+        {\begin{enumerate}{}{%
+%        {\begin{list}{}{%
+       \setlength{\leftmargin}{\bibhang}%
+       \setlength{\itemindent}{-\leftmargin}%
+       \setlength{\itemsep}{\bibsep}%
+       \setlength{\parsep}{\z@}%
+        \setlength{\partopsep}{0pt}%
+        \setlength{\topsep}{0pt}}}
+        {\end{enumerate}\vspace{-.6\baselineskip}}
+%        {\end{list}\vspace{-.6\baselineskip}}
+\makeatother
+
+% Layout: Puts the section titles on left side of page
+\reversemarginpar
+
+
+
+
+%
+%         PAPER SIZE, PAGE NUMBER, AND DOCUMENT LAYOUT NOTES:
+%
+% The next \usepackage line changes the layout for CV style section
+% headings as marginal notes. It also sets up the paper size as either
+% letter or A4. By default, letter was used. If A4 paper is desired,
+% comment out the letterpaper lines and uncomment the a4paper lines.
+%
+% As you can see, the margin widths and section title widths can be
+% easily adjusted.
+%
+% ALSO: Notice that the includefoot option can be commented OUT in order
+% to put the PAGE NUMBER *IN* the bottom margin. This will make the
+% effective text area larger.
+%
+% IF YOU WISH TO REMOVE THE ``of LASTPAGE'' next to each page number,
+% see the note about the +LP and -LP lines below. Comment out the +LP
+% and uncomment the -LP.
+%
+% IF YOU WISH TO REMOVE PAGE NUMBERS, be sure that the includefoot line
+% is uncommented and ALSO uncomment the \pagestyle{empty} a few lines
+% below.
+%
+
+%% Use these lines for letter-sized paper
+\usepackage[paper=letterpaper,
+            %includefoot, % Uncomment to put page number above margin
+            marginparwidth=1.2in,     % Length of section titles
+            marginparsep=.05in,       % Space between titles and text
+            margin=1in,               % 1 inch margins
+            includemp]{geometry}
+
+%% Use these lines for A4-sized paper
+%\usepackage[paper=a4paper,
+%            %includefoot, % Uncomment to put page number above margin
+%            marginparwidth=30.5mm,    % Length of section titles
+%            marginparsep=1.5mm,       % Space between titles and text
+%            margin=25mm,              % 25mm margins
+%            includemp]{geometry}
+
+%% More layout: Get rid of indenting throughout entire document
+\setlength{\parindent}{0in}
+
+\usepackage[shortlabels]{enumitem}
+
+%% Reference the last page in the page number
+%
+% NOTE: comment the +LP line and uncomment the -LP line to have page
+%       numbers without the ``of ##'' last page reference)
+%
+% NOTE: uncomment the \pagestyle{empty} line to get rid of all page
+%       numbers (make sure includefoot is commented out above)
+%
+\usepackage{fancyhdr,lastpage}
+\pagestyle{fancy}
+%\pagestyle{empty}      % Uncomment this to get rid of page numbers
+\fancyhf{}\renewcommand{\headrulewidth}{0pt}
+\fancyfootoffset{\marginparsep+\marginparwidth}
+\newlength{\footpageshift}
+\setlength{\footpageshift}
+          {0.5\textwidth+0.5\marginparsep+0.5\marginparwidth-2in}
+\lfoot{\hspace{\footpageshift}%
+       \parbox{4in}{\, \hfill %
+                    \arabic{page} of \protect\pageref*{LastPage} % +LP
+%                    \arabic{page}                               % -LP
+                    \hfill \,}}
+
+% Finally, give us PDF bookmarks
+\usepackage{color,hyperref}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.9}
+\hypersetup{colorlinks,breaklinks,
+            linkcolor=darkblue,urlcolor=darkblue,
+            anchorcolor=darkblue,citecolor=darkblue}
+
+%%%%%%%%%%%%%%%%%%%%%%%% End Document Setup %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% =================================================================================================%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Helper Commands %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% The title (name) with a horizontal rule under it
+% (optional argument typesets an object right-justified across from name
+%  as well)
+%
+% Usage: \makeheading{name}
+%        OR
+%        \makeheading[right_object]{name}
+%
+% Place at top of document. It should be the first thing.
+% If ``right_object'' is provided in the square-braced optional
+% argument, it will be right justified on the same line as ``name'' at
+% the top of the CV. For example:
+%
+%       \makeheading[\emph{Curriculum vitae}]{Your Name}
+%
+% will put an emphasized ``Curriculum vitae'' at the top of the document
+% as a title. Likewise, a picture could be included:
+%
+%   \makeheading[\includegraphics[height=1.5in]{my_picutre}]{Your Name}
+%
+% the picture will be flush right across from the name.
+\newcommand{\makeheading}[2][]%
+        {\hspace*{-\marginparsep minus \marginparwidth}%
+         \begin{minipage}[t]{\textwidth+\marginparwidth+\marginparsep}%
+             {\large \bfseries #2 \hfill #1}\\[-0.15\baselineskip]%
+                 \rule{\columnwidth}{1pt}%
+         \end{minipage}}
+
+% The section headings
+%
+% Usage: \section{section name}
+\renewcommand{\section}[1]{\pagebreak[3]%
+    \hyphenpenalty=10000%
+    \vspace{1.3\baselineskip}%
+    \phantomsection\addcontentsline{toc}{section}{#1}%
+    \noindent\llap{\scshape\smash{\parbox[t]{\marginparwidth}{\raggedright #1}}}%
+    \vspace{-\baselineskip}\par}
+
+% An itemize-style list with lots of space between items
+\newenvironment{outerlist}[1][\enskip\textbullet]%
+        {\begin{itemize}[#1,leftmargin=*]}{\end{itemize}%
+         \vspace{-.6\baselineskip}}
+
+% An environment IDENTICAL to outerlist that has better pre-list spacing
+% when used as the first thing in a \section
+\newenvironment{lonelist}[1][\enskip\textbullet]%
+        {\begin{list}{#1}{%
+        \setlength{\partopsep}{0pt}%
+        \setlength{\topsep}{0pt}}}
+        {\end{list}\vspace{-.6\baselineskip}}
+
+% An itemize-style list with little space between items
+\newenvironment{innerlist}[1][\enskip\textbullet]%
+        {\begin{itemize}[#1,leftmargin=*,parsep=0pt,itemsep=0pt,topsep=0pt,partopsep=0pt]}
+        {\end{itemize}}
+
+% An environment IDENTICAL to innerlist that has better pre-list spacing
+% when used as the first thing in a \section
+\newenvironment{loneinnerlist}[1][\enskip\textbullet]%
+        {\begin{itemize}[#1,leftmargin=*,parsep=0pt,itemsep=0pt,topsep=0pt,partopsep=0pt]}
+        {\end{itemize}\vspace{-.6\baselineskip}}
+
+% To add some paragraph space between lines.
+% This also tells LaTeX to preferably break a page on one of these gaps
+% if there is a needed pagebreak nearby.
+\newcommand{\blankline}{\quad\pagebreak[3]}
+\newcommand{\halfblankline}{\quad\vspace{-0.5\baselineskip}\pagebreak[3]}
+
+% Uses hyperref to link DOI
+\newcommand\doilink[1]{\href{http://dx.doi.org/#1}{#1}}
+\newcommand\doi[1]{doi:\doilink{#1}}
+
+% For \url{SOME_URL}, links SOME_URL to the url SOME_URL
+\providecommand*\url[1]{\href{#1}{#1}}
+% Same as above, but pretty-prints SOME_URL in teletype fixed-width font
+\renewcommand*\url[1]{\href{#1}{\texttt{#1}}}
+
+% For \email{ADDRESS}, links ADDRESS to the url mailto:ADDRESS
+\providecommand*\email[1]{\href{mailto:#1}{#1}}
+% Same as above, but pretty-prints ADDRESS in teletype fixed-width font
+%\renewcommand*\email[1]{\href{mailto:#1}{\texttt{#1}}}
+
+%\providecommand\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+%    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+%\providecommand\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+%    \TeX}}
+\providecommand\BibTeX{{B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    \TeX}}
+\providecommand\Matlab{\textsc{Matlab}}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%% End Helper Commands %%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%% Begin CV Document %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\makeheading{Andrew J. Emerick\\ \textnormal{NSF Graduate Research Fellow - Astronomy} \\ \textnormal{Columbia University}\\ \textnormal{American Museum of Natural History}}
+
+\section{Contact Information}
+
+% NOTE: Mind where the & separators and \\ breaks are in the following
+%       table.
+%
+% ALSO: \rcollength is the width of the right column of the table
+%       (adjust it to your liking; default is 1.85in).
+%
+\newlength{\rcollength}\setlength{\rcollength}{1.4in}%
+%
+\begin{tabular}[t]{@{}p{\textwidth-\rcollength}p{\rcollength}}
+\email{emerick@astro.columbia.edu} \\
+\end{tabular}
+
+%\section{Objective}
+
+%Insert text here if you want to
+%\begin{innerlist}
+%\item More information and auxiliary documents can be found at\\\url{http://www.tedpavlic.com/facjobsearch/}
+%\end{innerlist}
+
+\section{Research Interests}
+
+Using high performance computational simulations, I study the
+formation and evolution of galaxies, from the smallest dwarf galaxies found in the 
+Local Group to massive galaxy clusters. For my thesis research, I am developing 
+a new methods in the adaptive mesh refinement hydrodynamics code \textsc{Enzo} to 
+better understand the complex interplay of feedback physics (supernovae, stellar winds,
+radiation, and cosmic rays) in forming realistic galaxies. Building on previous work from
+the \textsc{Enzo} collaboration, I am simulating these physical processes by adding in a novel
+method to simulate individual stars in galaxy scale simulations while tracing stellar yields
+from individual stars, and thus galaxy scale chemical enrichment. I am also interested in 
+how star formation ceased in the lowest mass satellites of our Milky Way galaxy, and 
+have worked previously on real and synthetic observations of galaxy clusters, and galaxy cluster physics in general.
+
+\section{Education}
+
+\href{}{\textbf{Columbia University}},
+\begin{outerlist}
+
+\item[] Ph.D.,
+		\href{}
+			{Astronomy},
+			\emph{Expected:} 2018/2019
+\end{outerlist}
+
+\vspace{.1in}
+\textbf{University of Minnesota},
+Minneapolis, MN
+\begin{outerlist}
+
+%        \begin{innerlist}
+%        \item Thesis Topic: \emph{asdf}
+%        \item Advisors:
+%              \href{}
+%                   {name} and
+%              \href{http://www.biostat.umn.edu/~sudiptob/}
+%                   {Sudipto Banerjee, Ph.D}
+%        \end{innerlist}
+
+\item[] B.S.,
+        \href{http://www.astro.umn.edu/}
+             {Astrophysics},
+             May 2013
+        \begin{innerlist}
+		\item Summa Cum Laude, with Distinction    
+        \item Thesis Topic: \emph{Evolution of Weak Magnetic Fields in a Turbulent Plasma: A
+Galaxy Cluster Context} Advisor : \href{http://homepages.spa.umn.edu/~twj/}{Thomas W. Jones, Ph.D.}
+
+        \end{innerlist}
+        
+\item[] B.S.,
+        \href{http://www.physics.umn.edu/}
+             {Physics},
+             May 2013
+        \begin{innerlist}
+		\item Graduated with Distinction        
+        \end{innerlist}
+\end{outerlist}
+
+% The 'iflong' 'fi' statements in the following are used to disable/enable
+% descriptions of research experience when generating CV, depending on 
+% need (see if statements at top of file)
+\section{Research Experience}
+
+\textbf{NSF Graduate Fellow} \hfill {Aug. 2014 - Present}
+
+\textbf{Research Assistant} \hfill {Aug. 2013 - Present}
+\begin{innerlist}
+
+\item[] Department of Astronomy, Columbia University - New York, NY\\
+        American Museum of Natural History - New York, NY\\
+    Supervisors: Greg Bryan, Ph.D and Mordecai-Mark Mac Low, Ph.D\\
+		Supervisors (previous): Mary Putman, Ph.D
+%		\begin{innerlist}
+%		\item Research utilizes large scale computational simulations to study
+%		galaxy formation and evolution on all scales, with a focus on dwarf galaxies.
+%		\item Currently implementing a chemodynamics method into the AMR, hydro code 
+%		\textsc{Enzo} using star-by-star modeling and including the effects of supernovae,
+%		stellar winds, cosmic rays, and full radiative transfer.
+%		\item Utilize following code projects: \href{http://enzo-project.org/}{Enzo}, 
+%		\href{http://yt-project.org/}{\textit{yt}}, \href{http://flash.uchicago.edu/site/}{FLASH}
+%		\end{innerlist}
+\end{innerlist}
+
+\iflong
+\textbf{Undergraduate Research Assistant} \hfill {Dec. 2011 - Aug. 2013}
+\begin{innerlist}
+
+\item[] Minnesota Institute of Astrophysics, University of Minnesota - Minneapolis, MN\\
+		Supervisors: Thomas W. Jones, Ph.D and David Porter, Ph.D
+		\iflong
+		\begin{innerlist}
+		\item Studying evolution of weak magnetic fields in turbulent plasmas using
+		ideal MHD simulations at the Minnesota Supercomputing Institute.
+		\item A portion of this research constituted my senior undergraduate thesis.
+		\end{innerlist}
+		\fi
+\end{innerlist}
+
+\textbf{Undergraduate Research Assistant} \hfill {Jan. 2012 - May 2012}
+\begin{innerlist}
+
+\item[] Department of Physics, University of Minnesota - Minneapolis, MN\\
+		Supervisor: Priscilla Cushman, Ph.D
+
+		\begin{innerlist}		
+		\item Worked with partner to characterize the gamma ray background in the 
+		Cryogenic Dark Matter Search detector testing facility.
+		\item Used high purity germanium detector to lay groundwork for construction
+		of appropriate lead shielding for testing apparatus.
+		\end{innerlist}
+
+\end{innerlist}
+
+\textbf{Undergraduate Research Assistant} \hfill {Oct. 2009 - Sep. 2011}
+\begin{innerlist}
+
+\item[] Minnesota Institute for Astrophysics, University of Minnesota - Minneapolis, MN\\
+		Supervisor: Lawrence Rudnick, Ph.D
+
+		\begin{innerlist}
+		\item Worked on data processing and quality control for Green Bank Telescope
+		observations done by graduate student
+		\item Studied evolution of galaxy clusters using cluster radio halos as probes. Stacked
+		faint, diffuse halos to independently confirm bi-modal distribution in radio halo properties.
+		\end{innerlist}
+
+\end{innerlist}
+
+\textbf{Research Experience for Undergraduates} \hfill {Summer 2011}
+\begin{innerlist}
+
+\item[] Cyclotron Institute, Texas A\&M University - College Station, TX\\
+        Supervisor: Ralf Rapp, Ph.D
+
+        \begin{innerlist}
+        \item Utilized analytical reproduction of lattice QCD results to motive revisit
+        of problem of bottomonium binding scenarios in the QGP.
+        \item Used new understandings to update bottomonium production code to predict 
+        via observables, bottomonium yields at both RHIC and LHC.
+        \end{innerlist}
+
+\end{innerlist}
+
+\textbf{Research Assistant} \hfill {Summer 2010}
+\begin{innerlist}
+
+\item[] Bonner Nuclear Laboratories, Rice University - Houston, TX\\
+        Supervisor: Pablo Yepes, Ph.D
+
+        \begin{innerlist}
+        \item Utilized Monte Carlo and first principles code to simulate proton radiation
+        therapy. 
+        \item Improved first principles code with goal of more efficiently calculating relevant
+        parameters in a fraction of Monte Carlo simulation run-times.
+        \end{innerlist}
+
+\end{innerlist}
+\fi
+
+\section{Refereed Journal Publications}
+\vspace{-.1275in}
+\begin{bibsection}
+    \item \textbf{A. Emerick}, M-M. Mac Low, J. Grcevich, A. Gatto, \href{http://arxiv.org/abs/1605.02746}{``Gas Loss by Ram Pressure Stripping and Internal Feedback From Low Mass Milky Way Satellites''}, 2016, \textit{accepted for publication in ApJ}
+
+    \item \textbf{A. Emerick}, G. Bryan, M. E. Putman,  \href{http://adsabs.harvard.edu/abs/2015MNRAS.453.4051E}{``Warm Gas in and Around Simulated Galaxy Clusters as Probed by Absorption Lines''}, 2015 \textit{MNRAS} \textbf{453}
+    
+    \item \textbf{A. Emerick}, X. Zhao, R. Rapp, \href{http://adsabs.harvard.edu/abs/2012EPJA...48...72E}{``Bottomonia in the Quark-Gluon Plasma and
+	their Production at RHIC and LHC''}, \textit{Eur. Phys. J. A} (2012)
+	\textbf{47}:72	
+
+	
+	\item S. Brown, \textbf{A. Emerick}, L. Rudnick, G. Brunetti, \href{http://adsabs.harvard.edu/abs/2011ApJ...740L..28B}{``Probing the Off-State of
+	Cluster Radio Halos''}, 2011 \textit{ApJ} \textbf{740} L28 
+	
+\end{bibsection}
+
+\section{Talks}
+\vspace{-.125in}
+\begin{bibsection}
+    \item \textbf{A. Emerick}, M. Putman, G. Bryan, "Warm Gas in and Around Simulated
+    Galaxy Clusters as Probed by Absorption Line Studies", The Role of HI in Galxies,
+    Kuching, Malaysia (Fall 2014)
+\end{bibsection}
+
+\section{Conference Publications}
+\vspace{-.125in}
+\begin{bibsection}
+  \item \textbf{A. Emerick}, M-M. Mac Low, J. Grcevich, A. Gatto, "The Surprising Inefficiency of Ram Pressure Stripping and Feedback in Quenching the Lowest Mass Milky Way Satellites". 
+ `` Mapping the Pathways of Galaxy Transformation Across Time and Space'', Avalon, Californa,
+    August 2016
+  
+  \item \textbf{A. Emerick}, M-M. Mac Low, J. Grcevich, A. Gatto, "The Evolution of Satellite
+  Dwarf Galaxies via Stripping and Supernova Feedback in a Milky Way Type Halo". 
+  Lorentz Center Workshop, "The Life and Death of Satellite Galaxies". Leiden, Netherlands 2015
+
+	\item X. Zhao, \textbf{A. Emerick}, R. Rapp, "In-Medium Quarkonia at SPS, RHIC, and LHC"
+	\textit{Nuclear Physics A, Vol. 904, p. 611-614c}. Quark Matter 2012 - Proceedings. 
+	\href{http://www.sciencedirect.com/science/article/pii/S0375947413002042}{Abstract}
+	
+	\item \textbf{A. Emerick}, T.W. Jones, D. Porter, "Simulation of Turbulence and Magnetic
+	Field Evolution in Astrophysical Plasmas", \textit{UMN Digital Conservatory:
+	Undergraduate Research Presentations}. \href{http://purl.umn.edu/123023}{Poster}
+
+	\item \textbf{A. Emerick}, X. Zhao, R. Rapp, "Bottomonium in the QGP: production at
+	RHIC and LHC." \textit{Fall Meeting of the APS Division of Nuclear Physics: Bulletin
+	of the American Physical Society, Volume 56, Number 12}.
+	\href{http://meeting.aps.org/Meeting/DNP11/Event/156070}{Poster abstract}
+
+	\item \textbf{A. Emerick}, 	S. Brown, L. Rudnick, "Stacking Detection of Diffuse Radio
+	Halo Emission in Galaxy Clusters". In: \textit{AAS Meeting \# 218, \# 408.26; Bulletin of 
+	the American Astronomical Society, Vol. 43, 201}. 
+	\href{http://adsabs.harvard.edu/abs/2011AAS...21840826E}{Poster abstract}.
+	
+	\item \textbf{A. Emerick}, S. Brown, L. Rudnick, "Examination of Radio Halos and 
+	Corresponding X-ray Emission in Galaxy Clusters", \textit{UMN Digital Conservatory:
+	Undergraduate Research Presentations}.
+	\href{http://conservancy.umn.edu/handle/104933}{Poster}.
+\end{bibsection}
+
+\section{Unpublished Works}
+\vspace{-.125in}
+\begin{bibsection}
+	\item \textbf{A. Emerick}, "Evolution of Weak Magnetic Fields in a Turbulent Plasma: A 
+	Galaxy Cluster Context", \textit{Submitted to the University Honors Program at the 
+	University of Minnesota in partial fullfillment of the requirements for the degree of
+	Bachelor of Science summa cum laude in Astrophysics}. 
+	\href{http://purl.umn.edu/155303}{Full paper}
+\end{bibsection}
+
+\section{Teaching Experience}
+\begin{innerlist}
+\item Lab T.A. Astronomy W1904: Astronomy Lab II \hfill {Spring 2015}
+\item Lab T.A. Astronomy C1904: Astronomy Lab I \hfill {Fall 2014}
+\item T.A. Astronomy C1403: Earth, Moon, and Planets \hfill {Spring 2014}
+\item T.A. Astronomy C1836: Stars and Atoms \hfill {Fall 2013}
+\end{innerlist}
+
+\halfblankline
+
+\section{Public Outreach}
+Writer for Astrobites \hfill { Active Nov. 2013 - Nov. 2015} \\
+\begin{innerlist}
+    \iflong
+    \item \href{http://astrobites.com/}{Astrobites} is a blog type website
+    geared towards daily summaries of astronomy journal papers, readable by
+    an undergraduate astronomy/physics student.
+    \fi	  
+\end{innerlist}
+
+\halfblankline
+% Add a little space to nudge next ``Conference Publications'' marginpar
+% down to make room for tall ``Submitted Journal Publications''
+% marginpar. If there are enough submitted journal publications, this
+% space will not be needed (and should be removed).
+%\vspace{0.1in}
+
+%\section{Papers in Preparation}
+%\vspace{-.1in}
+%\begin{bibsection}
+%    \item Toomey, T.L., Erickson, D.J., Carlin, B.P., Lenk, K.M., {\bf Quick, H.S.}, and Harwood, E.M. ``Do neighborhood attributes moderate the relationship between alcohol establishment density and crime?"
+%    \item {\bf Quick, H.}, Banerjee, S., and Carlin, B.P. ``Heteroscedastic variances in areally referenced temporal processes with an application to California asthma hospitalization data.''
+
+%    \item {\bf Quick, H.}, Carlin, B.P., and Banerjee, S. ``Space-time Gaussian process modeling of temporal air pollution gradients."
+%\end{bibsection}
+
+\section{Awards}
+Graduate Awards
+\begin{innerlist}
+\item NSF Graduate Research Fellowship \hfill Fall 2014, 5 yr\\
+\item Dean's Fellowship \hfill Fall 2013, 5 yr \\
+	  Department of Astronomy, Columbia University
+\end{innerlist}
+
+\halfblankline
+
+Travel Awards
+\begin{innerlist}
+\item Conference Experience for Undergraduates\hfill Oct. 2011\\
+APS DNP Fall Meeting
+\item Funding from University of Minnesota 
+      and APS Minority Scholarship \hfill May 2011 \\
+      AAS 218$^{th}$ Meeting  - Summer Boston
+\end{innerlist}
+
+\halfblankline
+
+Research Grants
+\begin{innerlist}
+\item XSEDE Computing Startup Grant on the Stampede Cluster \hfill 2015-2016 \\
+\item Undergraduate Research Opportunities Program Grant \hfill Spring 2012 \\
+University of Minnesota
+\item Undergraduate Research Opportunities Program Grant \hfill Fall 2010 \\
+University of Minnesota 
+\end{innerlist}
+
+\halfblankline
+\iflong
+Undergraduate Scholarships
+\begin{innerlist}
+\item J. Morris Blair Scholarship in Physics \hfill 2012-2013\\
+Dept. of Physics (UMN)
+\item Laverne and Ted Jones Undergraduate Scholarship \hfill 2012-2013 \\
+Minnesota Institute for Astrophysics (UMN) 
+\item Astronaut Scholarship Foundation Scholarship \hfill 2012-2013
+\item Minnesota Space Grant Consortium Scholarship \hfill Spring 2011 and 2012
+\item Franklin Scholarship \hfill Fall 2011\\
+School of Physics and Astronomy (UMN)
+\item American Physical Society Minority Scholarship \hfill 2010-2012
+\item Gold National Scholarship \hfill 2009-2013\\
+University of Minnesota
+\end{innerlist}
+\fi
+
+
+
+\section{Code Repositories}
+In support of open science, I keep all of my code publicly available and accessible. Please take a look at both my \href{https://bitbucket.org/aemerick/}{Bitbucket} and \href{https://github.com/aemerick/}{GitHub} repositories.
+
+%\section{Organizations}
+%\begin{innerlist}
+%\item American Physical Society (APS); Society of Physics Students (SPS), Sigma Pi
+%Sigma: Physics Honors Society
+%\end{innerlist}
+
+
+%\section{Skills}
+%Computer Programming:
+%\begin{innerlist}
+%    \item C$++$, Fortran, Python, LaTex, R, UNIX shell scripting, 
+%    GNU make
+%\end{innerlist}
+
+%\halfblankline
+
+
+\section{References}
+Greg Bryan
+\begin{innerlist}
+\item[] Professor of Astronomy \hfill {Phone: 1-212-854-6837}\\
+Department of Astronomy \hfill{E-mail: gbryan@astro.columbia.edu }\\
+Columbia University
+\end{innerlist}
+
+\halfblankline
+
+Thomas W. Jones
+\begin{innerlist}
+\item[] Professor of Astronomy \hfill {Phone: 612-624-1699}\\
+Minnesota Institute for Astrophysics \hfill{E-mail: twj@astro.umn.edu}\\
+University of Minnesota
+\end{innerlist}
+
+\halfblankline
+
+Lawrence Rudnick
+\begin{innerlist}
+\item[] Distinguished Teaching Professor \hfill {Phone: 612-624-3396}\\
+Minnesota Institute for Astrophysics \hfill{E-mail: larry@astro.umn.edu}\\
+University of Minnesota
+\end{innerlist}
+
+
+\end{document}
