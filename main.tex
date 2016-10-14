@@ -40,7 +40,7 @@
 \newcommand{\eg}{e.g.,}
 \newcommand\rmxaa{Rev. Mex. Astron. Astrofis.} % Revista Mexicana de Astronomia y Astrofisica
 
-\DeclareSIUnit\parsec{pc}
+%\DeclareSIUnit\parsec{pc}
 \newcommand{\msun}{$\textrm{M}_{\odot}$}
 \newcommand{\rsun}{$\textrm{R}_{\odot}$}
 \newcommand{\lsun}{$\textrm{L}_{\odot}$}
@@ -168,7 +168,7 @@ We have tested the conservation of both energy and momentum in this method. Figu
 \section{Model Descriptions}
 \subsection{Clusters}
 
-We will be zooming in on high fidelity ISM simulations run by Juan Iba\~{n}ez-Mej\'{i}a \citep{Ibanez-Mejia2016}. These MHD simulations start with a 1x1x40 \si{kpc} elongated box representing a slice of a spiral galaxy gas disk. Initially the gas is stirred by supernova injected energy for approximately 200~Myr without gravity. Then both self gravity and a Navarro Frenk White (NFW) dark matter background are switched on and molecular clouds and cloud complexes form. These clouds have densities and velocity dispersions consistent with observations, with many undergoing collapse which would lead to star formation. Several molecular clouds from these simulations would be appropriate for our study, ranging in mass from %\SIrange{1e3}{1e6}{\msun}.
+We will be zooming in on high fidelity ISM simulations run by Juan Iba\~{n}ez-Mej\'{i}a \citep{Ibanez-Mejia2016}. These MHD simulations start with a 1x1x40 kpc elongated box representing a slice of a spiral galaxy gas disk. Initially the gas is stirred by supernova injected energy for approximately 200~Myr without gravity. Then both self gravity and a Navarro Frenk White (NFW) dark matter background are switched on and molecular clouds and cloud complexes form. These clouds have densities and velocity dispersions consistent with observations, with many undergoing collapse which would lead to star formation. Several molecular clouds from these simulations would be appropriate for our study, ranging in mass from %\SIrange{1e3}{1e6}{\msun}.
 $10^3$--$10^6$~\msun.  Further we have developed code which zooms in on selected clouds gradually, allowing for the turbulent energy to naturally cascade down to our final resolution. We intend to zoom in on three of these clouds: One $8 \times 10^3$~{\msun} cloud, one $10^5$~{\msun} cloud, and one cloud complex that is $10^6$~{\msun}. % The first cloud is shown in Fig \ref{fig:bullhead}.
 
 %\begin{figure}
@@ -221,7 +221,7 @@ We request a total of 9.68 million SU's and 12.3/2.6 TB of short/long term stora
 
 %\subsubsection{Proposed Runs}
 
-The cost of a single zone MHD update in Flash is about 150~$\mu$s. When radiation is added, this cost doubles \citep{wise_enzo+moray:_2011}. Using the zoom algorithm, zooming in on the Bullhead cloud (mass $8 \times 10^3$~{\msun}) from kiloparsec scales down to $\sim50$~pc leaves us with about 2000 grids in the zoomed region. Further refinement levels each double the number of blocks from the previous level, since the volume filling factor is about 1/8th. It takes 12 levels of refinement to go to scales on the order of 100 \si{AU}. With $16^3$ cells per grid this gives about \num{8.3e7} cells total. The highest temperature on the grid generally will be from the winds, on the order of $10^6$~K. This gives a timestep of about 10~yr, and for a simulation run for 10~Myr requires \num{e6} steps. This leads to an estimate of total number of CPU hours of $11.5 \times 10^7$. Conducting this same estimate without winds means the highest temperature on the grid is generally due to the radiation at \SI{e4}{K} (this anticipates that supernova are brief and infrequent events in our simulation). This leads to a total of \SI{6.98e5}{hrs} for a single run. We therefore propose to do two runs for comparison, one with winds and one without.
+The cost of a single zone MHD update in Flash is about 150~$\mu$s. When radiation is added, this cost doubles \citep{WiseAbel2011}. Using the zoom algorithm, zooming in on the Bullhead cloud (mass $8 \times 10^3$~{\msun}) from kiloparsec scales down to $\sim50$~pc leaves us with about 2000 grids in the zoomed region. Further refinement levels each double the number of blocks from the previous level, since the volume filling factor is about 1/8th. It takes 12 levels of refinement to go to scales on the order of 100 AU. With $16^3$ cells per grid this gives about 8.3e7 cells total. The highest temperature on the grid generally will be from the winds, on the order of $10^6$~K. This gives a timestep of about 10~yr, and for a simulation run for 10~Myr requires $10^6$ steps. This leads to an estimate of total number of CPU hours of $11.5 \times 10^7$. Conducting this same estimate without winds means the highest temperature on the grid is generally due to the radiation at $10^4$ K (this anticipates that supernova are brief and infrequent events in our simulation). This leads to a total of $6.98 \times 10^5$ hrs for a single run. We therefore propose to do two runs for comparison, one with winds and one without.
 
 
 % Saving the stuff below in case we want to request runs with carved out winds, etc.
