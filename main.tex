@@ -18,6 +18,8 @@
 \newcolumntype{L}{>{\centering\arraybackslash}m{2cm}}
 \newcolumntype{R}{>{\centering\arraybackslash}m{1.25cm}}
 
+\renewcommand{\floatpagefraction}{.8}%
+
 \citestyle{aa}
 
 \newcommand {\apj}{ApJ}
@@ -42,12 +44,13 @@
 
 \section{Introduction}
 {\bf actual draft of this section pending Josh's end:}
-This renewal proposal describes our proposed research for the coming year in two related areas of astrophysical research. The PI of this proposal (M-M. Mac Low) is PI on NSF grant AST11-09395, which also supports co-PI Wall, while co-PI Emerick is supported by a NSF Graduate Research Fellowship.
+This renewal proposal describes our proposed research for the coming year in two related areas of astrophysical research. The PI of this proposal (M-M. Mac Low) is PI on NSF grant AST11-09395, which also supports co-PI Wall, while co-PI Emerick is supported by a NSF Graduate Research Fellowship (DGE-16-44869).
 Our research focuses on understanding the detailed effects of feedback physics 
 using detailed models in two distinct regimes: cluster formation in giant molecular clouds (lead by co-PI Wall), and
 star formation histories of low mass dwarf galaxies, lead by co-PI Emerick. 
 
-Both projects represent novel endeavors in their respective sub-fields. The cluster formation simulations combine stellar dynamics and evolution with a detailed feedback model in a hybrid hydrodynamics/N-body simulation reaching down to hundreds of AU.  Our dwarf galaxy simulations also include feedback at a coarser scale of 1.5~pc in a model tracking individual stars---unique on galactic scales---while also tracking stellar yields to trace both gas and stellar phase abundances for a dozen distinct metal species. Each project is supervised by PI M-M. Mac Low, with collaborator S. McMillan co-advising the cluster project, and collaborator G. Bryan co-advising the dwarf galaxy project. We summarize the science motivation for each of these projects below, while justifying our resource request. We note that each of these projects is central to the PhD thesis of one of the co-PIs.
+Both projects represent novel endeavors in their respective sub-fields. The cluster formation simulations combine stellar dynamics and evolution with a detailed feedback model in a hybrid hydrodynamics/N-body simulation reaching down to hundreds of AU.  Our dwarf galaxy simulations also include feedback at a coarser scale of 1.5~pc in a model tracking individual stars---unique on galactic scales---while also tracking stellar yields to trace both gas and stellar phase abundances for a dozen distinct metal species. Each project is supervised by PI M-M. Mac Low, with collaborator S. McMillan co-advising the cluster project, and collaborator G. Bryan co-advising the dwarf galaxy project. We summarize the science motivation for each of these projects below, while justifying our resource request. We note that each of these projects is central to the PhD thesis of each of the co-PIs.
+% AE: changed "one" to "each" in the above.... I am assuming this is for Josh's thesis work as well?
 % Wall (GMC's) and co-PI Emerick (dwarf galaxies).
 
 \subsection{Star Cluster Formation in Giant Molecular Clouds}
@@ -57,7 +60,7 @@ Star cluster formation theory is at an exciting threshold. Over the last decade,
 The intersection of these two fields comes when newly formed stars interact with the surrounding gas through the effects of winds, radiation and supernovae, collectively described as stellar feedback, while the inhomogeneous gas exerts tidal forces on the newly forming cluster. Numerical algorithms modeling stellar feedback have seen a great deal of recent attention. Supernova methods have become increasingly better at reproducing observations at all times, with recent kinetic energy injection models capturing the temperature and density evolution from pre-Sedov phase to cold remnant \citep{simpson_kinetic_2015,Kim_Ostriker_2015ApJ}. Winds have been modeled often in stellar feedback simulations as either pure thermal energy injection or actual kinetic particle injection \citep{Pelupessy_embedded_SC,Dale_winds_2013}. Finally radiation has been modeled with numerous different algorithms such as ray tracing and the M1 closure and including either thermal heating, radiation momentum pressure, or both \citep{Dale_Winds_and_H2,wise_enzo+moray:_2011,Rosdahl_RAMSES_RT_2015,Raskutti_Ostriker_2016}.
 
 However simulating star cluster formation is a complex problem. While many of the above simulations contain the specific physics of one or two forms of feedback, all three forms are expected to be present during the first 10--15~Myr %\SIrange{10}{15}{Myr} 
-of a new cluster's existence \citep{Need observational paper here!}. Further N-body dynamics is also occurring, forming and dissolving binaries that can lead to mass transfer and altered stellar evolution in the system \citep{something of Steve's likely here}. Finally, many of the simulations of star cluster formation cited above start from idealized initial conditions. This usually consist of a spherical density distribution with a turbulent velocity spectrum \citep{Dale_Winds_and_H2,Raskutti_Ostriker_2016}, instead of gravitationally-formed filamentary structures \citep{ibanez-mejia_gravitational_2015} still influenced by external stellar feedback themselves, such as supernovae \citep{Hill_2012}. For simulations that do start with more realistic initial gas distributions, stars are generally not individually resolved but are represented in groups of stars by cluster particles \citep{Gatto_Walch_SILCC3_2016,dobbs_properties_2016}.
+of a new cluster's existence {\bf( Need observational paper citation here!)}. Further N-body dynamics is also occurring, forming and dissolving binaries that can lead to mass transfer and altered stellar evolution in the system {\bf( cite something of Steve's likely here)}. Finally, many of the simulations of star cluster formation cited above start from idealized initial conditions. This usually consist of a spherical density distribution with a turbulent velocity spectrum \citep{Dale_Winds_and_H2,Raskutti_Ostriker_2016}, instead of gravitationally-formed filamentary structures \citep{ibanez-mejia_gravitational_2015} still influenced by external stellar feedback themselves, such as supernovae \citep{Hill_2012}. For simulations that do start with more realistic initial gas distributions, stars are generally not individually resolved but are represented in groups of stars by cluster particles \citep{Gatto_Walch_SILCC3_2016,dobbs_properties_2016}.
 
 \subsection{Star Formation, Feedback, and Chemodynamics of Galaxies}
 
@@ -112,12 +115,12 @@ Figure~\ref{fig:dwarf galaxy} shows the results from a low resolution (8 pc) pro
 
 \begin{figure}
 \centering
-\includegraphics[width=0.45\linewidth]{number_density_slice}
-\includegraphics[width=0.45\linewidth]{temperature_slice}
+\includegraphics[width=0.4\linewidth]{number_density_slice}
+\includegraphics[width=0.4\linewidth]{temperature_slice}
 \vspace{0.1cm}
-\includegraphics[width=0.45\linewidth]{hi_radiation_slice}
-\includegraphics[width=0.45\linewidth]{c_projection}
-\caption{Example images from a proof of concept test of our dwarf galaxy model at low resolution (8 pc). Shown here are face-on slices of number density (top left), temperature (top right), and H~{\sc i} ionizing radiation (bottom left), along with an edge-on projection of total carbon column density, illustrating yields ejected in metal enriched winds. This test was run with supernovae, stellar winds, radiative transfer, and photoelectric heating. Each black dot in the images is a star particle, which are often too clustered to distinguish between individual particles in these zoomed-out images. These images show the simulation $\sim$60 Myr after star formation, at which point there are 4,324 star particles with total mass $1.2\times10^4$ M$_{\odot}$. Of these, 173 are ionizing sources.}
+\includegraphics[width=0.4\linewidth]{hi_radiation_slice}
+\includegraphics[width=0.4\linewidth]{c_projection}
+\caption{\small Example images from a proof of concept test of our dwarf galaxy model at low resolution (8 pc). Shown here are face-on slices of number density (top left), temperature (top right), and H~{\sc i} ionizing radiation (bottom left), along with an edge-on projection of total carbon column density, illustrating yields ejected in metal enriched winds. This test was run with supernovae, stellar winds, radiative transfer, and photoelectric heating. Each black dot in the images is a star particle, which are often too clustered to distinguish between individual particles in these zoomed-out images. These images show the simulation $\sim$60 Myr after star formation, at which point there are 4,324 star particles with total mass $1.2\times10^4$ M$_{\odot}$. Of these, 173 are ionizing sources.}
 \label{fig:dwarf galaxy}
 \end{figure}
 
@@ -153,7 +156,7 @@ Our primary objective is to test the role various feedback processes play in the
  \hline
  \end{tabular}
 
- \caption{List of our planned simulations and the various feedback processes included in each. Stellar winds and supernovae are consistent in each case, except in model 2, where we ignore stellar wind energy injection (see text). Each simulation has a maximum spatial resolution of 1.5 pc with the exception of models 8 and 9, which will be run for a shorter time at 0.75 and 3.0 pc resolution respectively.}
+ \caption{\small List of our planned simulations and the various feedback processes included in each. Stellar winds and supernovae are consistent in each case, except in model 2, where we ignore stellar wind energy injection (see text). Each simulation has a maximum spatial resolution of 1.5 pc with the exception of models 8 and 9, which will be run for a shorter time at 0.75 and 3.0 pc resolution respectively.}
    \label{table:SU}
 \end{table}
 
@@ -178,7 +181,7 @@ Our primary objective is to test the role various feedback processes play in the
   TOTAL & - & - & - & - & 12.3 & 2.6 \\
  \hline
  \end{tabular}
- \caption{The estimated short and long term memory storage requirements for each of our simulations, and the total storage requested for this portion of our project. Each of the above grid and particle fields are stored as a 64 bit float. The above calculations are made assuming a typical grid cell count of $1.05\times 10^{7}$ and particle count of $\sim 10^{5}$. For our short, high resolution simulation (model 8) we expect on order of $\sim5\times 10^{7}$ grid cells, and $\sim2 \times 10^{6}$ in model 9. Our 1 Gyr runs (models 1 - 7) will have a total of 400 short term and 100 long term outputs, and our short resolution study runs will have 200 short term and 20 long term outputs.}
+ \caption{\small The estimated short and long term memory storage requirements for each of our simulations, and the total storage requested for this portion of our project. Each of the above grid and particle fields are stored as a 64 bit float. The above calculations are made assuming a typical grid cell count of $1.05\times 10^{7}$ and particle count of $\sim 10^{5}$. For our short, high resolution simulation (model 8) we expect on order of $\sim5\times 10^{7}$ grid cells, and $\sim2 \times 10^{6}$ in model 9. Our 1 Gyr runs (models 1 - 7) will have a total of 400 short term and 100 long term outputs, and our short resolution study runs will have 200 short term and 20 long term outputs.}
  \label{table:storage}
 \end{table}
 
@@ -223,7 +226,7 @@ will supervise the work proposed here, ensuring completion and publication.
 
 \subsection{Summary}
 
-Code development, production, and analysis of simulations of star formation, feedback, and chemodynamics of isolation galaxies in \texttt{Enzo} will be led by co-PI Emerick. The simulations of isolated dwarf galaxies will be supervised by PI Mac Low and collaborator Greg Bryan. {\bf is it worth mentioning that Brian O'Shea, Kathryn, and Mary are also involved?  A: Yes, I think so.}
+Code development, production, and analysis of simulations of star formation, feedback, and chemodynamics of isolation galaxies in \texttt{Enzo} will be led by co-PI Emerick. The simulations of isolated dwarf galaxies will be supervised by PI Mac Low and collaborator Greg Bryan. This project is possible with continual collaboration and advice in this endeavor from many additional researchers, who we briefly acknowledge here: Brian O'Shea (Michigan State), Benoit C{\^o}t{\'e} (Michigan State), Mary Putman (Columbia), Kathryn Johnston (Columbia), Britton Smith (Edinburgh), John Wise (Georgia Tech), and Simon Glover (ITA-Heidelberg).
 
 \subsection{Local Computing Environment}
 
