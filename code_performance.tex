@@ -113,8 +113,40 @@ The left panel in Figure ~\ref{fig:radiation_and_scaling} illustrates the estima
 
 We demonstrate weak scaling in Figure~\ref{fig:radiation_and_scaling} for our two test simulations, each run with a maximum of 6 and 7 levels of refinement, as compared to ideal scaling. Our simulations scale well up to about 128 processors, falling away from ideal at higher processor counts. However, this is in part because scaling in \texttt{Enzo} works best when the number of root grids on a side is greater than or equal to the number of cores. In this case, we don't expect perfect scaling much above 128 cores for our 128$^3$ simulations. For this reason, we anticipate to run all of our dwarf galaxy models on 128 or 256 cores depending on how the number of cells and particles varies throughout the simulation. We note that \texttt{Enzo} has been shown to scale well to at least 10$^3$ processors in a variety of contexts.
 
+\section{Integrated Codes for Star Cluster Formation}
+
+
+
+\subsection{Flash}
+
+Flash is a magnetohydrodynamics (MHD) code with adaptive grid refinement \citep{FLASH}. Flash includes numerous HD and MHD solvers, radiation transport methods and gravitational solvers. Here we choose to use the Waagan MHD solver \citep{Waagan2011} due to its robust nature, the Barnes and Hut tree gravity method of W\"{u}nsch (in preparation), and the radiation transport module FERVENT.
+
+\subsection{ph4}
+
+For the N-body dynamics we have chosen the GPU accelerated parallel code ph4 \citep{ph4}, which combines the direct summation of the gravitational acceleration with a 4th order Hermite integration. This method predicts the acceleration and jerk analytically, then applies a corrector to the acceleration and jerk with Hermite interpolation of the second and third derivatives of the acceleration \citep{Makino4thHermite}. This method is more accurate than the basic leap frog integrator contained in FLASH, which will allow us to resolve close encounters.
+
+\subsection{Multiples}
+
+When two (or more) bodies do have a close encounter in PH4, the encounter will be handed off the Multiples module in AMUSE \citep{AMUSE}, which solves the few body problem for the interaction as a separate process. Once the encounter resolves, both objects will then integrated back into PH4 either as a single object if a binary formed, or two separate objects with the proper trajectories if they did not. 
+
+\subsection{SeBa}
+
+Finally, stellar and binary evolution in the simulation will be obtained from the code SeBa \citep{Portegies_SeBa}. This will give the temperature, luminosity and mass loss rate of each star, allowing us to then input radiation and winds into FLASH accurately, as well as detect when a supernova event occurs and simulate this in FLASH appropriately.
+
+\subsection{Scaling of the Code}
+
+The computational cost of our simulations is largely dominated by Flash, with our initial testing showing 10\% or less of the total simulation time spent outside of Flash (in python, ph4, SeBa, etc). Specifically we expect our runs to be dominated by the ray tracing algorithm FERVENT. FERVENT follows the original implementation by Wise and Abel \citep{WiseAbel2011} closely, and scales with the number of high mass stars (radiation sources) formed in the simulation in the same way as ENZO. This scaling is well demonstrated in Fig. \ref{fig:radiation_and_scaling}. We have conducted preliminary weak scaling test of the fully coupled code with about 200 $8^3$ grids per processor on 12 core nodes (Fig. \ref{fig:weak}), which shows we are still getting speedup in Flash of about 14\% at 562 processors, as far as we could test on our small local cluster.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.6\linewidth]{weak}
+\caption{Weak scaling of the combined AMUSE/Flash run with up to 562 cores.}
+\label{fig:weak}
+\end{figure}
+
+
 \bibliographystyle{apj}
-\bibliography{msbib}
+\bibliography{msAllbib}
 
 
 \end{document}
