@@ -14,6 +14,7 @@
 \usepackage{array}
 \usepackage{graphicx}
 \usepackage{epstopdf}
+%\usepackage{siunitx}
 \epstopdfsetup{update}
 \newcolumntype{L}{>{\centering\arraybackslash}m{2cm}}
 \newcolumntype{R}{>{\centering\arraybackslash}m{1.25cm}}
@@ -39,6 +40,11 @@
 \newcommand{\eg}{e.g.,}
 \newcommand\rmxaa{Rev. Mex. Astron. Astrofis.} % Revista Mexicana de Astronomia y Astrofisica
 
+%\DeclareSIUnit\parsec{pc}
+\newcommand{\msun}{$\textrm{M}_{\odot}$}
+\newcommand{\rsun}{$\textrm{R}_{\odot}$}
+\newcommand{\lsun}{$\textrm{L}_{\odot}$}
+
 \begin{document}
 \maketitle
 
@@ -61,7 +67,7 @@ Star cluster formation theory is at an exciting threshold. Over the last decade,
 The intersection of these two fields comes when newly formed stars interact with the surrounding gas through the effects of winds, radiation and supernovae, collectively described as stellar feedback, while the inhomogeneous gas exerts tidal forces on the newly forming cluster. Numerical algorithms modeling stellar feedback have seen a great deal of recent attention. Supernova methods have become increasingly better at reproducing observations at all times, with recent kinetic energy injection models capturing the temperature and density evolution from pre-Sedov phase to cold remnant \citep{Simpson2015,Kim_Ostriker_2015ApJ}. Winds have been modeled often in stellar feedback simulations as either pure thermal energy injection or actual kinetic particle injection \citep{Pelupessy_embedded_SC,Dale_winds_2013}. Finally radiation has been modeled with numerous different algorithms such as ray tracing and the M1 closure and including either thermal heating, radiation momentum pressure, or both \citep{Dale_Winds_and_H2,WiseAbel2011,RAMSES-RT,Raskutti_Ostriker_2016}.
 
 However simulating star cluster formation is a complex problem. While many of the above simulations contain the specific physics of one or two forms of feedback, all three forms are expected to be present during the first 10--15~Myr %\SIrange{10}{15}{Myr} 
-of a new cluster's existence {\bf( Need observational paper citation here!)}. Further N-body dynamics is also occurring, forming and dissolving binaries that can lead to mass transfer and altered stellar evolution in the system {\bf( cite something of Steve's likely here)}. Finally, many of the simulations of star cluster formation cited above start from idealized initial conditions. This usually consist of a spherical density distribution with a turbulent velocity spectrum \citep{Dale_Winds_and_H2,Raskutti_Ostriker_2016}, instead of gravitationally-formed filamentary structures \citep{Ibanez-Mejia2016} still influenced by external stellar feedback themselves, such as supernovae \citep{Hill2012}. For simulations that do start with more realistic initial gas distributions, stars are generally not individually resolved but are represented in groups of stars by cluster particles \citep{Gatto_Walch_SILCC3_2016,dobbs_properties_2016}.
+of a new cluster's existence {\bf( Need observational paper citation here!)}. Further N-body dynamics is also occurring, forming and dissolving binaries that can lead to mass transfer and altered stellar evolution in the system \citep{PortegiesZwart2007}. Finally, many of the simulations of star cluster formation cited above start from idealized initial conditions. This usually consist of a spherical density distribution with a turbulent velocity spectrum \citep{Dale_Winds_and_H2,Raskutti_Ostriker_2016}, instead of gravitationally-formed filamentary structures \citep{Ibanez-Mejia2016} still influenced by external stellar feedback themselves, such as supernovae \citep{Hill2012}. For simulations that do start with more realistic initial gas distributions, stars are generally not individually resolved but are represented in groups of stars by cluster particles \citep{Gatto_Walch_SILCC3_2016,dobbs_properties_2016}.
 
 \subsection{Star Formation, Feedback, and Chemodynamics of Galaxies}
 
@@ -94,49 +100,49 @@ Accounting for the effects of CRs in galaxy scale simulations has only been poss
 
 Radiation from massive stars provides a substantial additional source of feedback in galaxies \citep[\eg][]{Agertz2013}. Including radiative feedback has a significant affect on galaxy dynamical and morphological structure \citep[\eg][]{WiseAbel2012, Kim2013a, Kim2013b, Roskar2014, Rosdahl2015}. Radiation fluxes for each of our stars are computed using the \texttt{OSTAR2002} grid of stellar atmosphere models \citep{Lanz2003}; for stars with effective temperatures below those sampled on the \texttt{OSTAR2002} grid, we compute radiation rates assuming a black body spectrum, scaled to be consistent with the \texttt{OSTAR2002} models. In this proposal, we include radiative feedback in two distinct forms: 1) H and He ionizing radiation from massive stars, and 2) local FUV flux from all stars that contributes to photoelectric heating within the ISM. Separating these physics will allow us to directly address recent disagreement in the role of photoelectric heating in dwarf galaxies \citep{Hu2016, Forbes2016}. We use \texttt{Enzo}'s radiative transfer capabilities \citep{Wise2012a,WiseAbel2012,Wise2014} to track ionizing radiation directly, coupling the ionizing / heating rates to the \texttt{Grackle} chemistry solver, and accounting directly for the effects of Hydrogen radiation pressure. We assume the FUV radiation to be everywhere optically thin and apply a photoelectric heating rate model from \cite{BakesTielens1994} and \cite{Wolfire2003} that scales with local density, temperature, and metallicity.
 
-\section{Computational Methods}
+%\section{Computational Methods}
 
-\subsection{Flash}
+%\subsection{Flash}
 
-Flash is a magnetohydrodynamics (MHD) code with adaptive grid refinement \citep{FLASH}. Magnetohydrodynamics is an approximation to solving the full charged, multi-species fluid problem. The problem is assumed to be electrically neutral on any scale large enough to be relevant to the simulation. But there can be flows of charged particles in different directions (known as the one fluid model) which act like a current and result in magnetic fields. These fields in turn effect the fluid and evolve in time according to the MHD equations. FLASH solves the conservative MHD equations given as (shown here in dimensionless form with extensive variables being per unit mass)
+%Flash is a magnetohydrodynamics (MHD) code with adaptive grid refinement \citep{FLASH}. Magnetohydrodynamics is an approximation to solving the full charged, multi-species fluid problem. The problem is assumed to be electrically neutral on any scale large enough to be relevant to the simulation. But there can be flows of charged particles in different directions (known as the one fluid model) which act like a current and result in magnetic fields. These fields in turn effect the fluid and evolve in time according to the MHD equations. FLASH solves the conservative MHD equations given as (shown here in dimensionless form with extensive variables being per unit mass)
 
 
 %\begin{widetext}
-\begin{eqnarray}
-\frac{\partial \rho}{\partial t} + \nabla \cdot \left(\rho \vec{v} \right) &=& 0 \\
-\frac{\partial \rho \vec{v}}{\partial t} + \nabla \cdot \left(\rho \vec{v} \vec{v} - \vec{B} \vec{B} \right) + \nabla p_{tot} &=& \rho \vec{g} + \nabla \cdot \tau \\
-\frac{\partial \rho E}{\partial t} + \nabla \cdot \left[\vec{v} \left(\rho E + p_{tot} \right) - \vec{B} \left(\vec{v} \cdot \vec{B}\right)\right] &=& \rho \vec{g} \cdot \vec{v} + \nabla \cdot \left(\vec{v} \cdot \tau + \sigma \nabla T \right) + \nabla \cdot \left[ \vec{B} \times \left( \eta \nabla \times \vec{B} \right) \right] \\
-\frac{\partial \vec{B}}{\partial t} + \nabla \cdot \left(\vec{v} \vec{B} - \vec{B} \vec{v}\right) &=& - \nabla \times \left(\eta \nabla \times \vec{B}\right) 
-\end{eqnarray}
+%\begin{eqnarray}
+%\frac{\partial \rho}{\partial t} + \nabla \cdot \left(\rho \vec{v} \right) &=& 0 \\
+%\frac{\partial \rho \vec{v}}{\partial t} + \nabla \cdot \left(\rho \vec{v} \vec{v} - \vec{B} \vec{B} \right) + \nabla p_{tot} &=& \rho \vec{g} + \nabla \cdot \tau \\
+%\frac{\partial \rho E}{\partial t} + \nabla \cdot \left[\vec{v} \left(\rho E + p_{tot} \right) - \vec{B} \left(\vec{v} \cdot \vec{B}\right)\right] &=& \rho \vec{g} \cdot \vec{v} + \nabla \cdot \left(\vec{v} \cdot \tau + \sigma \nabla T \right) + \nabla \cdot \left[ \vec{B} \times \left( \eta \nabla \times \vec{B} \right) \right] \\
+%\frac{\partial \vec{B}}{\partial t} + \nabla \cdot \left(\vec{v} \vec{B} - \vec{B} \vec{v}\right) &=& - \nabla \times \left(\eta \nabla \times \vec{B}\right) 
+%\end{eqnarray}
 %\end{widetext}
 
-\noindent
-where
+%\noindent
+%where
 
-\begin{eqnarray}
-p_{tot} &=& p + \frac{B^2}{2} \\
-E &=& \frac{1}{2}v^2 + \epsilon + \frac{B^2}{2 \rho} \\
-\tau &=& \mu\left[\nabla \vec{v} + \left(\nabla \vec{v}\right)^T - \frac{2}{3}\left(\nabla \cdot \vec{v}\right) \mathbf{I} \right]
-\end{eqnarray}
+%\begin{eqnarray}
+%p_{tot} &=& p + \frac{B^2}{2} \\
+%E &=& \frac{1}{2}v^2 + \epsilon + \frac{B^2}{2 \rho} \\
+%\tau &=& \mu\left[\nabla \vec{v} + \left(\nabla \vec{v}\right)^T - \frac{2}{3}\left(\nabla \cdot \vec{v}\right) \mathbf{I} \right]
+%\end{eqnarray}
 
-\noindent
-gives the total pressure (thermal plus magnetic), the total energy, and the viscous stress respectively and $\mathbf{I}$ is the identity matrix, $\epsilon$ is the specific internal energy and $\vec{g}$ is the body force per unit mass due to gravity (or other forces if present). Note that in determining magnetic fields in GMCs usually the plasma $\beta$ is given
+%\noindent
+%gives the total pressure (thermal plus magnetic), the total energy, and the viscous stress respectively and $\mathbf{I}$ is the identity matrix, $\epsilon$ is the specific internal energy and $\vec{g}$ is the body force per unit mass due to gravity (or other forces if present). Note that in determining magnetic fields in GMCs usually the plasma $\beta$ is given
 
-\begin{equation}
-\beta = \frac{2p}{B^2}
-\end{equation}
+%\begin{equation}
+%\beta = \frac{2p}{B^2}
+%\end{equation}
 
-\noindent
-which is the ratio of the thermal pressure to the magnetic pressure. For GMCs this value is $\sim$ 0.04 \citep{Crutcher_1999}. We can then use this value to estimate the initial magnetic field in a GMC from the pressure.
+%\noindent
+%which is the ratio of the thermal pressure to the magnetic pressure. For GMCs this value is $\sim$ 0.04 \citep{Crutcher_1999}. We can then use this value to estimate the initial magnetic field in a GMC from the pressure.
 
-The simulation domain is represented in Cartesian coordinates as a grid of blocks, where each block is constructed of a cube of cells. Refinement occurs at the block level when a refinement criterion is met, such as the gradient in density of the fluid across two cells becoming too large. If the criterion are satisfied, the refined block is divided into eight blocks, (for a 3 dimensional grid) since the block is split in two in each dimension. Refinements are nested, with the newly created child blocks connected to the parent blocks in a tree structure for interpolation and prolongation across refinement levels.
+%The simulation domain is represented in Cartesian coordinates as a grid of blocks, where each block is constructed of a cube of cells. Refinement occurs at the block level when a refinement criterion is met, such as the gradient in density of the fluid across two cells becoming too large. If the criterion are satisfied, the refined block is divided into eight blocks, (for a 3 dimensional grid) since the block is split in two in each dimension. Refinements are nested, with the newly created child blocks connected to the parent blocks in a tree structure for interpolation and prolongation across refinement levels.
 
-\subsection{ph4}
+%\subsection{ph4}
 
-For the N-body dynamics we have chosen the GPU accelerated parallel code ph4 \citep{ph4}, which combines the direct summation of the gravitational acceleration with a 4th order Hermite integration. This method predicts the acceleration and jerk analytically, then applies a corrector to the acceleration and jerk with Hermite interpolation of the second and third derivatives of the acceleration \citep{Makino4thHermite}. This method is more accurate than the basic leap frog integrator contained in FLASH, which will allow us to resolve close encounters.
+%For the N-body dynamics we have chosen the GPU accelerated parallel code ph4 \citep{ph4}, which combines the direct summation of the gravitational acceleration with a 4th order Hermite integration. This method predicts the acceleration and jerk analytically, then applies a corrector to the acceleration and jerk with Hermite interpolation of the second and third derivatives of the acceleration \citep{Makino4thHermite}. This method is more accurate than the basic leap frog integrator contained in FLASH, which will allow us to resolve close encounters.
 
 
-When two (or more) bodies do have a close encounter in PH4, the encounter will be handed off the Multiples module in AMUSE \citep{AMUSE}, which solves the few body problem for the interaction as a separate process. Once the encounter resolves, both objects will then integrated back into PH4 either as a single object if a binary formed, or two separate objects with the proper trajectories if they did not. Finally, stellar and binary evolution in the simulation will be obtained from the code SeBa \citep{Portegies_SeBa}. This will give the location of each star on the main sequence, allowing us to then input radiation and winds into FLASH for each star accurately, as well as detect when a supernova event occurs and simulate this in FLASH appropriately.
+%When two (or more) bodies do have a close encounter in PH4, the encounter will be handed off the Multiples module in AMUSE \citep{AMUSE}, which solves the few body problem for the interaction as a separate process. Once the encounter resolves, both objects will then integrated back into PH4 either as a single object if a binary formed, or two separate objects with the proper trajectories if they did not. Finally, stellar and binary evolution in the simulation will be obtained from the code SeBa \citep{Portegies_SeBa}. This will give the location of each star on the main sequence, allowing us to then input radiation and winds into FLASH for each star accurately, as well as detect when a supernova event occurs and simulate this in FLASH appropriately.
 
 \subsection{Gravity Bridge}
 
@@ -146,7 +152,7 @@ We have tested the conservation of both energy and momentum in this method. Figu
 
 \begin{figure}
 \centering
-\includegraphics[width=1.0\linewidth]{ener_mod}
+\includegraphics[width=0.5\linewidth]{ener_mod}
 \caption{Energy error of the gravity bridge for the orbit of three sink particles through a stationary isothermal gas sphere. The bridge timestep was step such that the outer particle recieved 100 kicks per orbit.}
 \label{fig:ener}
 \end{figure}
@@ -154,7 +160,7 @@ We have tested the conservation of both energy and momentum in this method. Figu
 \begin{figure}
 \hspace{-1.0cm}
 \centering
-\includegraphics[width=1.0\linewidth]{mom_mod}
+\includegraphics[width=0.5\linewidth]{mom_mod}
 \caption{The total momentum and momentum error for a simulation starting with a spherical gas clound and a sink using the gravity bridge. The gas cloud collapses and forms a second sink during the run. Note the y axis scaling, the error is two orders of magnitude smaller than the total momentum. The primary error comes from accretion onto the newly formed sink particle and is a ``worst case scenario" for our code.}
 \label{fig:mommod}
 \end{figure}
@@ -162,15 +168,15 @@ We have tested the conservation of both energy and momentum in this method. Figu
 \section{Model Descriptions}
 \subsection{Clusters}
 
-We will be zooming in on high fidelity ISM simulations run by Juan Iba\~{n}ez-Mej\'{i}a \citep{ibanez-mejia_gravitational_2015}. These MHD simulations start with a 1x1x40 \si{kpc} elongated box representing a slice of a spiral galaxy gas disk. Initially the gas is stirred by supernova injected energy for approximately 200~Myr without gravity. Then both self gravity and a Navarro Frenk White (NFW) dark matter background are switched on and molecular clouds and cloud complexes form. These clouds have densities and velocity dispersions consistent with observations, with many undergoing collapse which would lead to star formation. Several molecular clouds from these simulations would be appropriate for our study, ranging in mass from %\SIrange{1e3}{1e6}{\msun}.
-$10^3$--$10^6$~\msun.  Further we have developed code which zooms in on selected clouds gradually, allowing for the turbulent energy to naturally cascade down to our final resolution. We intend to zoom in on three of these clouds: One $8 \times 10^3$~{\msun} cloud, one $10^5$~{\msun} cloud, and one cloud complex that is $10^6$~{\msun}. The first cloud is shown in Fig \ref{fig:bullhead}.
+We will be zooming in on high fidelity ISM simulations run by Juan Iba\~{n}ez-Mej\'{i}a \citep{Ibanez-Mejia2016}. These MHD simulations start with a 1x1x40 kpc elongated box representing a slice of a spiral galaxy gas disk. Initially the gas is stirred by supernova injected energy for approximately 200~Myr without gravity. Then both self gravity and a Navarro Frenk White (NFW) dark matter background are switched on and molecular clouds and cloud complexes form. These clouds have densities and velocity dispersions consistent with observations, with many undergoing collapse which would lead to star formation. Several molecular clouds from these simulations would be appropriate for our study, ranging in mass from %\SIrange{1e3}{1e6}{\msun}.
+$10^3$--$10^6$~\msun.  Further we have developed code which zooms in on selected clouds gradually, allowing for the turbulent energy to naturally cascade down to our final resolution. We intend to zoom in on three of these clouds: One $8 \times 10^3$~{\msun} cloud, one $10^5$~{\msun} cloud, and one cloud complex that is $10^6$~{\msun}. % The first cloud is shown in Fig \ref{fig:bullhead}.
 
-\begin{figure}
-\centering
-\includegraphics[width=1.0\linewidth]{bullhead_mod}
-\caption{Integrated column density of the ``Bullhead" cloud, which is $8 \times 10^3$~{\msun}. The contour shown is where the volume density $n=10^3 \si{cm^{-3}}$.}
-\label{fig:bullhead}
-\end{figure}
+%\begin{figure}
+%\centering
+%\includegraphics[width=0.7\linewidth]{bullhead_mod}
+%\caption{Integrated column density of the ``Bullhead" cloud, which is $8 \times 10^3$~{\msun}. The contour shown is where the volume density $n=10^3 \si{cm^{-3}}$.}
+%\label{fig:bullhead}
+%\end{figure}
 
 \subsection{Dwarf Galaxies}
 Our dwarf galaxy simulations will be carried out using \texttt{Enzo}\footnote{www.enzo-project.org}, an adaptive mesh refinement (AMR) hydrodynamics and N-body code. \texttt{Enzo} is an entirely open-source code that is undergoing active development by many researchers across several institutions; its most recent stable release is version 2.5. This project involves a substantial amount of additional code development built on top of the development version of \texttt{Enzo} (version 2.X)\footnote{This version is also publicly available at www.bitbucket.org/aemerick/enzo-emerick}. \texttt{Enzo} has been well tested and extensively used in a variety of applications, including the ISM \citep{2005MNRAS.356..737S, 2008ApJ...673..810T}, the IGM \citep{2000ApJ...534...57B, 2001ApJ...561L..31F}, the first stars and galaxies \citep[\eg][]{Wise2012a, WiseAbel2012, Wise2014}, and the roles of various feedback methods in galaxies \citep[\eg][]{Simpson2015, SalemBryan2014, Goldbaum2016, Forbes2016}. We outline the methods employed in \texttt{Enzo} as relevant to our proposal; a detailed description of these methods can be found in the \texttt{Enzo} method paper \citep{Enzo2014}. 
@@ -209,13 +215,13 @@ We request a total of 9.68 million SU's and 12.3/2.6 TB of short/long term stora
 
 \subsection{Cluster Formation}
 
-\subsubsection{Scaling of the Code}
+%\subsubsection{Scaling of the Code}
 
-The computational cost of our simulations is largely dominated by Flash, with our initial testing showing 10\% or less of the total simulation time spent outside of Flash. Specifically we expect our runs to be dominated by the ray tracing algorithm Fervent, which scales with the number of high mass stars (radiation sources) formed in the simulation. Fervent follows the original implementation by Wise and Abel \citep{wise_enzo+moray:_2011} by using asynchronous MPI calls where possible however. Our initial weak scaling of the code shows we are still getting speedup in Flash at 512 processors, and we expect to still scale well up to around 1K processors (Fig. \ref{fig:weakscale}).
+%The computational cost of our simulations is largely dominated by Flash, with our initial testing showing 10\% or less of the total simulation time spent outside of Flash. Specifically we expect our runs to be dominated by the ray tracing algorithm Fervent, which scales with the number of high mass stars (radiation sources) formed in the simulation. Fervent follows the original implementation by Wise and Abel \citep{wise_enzo+moray:_2011} by using asynchronous MPI calls where possible however. Our initial weak scaling of the code shows we are still getting speedup in Flash at 512 processors, and we expect to still scale well up to around 1K processors (Fig. \ref{fig:weakscale}).
 
-\subsubsection{Proposed Runs}
+%\subsubsection{Proposed Runs}
 
-The cost of a single zone MHD update in Flash is about 150~$\mu$s. When radiation is added, this cost doubles \citep{wise_enzo+moray:_2011}. Using the zoom algorithm, zooming in on the Bullhead cloud (mass $8 \times 10^3$~{\msun}) from kiloparsec scales down to $\sim50$~pc leaves us with about 2000 grids in the zoomed region. Further refinement levels each double the number of blocks from the previous level, since the volume filling factor is about 1/8th. It takes 12 levels of refinement to go to scales on the order of 100 \si{AU}. With $16^3$ cells per grid this gives about \num{8.3e7} cells total. The highest temperature on the grid generally will be from the winds, on the order of $10^6$~K. This gives a timestep of about 10~yr, and for a simulation run for 10~Myr requires \num{e6} steps. This leads to an estimate of total number of CPU hours of $11.5 \times 10^7$. Conducting this same estimate without winds means the highest temperature on the grid is generally due to the radiation at \SI{e4}{K} (this anticipates that supernova are brief and infrequent events in our simulation). This leads to a total of \SI{6.98e5}{hrs} for a single run. We therefore propose to do two runs for comparison, one with winds and one without.
+The cost of a single zone MHD update in Flash is about 150~$\mu$s. When radiation is added, this cost doubles \citep{WiseAbel2011}. Using the zoom algorithm, zooming in on the Bullhead cloud (mass $8 \times 10^3$~{\msun}) from kiloparsec scales down to $\sim50$~pc leaves us with about 2000 grids in the zoomed region. Further refinement levels each double the number of blocks from the previous level, since the volume filling factor is about 1/8th. It takes 12 levels of refinement to go to scales on the order of 100 AU. With $16^3$ cells per grid this gives about 8.3e7 cells total. The highest temperature on the grid generally will be from the winds, on the order of $10^6$~K. This gives a timestep of about 10~yr, and for a simulation run for 10~Myr requires $10^6$ steps. This leads to an estimate of total number of CPU hours of $11.5 \times 10^7$. Conducting this same estimate without winds means the highest temperature on the grid is generally due to the radiation at $10^4$ K (this anticipates that supernova are brief and infrequent events in our simulation). This leads to a total of $6.98 \times 10^5$ hrs for a single run. We therefore propose to do two runs for comparison, one with winds and one without.
 
 
 % Saving the stuff below in case we want to request runs with carved out winds, etc.
@@ -225,19 +231,21 @@ The cost of a single zone MHD update in Flash is about 150~$\mu$s. When radiatio
 %If we make the rough approximation that a single cloud which is an order of magnitude more massive has double the radius (\SI{100}{pc} zoom in) and therefore about $2^3$ times as many initial grids, the same calculations lead us to estimate the number of CPU hours as \SI{1.4e6}{hrs}. With \num{1e4} processors, this run would take about 6 days on a large machine such as Stampede. For a cloud complex consisting of three clouds each of which is about \SI{2e5}{\msun} and contained inside a \SI{100}{pc} region, we can just assume the initial and zoomed number of grids is tripled, tripling the run time.
 
 %\begin{widetext}
-\begin{center}
-%\begin{tabular}{|c|c|c|c|}
-\begin{tabular}{|c|c|c|}
 
+%\begin{tabular}{|c|c|c|c|}
+\begin{table}
+\centering
+%\footnotesize
+\begin{tabular}{|c|c|c|}
 \hline 
 Run \# & %Cloud & 
-             Description & SU's ($\times 10^3$) \\
+             Description & SU's ($\times 10^6$) \\
 \hline 
 1 & %$8 \times 10^3$~{\msun} & Bullhead cloud collapse - 
-       All feedback & 11500 \\
+       All feedback & 11.5 \\
 \hline 
 2 & %$8 \times 10^3$~{\msun} & Bullhead cloud collapse - 
-     Radiation and SN only & 700 \\
+     Radiation and SN only & 0.7 \\
 \hline 
 %3 & \SI{8e3}{\msun} & Bullhead cloud collapse - Winds only & 700 \\
 %\hline 
@@ -248,19 +256,22 @@ Run \# & %Cloud &
 %6 & \SI{e6}{\msun} & 3 cloud complex collapse with all feedback & 4200 \\
 \hline
 %\multicolumn{3}{|c|}{Total Request} & 12200 \\
-\multicolumn{2}{|c|}{Total Request} & 12200 \\
+\multicolumn{2}{|c|}{Total Request} & 12.2 \\
 
 \hline
 \end{tabular}
-\end{center}
+\caption{\small Runs for the Flash/AMUSE combined simulations. One run with all forms of feedback will be run, along with a comparison run with only radiation and supernova.}
+\end{table}
+
+
 %\end{widetext}
 
-\begin{figure}
-\centering
-\includegraphics[width=1.0\linewidth]{weak_scale}
-\caption{Weak scaling of Flash running under AMUSE with Fervent. We gain approximately 15\% effeciency at 512 processors and expect the curve to flatten out around 10K processors.}
-\label{fig:weakscale}
-\end{figure}
+%\begin{figure}
+%\centering
+%\includegraphics[width=1.0\linewidth]{weak_scale}
+%\caption{Weak scaling of Flash running under AMUSE with Fervent. We gain approximately 15\% effeciency at 512 processors and expect the curve to flatten out around 10K processors.}
+%\label{fig:weak}
+%\end{figure}
 
 
 \subsection{Feedback and Chemodynamics in Galaxies}
@@ -291,7 +302,7 @@ Our primary objective is to test the role various feedback processes play in the
  \hline
  \end{tabular}
 
- \caption{\small List of our planned simulations and the various feedback processes included in each. Stellar winds and supernovae are consistent in each case, except in model 2, where we ignore stellar wind energy injection (see text). Each simulation has a maximum spatial resolution of 1.5 pc with the exception of models 8 and 9, which will be run for a shorter time at 0.75 and 3.0 pc resolution respectively.}
+ \caption{\small List of our planned dwarf galaxy feedback simulations and the various processes included in each. Stellar winds and supernovae are consistent in each case, except in model 2, where we ignore stellar wind energy injection (see text). Each simulation has a maximum spatial resolution of 1.5 pc with the exception of models 8 and 9, which will be run for a shorter time at 0.75 and 3.0 pc resolution respectively.}
    \label{table:SU}
 \end{table}
 
@@ -316,7 +327,7 @@ Our primary objective is to test the role various feedback processes play in the
   TOTAL & - & - & - & - & 12.3 & 2.6 \\
  \hline
  \end{tabular}
- \caption{\small The estimated short and long term memory storage requirements for each of our simulations, and the total storage requested for this portion of our project. Each of the above grid and particle fields are stored as a 64 bit float. The above calculations are made assuming a typical grid cell count of $1.05\times 10^{7}$ and particle count of $\sim 10^{5}$. For our short, high resolution simulation (model 8) we expect on order of $\sim5\times 10^{7}$ grid cells, and $\sim2 \times 10^{6}$ in model 9. Our 1 Gyr runs (models 1 - 7) will have a total of 400 short term and 100 long term outputs, and our short resolution study runs will have 200 short term and 20 long term outputs.}
+ \caption{\small The estimated short and long term memory storage requirements for each of our dwarf galaxy simulations, and the total storage requested for this portion of our project. Each of the above grid and particle fields are stored as a 64 bit float. The above calculations are made assuming a typical grid cell count of $1.05\times 10^{7}$ and particle count of $\sim 10^{5}$. For our short, high resolution simulation (model 8) we expect on order of $\sim5\times 10^{7}$ grid cells, and $\sim2 \times 10^{6}$ in model 9. Our 1 Gyr runs (models 1 - 7) will have a total of 400 short term and 100 long term outputs, and our short resolution study runs will have 200 short term and 20 long term outputs.}
  \label{table:storage}
 \end{table}
 
