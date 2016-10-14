@@ -5,10 +5,11 @@
 
 \usepackage[letterpaper, margin=1in]{geometry}
 \usepackage{amsmath}
-\usepackage{natbib}
+\usepackage[super,sort&compress]{natbib}
 \usepackage{graphicx}
 \usepackage{epstopdf}
 \usepackage{titling}
+
 
 \setlength{\droptitle}{-7em}   % This is your set screw
 \epstopdfsetup{update}
@@ -39,10 +40,9 @@
 \maketitle
 
 \section{Introduction}
-{\bf general introduction goes here... pending Josh's side}
+Here we briefly discuss the computational methods, performance, and scaling properties of each of our two hydrodynamics codes, \texttt{Enzo} and Flash. {\bf need more?}
 
-
-\section{\texttt{Enzo}}
+\section{Dwarf Galaxies with \texttt{Enzo}}
 
 We determine the performance and scaling properties of \texttt{Enzo} in the context of the typical computational loads of our intended isolated dwarf galaxy simulations. In this situation, we are concerned with the weak scaling properties and efficiencies of \texttt{Enzo}. This analysis makes use of case studies of our dwarf galaxy model run at 1.0 and 2.0 pc resolution (note, our inteded resolution is 1.5 pc), as well as a full-physics 8 pc resolution run. The high resolution tests ran on 128 processors (64 for the low resolution case) on the TACC Stampede cluster, our proposed allocation resource.
 
@@ -52,7 +52,7 @@ We determine the performance and scaling properties of \texttt{Enzo} in the cont
 
 \subsubsection{Hydrodynamics and Gravity}
 
-\texttt{Enzo} is equipped with multiple, distinct hydrodynamics solvers. For this work we employ a direct-Eulerian piecewise parabolic method \citep{ColellaWoodward1984, Bryan1995}. This is an explicit, higher-order accurate version of Godunov's method for ideal gas hydrodynamics that uses spatially third-order accurate piecewise parabolic monotonic interpolation. This base method is extended to multiple dimensions using directional splitting, resulting in a final algorithm that is second-order accurate in space and time; we explicitly conserve mass, linear momentum, and energy. We default to using the two-shock approximate Riemann solver, with progressive fallback to more diffusive approximate Riemann solvers when higher order methods produce negative densities or energies. The hydrodynamics time step is set by the Courant-Friedrichs-Levy (CFL) condition for stability, scaling linearly with cell size ($\Delta x$) and inversely proportional to the sum of the bulk velocity and sound speed in each cell in a given direction. 
+\texttt{Enzo} is equipped with multiple, distinct hydrodynamics solvers. For this work we employ a direct-Eulerian piecewise parabolic method \citep{ColellaWoodward1984, Bryan1995}. This is an explicit, higher-order accurate version of Godunov's method for ideal gas hydrodynamics. This base method is extended to multiple dimensions using directional splitting, resulting in a final algorithm that is second-order accurate in space and time; we explicitly conserve mass, linear momentum, and energy. We default to using the two-shock approximate Riemann solver, with progressive fallback to more diffusive approximate Riemann solvers when higher order methods produce negative densities or energies. The hydrodynamics time step is set by the Courant-Friedrichs-Levy (CFL) condition for stability, scaling linearly with cell size ($\Delta x$) and inversely proportional to the sum of the bulk velocity and sound speed in each cell in a given direction. 
 
 %\texttt{Enzo} is equipped with multiple, distinct hydrodynamics solvers. For this work we employ a direct-Eulerian piecewise parabolic method \citep{ColellaWoodward1984, Bryan1995}. This is an explicit, higher-order accurate version of Godunov's method for ideal gas hydrodynamics that uses spatially third-order accurate piecewise parabolic monotonic interpolation. Shock capturing is handled with a nonlinear Riemann solver. This base method is extended to multiple dimensions using directional splitting, resulting in a final algorithm that is second-order accurate in space and time; we explicitly conserve mass, linear momentum, and energy \citep{Hawley1984, NormanWinkler1986}. We use a dual energy formalism to track the total energy and thermal energy separately, preventing substantial numerical errors that arise when the thermal energy is very small compared to the total energy (i.e. when the kinetic energy is large). We default to using the two-shock approximate Riemann solver \citep{Toro1997}, with progressive fallback to more diffusive approximate Riemann solvers when higher order methods produce negative densities or energies \citep{LemasterStone2009}. In this situation, we fall back to either the Harten-Lax-van Leer (HLL) \citep{Toro1997} method with contact discontinuities -- a three-wave, four-state solver -- or the basic HLL -- a two-state, three-wave solver. The hydrodynamics time step is set by the Courant-Friedrichs-Levy (CFL) condition for stability, scaling linearly with cell size ($\Delta x$) and inversely proportional to the sum of the bulk velocity and sound speed in each cell in a given direction. The multidimensional CFL limited time step is the harmonic average of the limiting CFL time step in each dimension. 
 
@@ -113,18 +113,22 @@ Figure~\ref{fig:levels} demonstrates the level-by-level break down of a single c
 %\label{fig:radiation}
 %\end{figure}
 
+The left panel in Figure ~\ref{fig:radiation_and_scaling} illustrates the estimated slow down due to RT as a function of the number of ionizing particles. This test was performed in \texttt{Enzo} on our dwarf galaxy model at 8.0 pc resolution (4 levels of refinement) on 64 processors. Slow down is computed relative to the case with no radiative particles, with efficiency defined here as number of cell updates/s/particle. Additional computational time is due mostly from evolving (tracing) the individual rays and the associated additional communication across processors. Since the RT methods in Flash were based on those used in this test case, we expect similar scaling properties in this code.
+
 %We demonstrate the effects of including radiative transfer as a function of the number of ionizing particles in Figure~\ref{fig:radiation} for a test simulation run with a maximum refinement level of 4 (8.0 pc resolution) on 64 processors. Shown is the slow down of a given cycle as a function of the number of ionizing sources. We compute this as the number of cell updates per second per particle, normalized to the zero particle case. This implicitly assumes that any decrease in performance is due solely to the number of sources, and no other factors. To be clear, the additional computational time incurred by including radiation is split in into three parts, 1) evolving the photon packages through the grid cells, 2) ray tracing from each source to deposit the photon packages, and 3) communication time communicating photon packages between processors. For this reason, the additional cost also depends upon the nature of the sources themselves, their clustering, and the details of the medium the photons propagate through.
 
 \subsection{Scaling Tests}
 
 \begin{figure}
 \centering
-\includegraphics[width=0.4\linewidth]{enzo_scaling}
-\caption{\small A demonstration of weak scaling for our two test runs with maximum refinement levels of 6 (dashed) and 7 (solid). Scaling works very well for up to 128 cores, but becomes less than ideal about this amount. We anticipate to run with either 128 or 256 cores for all of our simulations depending on how the grid and particle count evolve in the simulation.}
-\label{fig:scaling}
+\includegraphics[width=0.32\linewidth]{enzo_radiation}
+\includegraphics[width=0.32\linewidth]{enzo_scaling}
+\includegraphics[width=0.32\linewidth]{weak}
+\caption{\small Scaling properties for radiative particles in \texttt{Enzo} (left) and weak scaling tests in both \texttt{Enzo} (middle) and \texttt{FLASH} (right). We anticipate an factor of several to 10 slow down with typical radiating particle counts in production runs in both \texttt{Enzo} and \texttt{FLASH}. Our dwarf galaxy models in \texttt{Enzo} scale well to about 128 cores; we anticipate running at 128 cores. The right panel demonstrates scaling of the AMUSE/Flash run up to 562 cores.}
+\label{fig:radiation_and_scaling}
 \end{figure}
 
-We demonstrate weak scaling in Figure~\ref{fig:scaling} for our two test simulations, each run with a maximum of 6 and 7 levels of refinement, as compared to ideal scaling. Our simulations scale well up to about 128 processors, falling away from ideal at higher processor counts. However, this is in part because scaling in \texttt{Enzo} works best when the number of root grids on a side is greater than or equal to the number of cores. In this case, we don't expect perfect scaling much above 128 cores for our 128$^3$ simulations. For this reason, we anticipate to run all of our dwarf galaxy models on 128 or 256 cores depending on how the number of cells and particles varies throughout the simulation. We note that \texttt{Enzo} has been shown to scale well to at least 10$^3$ processors in a variety of contexts.
+We demonstrate weak scaling in Figure~\ref{fig:radiation_and_scaling} for our two test simulations, each run with a maximum of 6 and 7 levels of refinement, as compared to ideal scaling. Our simulations scale well up to about 128 processors, falling away from ideal at higher processor counts. However, this is in part because scaling in \texttt{Enzo} works best when the number of root grids on a side is greater than or equal to the number of cores. In this case, we don't expect perfect scaling much above 128 cores for our 128$^3$ simulations. For this reason, we anticipate to run all of our dwarf galaxy models on 128 or 256 cores depending on how the number of cells and particles varies throughout the simulation. We note that \texttt{Enzo} has been shown to scale well to at least 10$^3$ processors in a variety of contexts.
 
 \section{Integrated Codes for Star Cluster Formation}
 
@@ -147,18 +151,23 @@ Finally, stellar and binary evolution in the simulation will be obtained from th
 
 \subsection{Scaling of the Code}
 
-The computational cost of our simulations is largely dominated by Flash, with our initial testing showing 10\% or less of the total simulation time spent outside of Flash (in python, ph4, SeBa, etc). Specifically we expect our runs to be dominated by the ray tracing algorithm FERVENT. FERVENT follows the original implementation by Wise and Abel \citep{WiseAbel2011} closely, and scales with the number of high mass stars (radiation sources) formed in the simulation in the same way as ENZO. This scaling is well demonstrated in Fig. \ref{fig:radiation_and_scaling}. We have conducted preliminary weak scaling test of the fully coupled code with about 200 $8^3$ grids per processor on 12 core nodes (Fig. \ref{fig:weak}), which shows we are still getting speedup in Flash of about 14\% at 562 processors, as far as we could test on our small local cluster.
+The computational cost of our simulations is largely dominated by Flash, with our initial testing showing 10\% or less of the total simulation time spent outside of Flash (in python, ph4, SeBa, etc). Specifically we expect our runs to be dominated by the ray tracing algorithm FERVENT. FERVENT follows the RT methods used in \texttt{Enzo} closely, and scales with the number of high mass stars (radiation sources) formed in the simulation similarly. This scaling is well demonstrated in Fig. \ref{fig:radiation_and_scaling}. We have conducted preliminary weak scaling test of the fully coupled code with about 200 $8^3$ grids per processor on 12 core nodes (Fig. \ref{fig:radiation_and_scaling}), which shows we are still getting speedup in Flash of about 14\% at 562 processors, as far as we could test on our small local cluster.
 
-\begin{figure}
-\centering
-\includegraphics[width=0.5\linewidth]{weak}
-\caption{Weak scaling of the combined AMUSE/Flash run with up to 562 cores.}
-\label{fig:weak}
-\end{figure}
+%\begin{figure}
+%\centering
+%\includegraphics[width=0.5\linewidth]{weak}
+%\caption{Weak scaling of the combined AMUSE/Flash run with up to 562 cores.}
+%\label{fig:weak}
+%\end{figure}
 
 
 \bibliographystyle{apj}
-\bibliography{msAllbib}
+\begingroup
+    \setlength{\bibsep}{10pt}
+    %\setstretch{1}
+    \bibliography{msAllbib}
+\endgroup
+
 
 
 \end{document}
