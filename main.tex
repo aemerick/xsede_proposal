@@ -374,14 +374,23 @@ will supervise the work proposed here, ensuring completion and publication.
 
 \subsection{Summary}
 
-Code development, production, and analysis of simulations of star formation, feedback, and chemodynamics of isolation galaxies in \texttt{Enzo} will be led by co-PI Emerick. The simulations of isolated dwarf galaxies will be supervised by PI Mac Low and collaborator Greg Bryan. This project is possible with continual collaboration and advice in this endeavor from many additional researchers, who we briefly acknowledge here: Brian O'Shea (Michigan State), Benoit C{\^o}t{\'e} (Michigan State), Mary Putman (Columbia), Kathryn Johnston (Columbia), Britton Smith (Edinburgh), John Wise (Georgia Tech), and Simon Glover (ITA-Heidelberg).
+Code development, production, and analysis of simulations of star cluster formation Flash + AMUSE will be led by co-PI Wall. The simulations of isolated dwarf galaxies will be supervised by PI Mac Low and collaborator Greg Bryan. This project is in collaboration with broader code development efforts at the Flash Center of the U. of Chicago, R. Klessen's group at the Institute for Theoretical Astrophysics of the University of Heidelberg, and S. Portegies-Zwart's group at Leiden University.  
+
+Code development, production, and analysis of simulations of star formation, feedback, and chemodynamics of isolation galaxies in \texttt{Enzo} will be led by co-PI Emerick. These simulations will be supervised by PI Mac Low and collaborator Greg Bryan. This project relies on collaboration and advice from many additional researchers, including Brian O'Shea (Michigan State), Benoit C{\^o}t{\'e} (Michigan State), Mary Putman (Columbia), Kathryn Johnston (Columbia), Britton Smith (Edinburgh), John Wise (Georgia Tech), and Simon Glover (ITA-Heidelberg).
 
 \subsection{Local Computing Environment}
 
+The PI's group has an analysis workstation containing  2 AMD 6344 Abu Dhabi processors with 12 cores each, 256 GB of memory, 16 TB of data space, about 40 GB of home directory space, and an Nvidia GeForce GT 610 graphics card. It is running Ubuntu, and has all standard libraries installed.  The PI and his group also have partial access to two small clusters at the Museum. These include a 128 core (32 nodes each with two dual core processors) Xeon cluster connected with Infiniband, and a 40-processor Sunfire Ultrasparc III 900 Mhz cluster. These aged machines are shared with other users at the Museum including biologists doing large phylogenetic computations, and other astrophysicists.
+
 Through the Department of Astronomy at Columbia University, co-PI Emerick has partial access to Yeti, a 2762 core (167 nodes with dual, 1.8 Ghz, 8 core processors) HPC cluster. A subset, 64, of these nodes are connected via Infiniband. Resources on this cluster are shared between several departments at Columbia on a department-by-department basis. The ease of access coupled with fairly short to no queue wait times makes this an ideal resource for code development, testing, and some analysis work. However, resource availability and ``fair-use'' principles make using Yeti for production level simulations prohibitive. Some short term storage is available on this cluster, but is severely limited; a total of 5 TB is shared between $\sim$ 50 users.
 
-{\bf available AMNH resources?}
+\subsection{Other Supercomputing Support}
 
+Wall (project leader) and Mac Low are coinvestigators with S. Portegies-Zwart (PI), R. Klessen,  S. McMillan, and J. Ib\'a\~nez-Mej\'{\i}a on a 4M SBU allocation on the Dutch NWO supercomputer at SurfSARA.  We plan to use this allocation to try to do a model neglecting stellar winds of a cloud an order of magnitude more massive than the one proposed here.
+
+{\bf HEC time!}
+
+Emerick has completed an XSEDE startup grant, which supported some of his work on ram pressure stripping as noted in the progress report.
 
 \bibliographystyle{apj}
 \bibliography{msAllbib}
