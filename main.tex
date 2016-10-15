@@ -89,6 +89,30 @@ We provide a discussion of the feedback physics and associated models we propose
 
 To conduct more realistic star cluster simulations we have integrated the (R)MHD code Flash into the Astrophysical Multipurpose Software Environment(AMUSE) \citep{AMUSE}, an astrophysics software package that contains community codes for hydrodynamics, N-body dynamics, stellar evolution and radiative transport. This allows us to include accurate N-body dynamics for the stars using the GPU accelerated code ph4 \citep{ph4}. We have also augmented the publicly available version of Flash itself to include modules for radiation (momentum and heating), winds and supernova. Radiation is tracked using an improved version of the FERVENT module \citep{baczynski_fervent:_2015}. For supernova we have implemented the kinetic energy injection method of \citet{Simpson2015}, and for winds we use our own adaptation of the \cite{Simpson2015} method, injecting winds as a mixture of both kinetic and thermal energy. We will use this more realistic model of stellar feedback to study the impact of newly formed stars on their environment by analyzing how stellar formation efficiency evolves near natal clusters, how turbulence is driven by feedback, and whether any ejected or impacted gas can lead to or disrupt further star formation. 
 
+%JW Moved this section to be with the other explaination of star cluster methods. The jump in the middle for Andrew's work was too jarring/confusing.
+%\subsection{Gravity Bridge}
+
+To couple Flash (RMHD) to ph4 (N-body), we have implemented a momentum and energy conserving gravity bridge \citep{Fujii_Makino_bridge} which is a symplectic second order method first used to integrate the solar system \citep{Wisdom_Holman_1991}. This allows the two codes to evolve independently for multiple hydrodynamic and dozens or hundreds of N-body timesteps (a ``drift"), after which the mass in each code gives a gravitational acceleration to the other (a ``kick"). Both codes evolve independently in parallel during the drift, with the N-body portion (ph4) running on GPUs, and Flash on CPUs.
+
+% AE: This paragraph isn't entirely clear.. I'd reword, but I'm not entirely sure what it should say
+% JW: Its essentially explaining that the gravity bridge still conserves momentum and energy (to the order of the integrator), something that is always tested in N-body methods.
+We have tested the conservation of both energy and momentum of the gravity bridge. Figure \ref{fig:ener} shows energy conservation to follow the behavior of the 4th order Hermite method of ph4 \citep{binney2011galactic}, with global error on the order of 0.5\%. The momentum error is dominated by other factors in the code such as accretion onto sink particles in Flash, and is globally on the order of 1\% (Fig \ref{fig:mommod}).
+
+\begin{figure}
+\centering
+\includegraphics[width=0.75\linewidth]{ener_mod}
+\caption{\small Energy error of the Flash/ph4 gravity bridge via AMUSE for the orbit of three sink particles through a stationary isothermal gas sphere. The bridge timestep was set such that the outer particle received 100 kicks per orbit.}
+\label{fig:ener}
+\end{figure}
+
+\begin{figure}
+\hspace{-1.0cm}
+\centering
+\includegraphics[width=0.75\linewidth]{mom_mod}
+\caption{\small The total momentum and momentum error for a simulation starting with a spherical gas clound and a sink using the Flash/ph4 gravity bridge via AMUSE. The gas cloud collapses and forms a second sink during the run. Note the y axis scaling: the maximum error is two orders of magnitude smaller than the total momentum. The primary error comes from accretion onto the newly formed sink particle which is a worst case scenario for our code.}
+\label{fig:mommod}
+\end{figure}
+
 \subsection{Galactic Feedback Physics}
 
 The following physics will be identical in each galactic simulation: 1) gas self-gravity to capture gas collapse and subsequent star formation in dense regions, 2) a nine-species, non-equilibrium chemistry solver, following electrons, and H, He, and H$_{2}$ and their ionization states \citep{Anninos1997, Abel1997}, 3) associated heating / cooling as followed in the \texttt{Grackle} library (Smith et al.\ in prep), including heating from a metagalactic UV background \citep{HM2012} and tabulated metal line cooling from \texttt{Cloudy} \citep{Cloudy2013}, 4) approximate H and He gas self-shielding of the UV background \citep{Rahmati2013}, 5) a metagalactic Lyman-Werner (LW) flux from \cite{HM2012} to properly model H$_{2}$ dissociation, as well as an optically thin LW flux from each of our stars to account for local fluctuations in the LW field, and 6) a collisionless N-body solver to evolve the dynamics of the formed star particles. In every simulation, we form stars from dense gas on the most refined parts of the grid (with resolution of 1.5~pc) following a stochastic star formation scheme from \cite{Goldbaum2015, Goldbaum2016}, modified to sample individual stellar masses from an input IMF \citep[e.g.][]{Salpeter1955}. Each star is chemically tagged by the local gas abundances, and assigned stellar properties from a grid of stellar evolution tracks \citep{Bressan2012}, which ultimately govern the radiative properties of the stars (if radiation feedback is used), the stellar wind velocity, and the star's lifetime. We follow the mass loss of each particle via stellar winds and supernovae over time as determined by our stellar yield model.
@@ -143,27 +167,6 @@ Radiation from massive stars provides a substantial additional source of feedbac
 
 %When two (or more) bodies do have a close encounter in PH4, the encounter will be handed off the Multiples module in AMUSE \citep{AMUSE}, which solves the few body problem for the interaction as a separate process. Once the encounter resolves, both objects will then integrated back into PH4 either as a single object if a binary formed, or two separate objects with the proper trajectories if they did not. Finally, stellar and binary evolution in the simulation will be obtained from the code SeBa \citep{Portegies_SeBa}. This will give the location of each star on the main sequence, allowing us to then input radiation and winds into FLASH for each star accurately, as well as detect when a supernova event occurs and simulate this in FLASH appropriately.
 
-\subsection{Gravity Bridge}
-
-To couple Flash (RMHD) to ph4 (N-body), we have implemented a momentum and energy conserving gravity bridge \citep{Fujii_Makino_bridge} which is a symplectic second order method first used to integrate the solar system \citep{Wisdom_Holman_1991}. This allows the two codes to evolve independently for multiple hydrodynamic and dozens or hundreds of N-body timesteps (a ``drift"), after which the mass in each code gives a gravitational acceleration to the other (a ``kick"). Both codes evolve independently in parallel during the drift, with the N-body portion (ph4) running on GPUs, and Flash on CPUs.
-
-% AE: This paragraph isn't entirely clear.. I'd reword, but I'm not entirely sure what it should say
-We have tested the conservation of both energy and momentum of the gravity bridge. Figure \ref{fig:ener} shows energy conservation to follow the behavior of the 4th order Hermite method of ph4 \citep{binney2011galactic}, with global error on the order of 0.5\%. The momentum error is dominated by other factors in the code such as accretion onto sink particles in Flash, and is globally on the order of 1\% (Fig \ref{fig:mommod}).
-
-\begin{figure}
-\centering
-\includegraphics[width=0.75\linewidth]{ener_mod}
-\caption{\small Energy error of the Flash/ph4 gravity bridge via AMUSE for the orbit of three sink particles through a stationary isothermal gas sphere. The bridge timestep was set such that the outer particle received 100 kicks per orbit.}
-\label{fig:ener}
-\end{figure}
-
-\begin{figure}
-\hspace{-1.0cm}
-\centering
-\includegraphics[width=0.75\linewidth]{mom_mod}
-\caption{\small The total momentum and momentum error for a simulation starting with a spherical gas clound and a sink using the Flash/ph4 gravity bridge via AMUSE. The gas cloud collapses and forms a second sink during the run. Note the y axis scaling: the maximum error is two orders of magnitude smaller than the total momentum. The primary error comes from accretion onto the newly formed sink particle which is a worst case scenario for our code.}
-\label{fig:mommod}
-\end{figure}
 
 \section{Model Descriptions}
 \subsection{Stellar Clusters}
@@ -176,7 +179,11 @@ switched on and molecular clouds and cloud complexes form. These clouds have den
 %mm with many
      and are all 
 undergoing collapse that should lead to star formation. Several molecular clouds from these simulations would be appropriate for our study, ranging in mass from %\SIrange{1e3}{1e6}{\msun}.
-$10^3$--$10^6$~\msun.  \citet{Ibanez-Mejia2016b} developed code that zooms in on selected clouds gradually, allowing for the turbulent energy to naturally cascade down to the final resolution. We intend to zoom in further on %mm three 
+$10^3$--$10^6$~\msun. 
+%JW: 1) I don't actually have Juan's zoom in code. I independently developed my own zoom in code (because I didn't have access to Juan's at the time)
+%JW: 2) I don't have a citation for Juan's second paper in 2016. But since I was intending on using my zoom in code, I'm not sure it matters?
+ %\citet{Ibanez-Mejia2016b} 
+ We developed code that zooms in on selected clouds gradually, allowing for the turbulent energy to naturally cascade down to the final resolution. We intend to zoom in further on %mm three 
      one 
 of these clouds, with a mass of 
 %mm : One
@@ -233,14 +240,14 @@ We request a total of 9.68 million SU's and 12.3/2.6 TB of short/long term stora
 
 %\subsubsection{Proposed Runs}
 
-The cost of a single zone MHD update in Flash is about 150~$\mu$s. When radiation is added, this cost doubles \citep{WiseAbel2011}. Using the zoom algorithm, zooming in on the Bullhead cloud (mass $8 \times 10^3$~{\msun}) from kiloparsec scales down to $\sim50$~pc leaves us with about 350 grids in the zoomed region. Further refinement levels each double the number of blocks from the previous level, since the volume filling factor is about 1/8. It takes 5 levels of refinement to cover the zoomed in region with a single grid (but only about 3500 grids) and 9 additional levels of refinement to go from 50 pc down to 1256 AU, our smallest cell size. With $16^3$ cells per grid this gives about 4.2e8 cells total. The highest temperature on the grid, on the order of $10^6$~K, will usually be from the hot, shocked, stellar winds. Note at this resolution if we require 12 cells for a proper MHD Jeans length \citep{Heitsch2001} this means we can allow the gas to collapse down to densities $\sim 3 \times 10^5 n_H cm^{-3}$. 
+The cost of a single zone MHD update in Flash is about 150~$\mu$s. When radiation is added, this cost doubles \citep{WiseAbel2011}. Using the zoom algorithm, zooming in on the Bullhead cloud (mass $8 \times 10^3$~{\msun}) from kiloparsec scales down to $\sim50$~pc leaves us with about 350 grids in the zoomed region. Further refinement levels each double the number of blocks from the previous level, since the volume filling factor is about 1/8. It takes 5 levels of refinement to cover the zoomed in region with enough cells to resolve the Jeans length (but only about 3500 grids total are needed for the initial zoom). It takes 9 additional levels of refinement to go from 50 pc down to 1256 AU, our smallest cell size. With $16^3$ cells per grid this gives about $4.2 \times 10^8$ cells total. The highest temperature on the grid, on the order of $10^6$~K, will usually be from the hot, shocked, stellar winds. Note at this resolution if we require 12 cells for a proper MHD Jeans length \citep{Heitsch2001} this means we can allow the gas to collapse down to densities $\sim 3 \times 10^5 \, n_H \, cm^{-3}$. 
 %mm I get 34 yr!
 %*************************************
 This gives a timestep of about 40~yr,
 %mm
 %JW Courant number seems like a technical detail that may not matter to most people. Do we need it in here? The timing (i.e. result of Courant #) seems more important.
 %    for a Courant number of 0.3,
-so a simulation run for 10~Myr requires on the order of $10^6$ steps. This leads to an estimate of total number of CPU hours of $3.49 \times 10^6$. Conducting this same estimate without winds means the highest temperature on the grid is generally due to the radiation at $10^4$ K (this anticipates that supernova on the high density grid are brief and infrequent events in our simulation). This leads to a total of $4.38 \times 10^5$ hrs for a single run. We therefore propose to do two runs for comparison, one with winds and one without.
+so a simulation run for 10~Myr requires on the order of $10^6$ steps. This leads to an estimate of total number of CPU hours of $3.49 \times 10^6$ hrs. Conducting this same estimate without winds means the highest temperature on the grid is generally due to the radiation at $10^4$ K (this anticipates that supernova on the high density grid are brief and infrequent events in our simulation). This leads to a total of $4.38 \times 10^5$ hrs for a single run. We therefore propose to do two runs for comparison, one with winds and one without.
 
 % Saving the stuff below in case we want to request runs with carved out winds, etc.
 

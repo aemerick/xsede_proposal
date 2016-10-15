@@ -135,7 +135,7 @@ We demonstrate weak scaling in Figure~\ref{fig:radiation_and_scaling} for our tw
 
 \subsection{Flash}
 
-Flash is a magnetohydrodynamics (MHD) code with adaptive grid refinement \citep{FLASH}. Flash includes numerous HD and MHD solvers, radiation transport methods and gravitational solvers. Here we choose to use the Waagan MHD solver \citep{Waagan2011} due to its robust nature, the Barnes and Hut tree gravity method of W\"{u}nsch (in preparation), and the radiation transport module FERVENT.
+Flash is a magnetohydrodynamics (MHD) code with adaptive grid refinement \citep{FLASH}. Flash includes numerous HD and MHD solvers, radiation transport methods and gravitational solvers. Here we choose to use the Waagan MHD solver \citep{Waagan2011} due to its robust nature, the Barnes and Hut tree gravity method of W\"{u}nsch (in preparation), and the radiation transport module FERVENT \citep{BaczynskiGloverKlessen2015}.
 
 \subsection{ph4}
 
@@ -143,15 +143,15 @@ For the N-body dynamics we have chosen the GPU accelerated parallel code ph4 \ci
 
 \subsection{Multiples}
 
-When two (or more) bodies do have a close encounter in PH4, the encounter will be handed off the Multiples module in AMUSE \citep{AMUSE}, which solves the few body problem for the interaction as a separate process. Once the encounter resolves, both objects will then integrated back into PH4 either as a single object if a binary formed, or two separate objects with the proper trajectories if they did not. 
+When two (or more) bodies do have a close encounter in ph4, the encounter will be handed off the Multiples module in AMUSE \citep{AMUSE}, which solves the few body problem for the interaction as a separate process. Once the encounter resolves, both objects will then integrated back into ph4 either as a single object if a binary formed, or two separate objects with the proper trajectories if they did not. This also allows us to put in primordial binaries by hand, following the observation that most massive stars have a companion.
 
 \subsection{SeBa}
 
-Finally, stellar and binary evolution in the simulation will be obtained from the code SeBa \citep{Portegies_SeBa}. This will give the temperature, luminosity and mass loss rate of each star, allowing us to then input radiation and winds into FLASH accurately, as well as detect when a supernova event occurs and simulate this in FLASH appropriately.
+Finally, stellar and binary evolution in the simulation will be obtained from the code SeBa \citep{Portegies_SeBa}. This will give the temperature, luminosity and mass loss rate of each star, allowing us to then input radiation and winds into FLASH accurately, as well as detect when a supernova event occurs and simulate this in FLASH appropriately. Further SeBa can accurately calculate mass transfer and binary evolution for binaries that are present in our simulation, allowing us to more accurately track supernova, winds and radiation feedback than simulations without binary evolution.
 
 \subsection{Scaling of the Code}
 
-The computational cost of our simulations is largely dominated by Flash, with our initial testing showing 10\% or less of the total simulation time spent outside of Flash (in python, ph4, SeBa, etc). Specifically we expect our runs to be dominated by the ray tracing algorithm FERVENT. FERVENT follows the RT methods used in \texttt{Enzo} closely, and scales with the number of high mass stars (radiation sources) formed in the simulation similarly. This scaling is well demonstrated in Fig. \ref{fig:radiation_and_scaling}. We have conducted preliminary weak scaling test of the fully coupled code with about 200 $8^3$ grids per processor on 12 core nodes (Fig. \ref{fig:radiation_and_scaling}), which shows we are still getting speedup in Flash of about 14\% at 562 processors, as far as we could test on our small local cluster.
+The computational cost of our simulations is largely dominated by Flash, with our initial testing showing 10\% or less of the total simulation time spent outside of Flash (in python, ph4, SeBa, etc). Specifically we expect our runs to be dominated by the ray tracing algorithm FERVENT. FERVENT follows the RT methods used in \texttt{Enzo} closely, and scales with the number of high mass stars (radiation sources) formed in the simulation similarly. This scaling is well demonstrated in Fig. \ref{fig:radiation_and_scaling}. We have conducted preliminary weak scaling test of the fully coupled code with about 200 $8^3$ grids per processor on 12 core nodes (Fig. \ref{fig:radiation_and_scaling}), which shows we are still getting speedup in Flash of about 14\% at 562 processors, as far as we could test on our small local cluster. We anticipate scaling to flatten off at around 1K processors, therefore we anticipate running with 1024 or 2048 cores for our simulations.
 
 %\begin{figure}
 %\centering
