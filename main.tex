@@ -1,7 +1,7 @@
 \title{Star Formation and Feedback in Stellar Clusters and Galaxies}
 
 \author{PI: Mordecai-Mark Mac Low, American Museum of Natural History, New York.\\
-        co-PIs: Andrew Emerick, Columbia University / AMNH, Joshua Wall, Drexel University / AMNH}
+        co-PIs: Andrew Emerick, Columbia University / AMNH \\ Joshua Wall, Drexel University / AMNH}
 
 \documentclass[11pt]{article}
 
@@ -153,7 +153,7 @@ We have tested the conservation of both energy and momentum in this method. Figu
 \begin{figure}
 \centering
 \includegraphics[width=0.75\linewidth]{ener_mod}
-\caption{\small Energy error of the Flash/ph4 gravity bridge via AMUSE for the orbit of three sink particles through a stationary isothermal gas sphere. The bridge timestep was step such that the outer particle recieved 100 kicks per orbit.}
+\caption{\small Energy error of the Flash/ph4 gravity bridge via AMUSE for the orbit of three sink particles through a stationary isothermal gas sphere. The bridge timestep was set such that the outer particle received 100 kicks per orbit.}
 \label{fig:ener}
 \end{figure}
 
@@ -161,7 +161,7 @@ We have tested the conservation of both energy and momentum in this method. Figu
 \hspace{-1.0cm}
 \centering
 \includegraphics[width=0.75\linewidth]{mom_mod}
-\caption{\small The total momentum and momentum error for a simulation starting with a spherical gas clound and a sink using the Flash/ph4 gravity bridge via AMUSE. The gas cloud collapses and forms a second sink during the run. Note the y axis scaling, the error is two orders of magnitude smaller than the total momentum. The primary error comes from accretion onto the newly formed sink particle and is a ``worst case scenario" for our code.}
+\caption{\small The total momentum and momentum error for a simulation starting with a spherical gas clound and a sink using the Flash/ph4 gravity bridge via AMUSE. The gas cloud collapses and forms a second sink during the run. Note the y axis scaling: the maximum error is two orders of magnitude smaller than the total momentum. The primary error comes from accretion onto the newly formed sink particle which is a worst case scenario for our code.}
 \label{fig:mommod}
 \end{figure}
 
@@ -234,9 +234,12 @@ We request a total of 9.68 million SU's and 12.3/2.6 TB of short/long term stora
 %\subsubsection{Proposed Runs}
 
 The cost of a single zone MHD update in Flash is about 150~$\mu$s. When radiation is added, this cost doubles \citep{WiseAbel2011}. Using the zoom algorithm, zooming in on the Bullhead cloud (mass $8 \times 10^3$~{\msun}) from kiloparsec scales down to $\sim50$~pc leaves us with about 350 grids in the zoomed region. Further refinement levels each double the number of blocks from the previous level, since the volume filling factor is about 1/8. It takes 10 levels of refinement to go from 50 pc down to scales on the order of 1000 AU. With $16^3$ cells per grid this gives about 8.2e8 cells total. The highest temperature on the grid, on the order of $10^6$~K, will usually be from the hot, shocked, stellar winds. Note at this resolution if we require 12 cells for a proper MHD Jeans length \citep{Klessen_2000_GasDynTurb}, this means we can allow the gas to collapse down to densities $\sim 5 \times 10^5 n_H cm^{-3}$. 
-%mm I get 3.4 yr!
+%mm I get 34 yr!
 %*************************************
-This gives a timestep of about 10~yr, and for a simulation run for 10~Myr requires $10^6$ steps. This leads to an estimate of total number of CPU hours of $1.73 \times 10^7$. Conducting this same estimate without winds means the highest temperature on the grid is generally due to the radiation at $10^4$ K (this anticipates that supernova are brief and infrequent events in our simulation). This leads to a total of $6.98 \times 10^5$ hrs for a single run. We therefore propose to do two runs for comparison, one with winds and one without.
+This gives a timestep of about 10~yr,
+%mm 
+    for a Courant number of 0.3,
+so a simulation run for 10~Myr requires $10^6$ steps. This leads to an estimate of total number of CPU hours of $1.73 \times 10^7$. Conducting this same estimate without winds means the highest temperature on the grid is generally due to the radiation at $10^4$ K (this anticipates that supernova on the high density grid are brief and infrequent events in our simulation). This leads to a total of $6.98 \times 10^5$ hrs for a single run. We therefore propose to do two runs for comparison, one with winds and one without.
 
 % Saving the stuff below in case we want to request runs with carved out winds, etc.
 
