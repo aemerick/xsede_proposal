@@ -186,7 +186,7 @@ This cloud is shown in Fig \ref{fig:bullhead}.
 
 \begin{figure}
 \centering
-\includegraphics[width=0.7\linewidth]{bullhead_mod}
+\includegraphics[width=0.7\linewidth]{bullheadmod}
 \caption{\small Integrated column density of the ``Bullhead" cloud, which is $8 \times 10^3$~{\msun}. The contour shown is at $n~=~10^3~{\rm cm}^{-3}$}
 \label{fig:bullhead}
 \end{figure}
@@ -240,7 +240,7 @@ This gives a timestep of about 10~yr, and for a simulation run for 10~Myr requir
 
 % Saving the stuff below in case we want to request runs with carved out winds, etc.
 
-%The cost of a single zone MHD update in Flash is about \SI{150}{\micro s}. When radiation is added, this cost doubles \citep{wise_enzo+moray:_2011}. Using the zoom algorithm, zooming in on the Bullhead cloud (mass \SI{8e3}{\msun})from \si{kpc} scales down to $\sim \SI{50}{pc}$ leaves us with about 2000 grids in the zoomed region. Further refinement levels each double the number of blocks from the previous level, since the volume filling factor is about 1/8th. It takes 12 levels of refinement to go to scales on the order of 100 \si{AU}. With $16^3$ cells per grid this gives about \num{8.3e7} cells total. The highest temperature on the grid generally will be from the winds, on the order of \SI{e4}{K}. This gives a timestep of about \SI{100}{yr}, and for a simulation run for \SI{10}{Myr} requires \num{e5} steps. This leads to an estimate of total number of CPU hours at \SI{6.98e5}{hrs}.
+%The cost of a single zone MHD update in Flash is about \SI{150}{\micro s}. When radiation is added, this cost doubles \citep{wise_enzo+moray:_2011}. Using the zoom algorithm, zooming in on the Bullhead cloud (mass \SI{8e3}{\msun})from \si{kpc} scales down to $\sim \SI{50}{pc}$ leaves us with about 2000 grids in the zoomed region. Further refinement levels each double the number of blocks from the previous level, since the volume filling factor is about 1/8th. It takes 9 levels of refinement to go from 50 pc to scales on the order of 1500 \si{AU}. With $16^3$ cells per grid this gives about \num{8.3e7} cells total. The highest temperature on the grid generally will be from the winds, on the order of \SI{e4}{K}. This gives a timestep of about \SI{100}{yr}, and for a simulation run for \SI{10}{Myr} requires \num{e5} steps. This leads to an estimate of total number of CPU hours at \SI{6.98e5}{hrs}.
 
 %If we make the rough approximation that a single cloud which is an order of magnitude more massive has double the radius (\SI{100}{pc} zoom in) and therefore about $2^3$ times as many initial grids, the same calculations lead us to estimate the number of CPU hours as \SI{1.4e6}{hrs}. With \num{1e4} processors, this run would take about 6 days on a large machine such as Stampede. For a cloud complex consisting of three clouds each of which is about \SI{2e5}{\msun} and contained inside a \SI{100}{pc} region, we can just assume the initial and zoomed number of grids is tripled, tripling the run time.
 
@@ -256,11 +256,14 @@ Run \# & %Cloud &
              Description & SU's ($\times 10^6$) \\
 \hline 
 1 & %$8 \times 10^3$~{\msun} & Bullhead cloud collapse - 
-       All feedback & 11.5 \\
+     All feedback          & 11.5 \\
 \hline 
 2 & %$8 \times 10^3$~{\msun} & Bullhead cloud collapse - 
      Radiation and SN only & 0.7 \\
-\hline 
+\hline
+3 &  Radiation only        & 0.7 \\
+\hline
+4 &  Winds only            & 5.8 \\
 %3 & \SI{8e3}{\msun} & Bullhead cloud collapse - Winds only & 700 \\
 %\hline 
 %4 & \SI{8e3}{\msun} & Bullhead cloud collapse - Supernova only & 7 \\
@@ -270,7 +273,7 @@ Run \# & %Cloud &
 %6 & \SI{e6}{\msun} & 3 cloud complex collapse with all feedback & 4200 \\
 \hline
 %\multicolumn{3}{|c|}{Total Request} & 12200 \\
-\multicolumn{2}{|c|}{Total Request} & 12.2 \\
+\multicolumn{2}{|c|}{Total Request} & 18.65 \\
 
 \hline
 \end{tabular}
