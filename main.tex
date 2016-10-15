@@ -145,10 +145,10 @@ Radiation from massive stars provides a substantial additional source of feedbac
 
 \subsection{Gravity Bridge}
 
-To couple Flash (RMHD) to ph4 (N-body), we have implemented a momentum and energy conserving gravity bridge \citep{Fujii_Makino_bridge} which is a symplectic second order method first used to integrate the solar system \citep{Wisdom_Holman_1991}. This allows the two codes to evolve independently for multiple hydrodynamic and dozens or hundreds of N-body timesteps (which we call a ``drift"), after which the mass in each code gives a gravitational acceleration to the other (a ``kick"). Both codes evolve independently in parallel during the drift, with the N-body portion (ph4) running on GPUs, and Flash on CPUs.
+To couple Flash (RMHD) to ph4 (N-body), we have implemented a momentum and energy conserving gravity bridge \citep{Fujii_Makino_bridge} which is a symplectic second order method first used to integrate the solar system \citep{Wisdom_Holman_1991}. This allows the two codes to evolve independently for multiple hydrodynamic and dozens or hundreds of N-body timesteps (a ``drift"), after which the mass in each code gives a gravitational acceleration to the other (a ``kick"). Both codes evolve independently in parallel during the drift, with the N-body portion (ph4) running on GPUs, and Flash on CPUs.
 
 % AE: This paragraph isn't entirely clear.. I'd reword, but I'm not entirely sure what it should say
-We have tested the conservation of both energy and momentum in this method. Figure \ref{fig:ener} shows energy conservation to follow the behavior of the 4th order Hermite method \citep{binney2011galactic}, with global error on the order of 0.5\%. The momentum error is dominated by other factors in the code such as accretion onto sink particles, and is globally on the order of 1\% (Fig \ref{fig:mommod}).
+We have tested the conservation of both energy and momentum of the gravity bridge. Figure \ref{fig:ener} shows energy conservation to follow the behavior of the 4th order Hermite method of ph4 \citep{binney2011galactic}, with global error on the order of 0.5\%. The momentum error is dominated by other factors in the code such as accretion onto sink particles in Flash, and is globally on the order of 1\% (Fig \ref{fig:mommod}).
 
 \begin{figure}
 \centering
@@ -233,13 +233,14 @@ We request a total of 9.68 million SU's and 12.3/2.6 TB of short/long term stora
 
 %\subsubsection{Proposed Runs}
 
-The cost of a single zone MHD update in Flash is about 150~$\mu$s. When radiation is added, this cost doubles \citep{WiseAbel2011}. Using the zoom algorithm, zooming in on the Bullhead cloud (mass $8 \times 10^3$~{\msun}) from kiloparsec scales down to $\sim50$~pc leaves us with about 350 grids in the zoomed region. Further refinement levels each double the number of blocks from the previous level, since the volume filling factor is about 1/8. It takes 10 levels of refinement to go from 50 pc down to scales on the order of 1000 AU. With $16^3$ cells per grid this gives about 8.2e8 cells total. The highest temperature on the grid, on the order of $10^6$~K, will usually be from the hot, shocked, stellar winds. Note at this resolution if we require 12 cells for a proper MHD Jeans length \citep{Klessen_2000_GasDynTurb}, this means we can allow the gas to collapse down to densities $\sim 5 \times 10^5 n_H cm^{-3}$. 
+The cost of a single zone MHD update in Flash is about 150~$\mu$s. When radiation is added, this cost doubles \citep{WiseAbel2011}. Using the zoom algorithm, zooming in on the Bullhead cloud (mass $8 \times 10^3$~{\msun}) from kiloparsec scales down to $\sim50$~pc leaves us with about 350 grids in the zoomed region. Further refinement levels each double the number of blocks from the previous level, since the volume filling factor is about 1/8. It takes 5 levels of refinement to cover the zoomed in region with a single grid (but only about 3500 grids) and 9 additional levels of refinement to go from 50 pc down to 1256 AU, our smallest cell size. With $16^3$ cells per grid this gives about 4.2e8 cells total. The highest temperature on the grid, on the order of $10^6$~K, will usually be from the hot, shocked, stellar winds. Note at this resolution if we require 12 cells for a proper MHD Jeans length \citep{Heitsch2001} this means we can allow the gas to collapse down to densities $\sim 3 \times 10^5 n_H cm^{-3}$. 
 %mm I get 34 yr!
 %*************************************
-This gives a timestep of about 10~yr,
-%mm 
-    for a Courant number of 0.3,
-so a simulation run for 10~Myr requires $10^6$ steps. This leads to an estimate of total number of CPU hours of $1.73 \times 10^7$. Conducting this same estimate without winds means the highest temperature on the grid is generally due to the radiation at $10^4$ K (this anticipates that supernova on the high density grid are brief and infrequent events in our simulation). This leads to a total of $6.98 \times 10^5$ hrs for a single run. We therefore propose to do two runs for comparison, one with winds and one without.
+This gives a timestep of about 40~yr,
+%mm
+%JW Courant number seems like a technical detail that may not matter to most people. Do we need it in here? The timing (i.e. result of Courant #) seems more important.
+%    for a Courant number of 0.3,
+so a simulation run for 10~Myr requires on the order of $10^6$ steps. This leads to an estimate of total number of CPU hours of $3.49 \times 10^6$. Conducting this same estimate without winds means the highest temperature on the grid is generally due to the radiation at $10^4$ K (this anticipates that supernova on the high density grid are brief and infrequent events in our simulation). This leads to a total of $4.38 \times 10^5$ hrs for a single run. We therefore propose to do two runs for comparison, one with winds and one without.
 
 % Saving the stuff below in case we want to request runs with carved out winds, etc.
 
@@ -259,14 +260,14 @@ Run \# & %Cloud &
              Description & SU's ($\times 10^6$) \\
 \hline 
 1 & %$8 \times 10^3$~{\msun} & Bullhead cloud collapse - 
-     All feedback          & 17.3 \\
+     All feedback          & 6.98 \\
 \hline 
 2 & %$8 \times 10^3$~{\msun} & Bullhead cloud collapse - 
-     Radiation and SN only & 0.5 \\
+     Radiation and SN only & 0.44 \\
 \hline
-3 &  Radiation only        & 0.5 \\
-\hline
-4 &  Winds only            & 8.65 \\
+%3 &  Radiation only        & 0.22 \\
+%\hline
+%4 &  Winds only            & 3.49 \\
 %3 & \SI{8e3}{\msun} & Bullhead cloud collapse - Winds only & 700 \\
 %\hline 
 %4 & \SI{8e3}{\msun} & Bullhead cloud collapse - Supernova only & 7 \\
@@ -276,7 +277,7 @@ Run \# & %Cloud &
 %6 & \SI{e6}{\msun} & 3 cloud complex collapse with all feedback & 4200 \\
 \hline
 %\multicolumn{3}{|c|}{Total Request} & 12200 \\
-\multicolumn{2}{|c|}{Total Request} & 26.9 \\
+\multicolumn{2}{|c|}{Total Request} & 7.42 \\ % or 11.13 if you want all 4 - JW
 
 \hline
 \end{tabular}
