@@ -229,8 +229,7 @@ Figure~\ref{fig:dwarf galaxy} shows the results from a low resolution (8 pc) pro
 \end{figure}
 
 \section{Computational Resources}
-***********************
-We request a total of 9.68 million SU's and 12.3/2.6 TB of short/long term storage space, as explained below for each of our projects. Analysis for each project will be conducted on local computing resources utilizing the open source analysis toolkit \texttt{yt} \citep{yt}, and is therefore not considered in the total SU expense.
+We request a total of 17.1 million SU's and 12.3/2.6 TB of short/long term storage space, as explained below for each of our projects. Analysis for each project will be conducted on local computing resources utilizing the open source analysis toolkit \texttt{yt} \citep{yt}, and is therefore not considered in the total SU expense.
 
 \subsection{Cluster Formation}
 
@@ -240,14 +239,15 @@ We request a total of 9.68 million SU's and 12.3/2.6 TB of short/long term stora
 
 %\subsubsection{Proposed Runs}
 
-The cost of a single zone MHD update in Flash is about 150~$\mu$s. When radiation is added, this cost doubles \citep{WiseAbel2011}. Using the zoom algorithm, zooming in on the Bullhead cloud (mass $8 \times 10^3$~{\msun}) from kiloparsec scales down to $\sim50$~pc leaves us with about 350 grids in the zoomed region. Further refinement levels each double the number of blocks from the previous level, since the volume filling factor is about 1/8. It takes 5 levels of refinement to cover the zoomed in region with enough cells to resolve the Jeans length (but only about 3500 grids total are needed for the initial zoom). It takes 9 additional levels of refinement to go from 50 pc down to 1256 AU, our smallest cell size. With $16^3$ cells per grid this gives about $4.2 \times 10^8$ cells total. The highest temperature on the grid, on the order of $10^6$~K, will usually be from the hot, shocked, stellar winds. Note at this resolution if we require 12 cells for a proper MHD Jeans length \citep{Heitsch2001} this means we can allow the gas to collapse down to densities $\sim 3 \times 10^5 \, n_H \, cm^{-3}$. 
+The cost of a single zone MHD update in Flash is about 150~$\mu$s. When radiation is added, this cost doubles \citep{WiseAbel2011}. Using the zoom algorithm, zooming in on the Bullhead cloud (mass $8 \times 10^3$~{\msun}) from kiloparsec scales down to $\sim50$~pc leaves us with about 350 grids in the zoomed region. Further refinement levels each double the number of blocks from the previous level, since the volume filling factor is about 1/8. It takes 5 levels of refinement to cover the zoomed in region with enough cells to resolve the Jeans length (but only about 3500 grids total are needed for the initial zoom). It takes 9 additional levels of refinement to go from 50 pc down to 1256 AU, our smallest cell size. With $16^3$ cells per grid this gives about $4.2 \times 10^8$ cells total. The highest temperature on the grid, on the order of $10^6$~K, will usually be from the hot, shocked, stellar winds. Note at this resolution if we require 12 cells for a proper MHD Jeans length \citep{Heitsch2001} this means we can allow the gas to collapse down to densities $\sim 3 \times 10^5$ %\, n_H
+cm$^{-3}$. 
 %mm I get 34 yr!
 %*************************************
 This gives a timestep of about 40~yr,
 %mm
 %JW Courant number seems like a technical detail that may not matter to most people. Do we need it in here? The timing (i.e. result of Courant #) seems more important.
 %    for a Courant number of 0.3,
-so a simulation run for 10~Myr requires $\sim 2 \times 10^5$ steps, assuming during the first 2 Myr the gas is still collapsing and no stars have formed yet. This leads to an estimate of total number of CPU hours of $6.98 \times 10^6$ hrs. Conducting this same estimate without winds means the highest temperature on the grid is generally due to the radiation at $10^4$ K (this anticipates that supernova on the high density grid are brief and infrequent events in our simulation). This leads to a total of $4.38 \times 10^5$ hrs for a single run. We therefore propose to do two runs for comparison, one with winds and one without.
+so a simulation run for 10~Myr requires $\sim 2 \times 10^5$ steps, assuming during the first 2 Myr the gas is still collapsing and no stars have formed yet. This leads to an estimate of total number of CPU hours of $6.98 \times 10^6$ hrs. Conducting this same estimate without winds means the highest temperature on the grid is generally due to the radiation at $10^4$ K (this anticipates that supernova on the high density grid are brief and infrequent events in our simulation). This leads to a total of $4.38 \times 10^5$ hrs for a single run. We propose to do two runs for comparison, one with winds and one without.
 
 % Saving the stuff below in case we want to request runs with carved out winds, etc.
 
