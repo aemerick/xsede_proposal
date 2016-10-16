@@ -291,6 +291,8 @@ Run \# & %Cloud &
 \caption{\small Runs for the Flash/AMUSE combined simulations. One run with all forms of feedback will be run, along with a comparison run with only radiation and supernova.}
 \end{table}
 
+For storage requirements we will write out data files every 10,000 years and two checkpoint files on rotation in case of the need for a restart. A single data file contains all the information for the Flash grid and all the particles. Each grid zone has 33 variables, and we expect at most to have $\sim 4.2 \times 10^8$ cells in the simulation at maximum refinement. Further we expect about 10\% stellar formation efficiency, leading to $10^4$ stars, which also have 33 variable properties. Each variable is written in 64 bit, so for 100 data files we will need 10.2 TB for each run. For each checkpoint file the code also writes the ghost zones for each grid, with four zones in each direction. For our estimated run there are $\sim 101400$ grids. This gives checkpoint files of 350 GB each when the grid structure and runtime parameters are also included. In total for both runs, we require 21.8 TB of total storage during the runs. 
+
 
 %\end{widetext}
 
