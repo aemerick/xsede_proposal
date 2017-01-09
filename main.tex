@@ -1,7 +1,7 @@
 \title{Star Formation and Feedback in Stellar Clusters and Galaxies}
 
 \author{PI: Mordecai-Mark Mac Low, American Museum of Natural History, New York.\\
-        co-PIs: Andrew Emerick, Columbia University / AMNH \\ Joshua Wall, Drexel University / AMNH}
+        co-PI: Andrew Emerick, Columbia University / AMNH }
 
 \documentclass[11pt]{article}
 
@@ -49,25 +49,7 @@
 \maketitle
 
 \section{Introduction}
-%{\bf actual draft of this section pending Josh's end:}
-This renewal proposal describes our proposed research for the coming year in two related areas of astrophysical research. The PI of this proposal (M-M. Mac Low) is PI on NSF grant AST11-09395, which also supports co-PI Wall, while co-PI Emerick is supported by a NSF Graduate Research Fellowship (DGE-16-44869).
-Our research focuses on understanding the precise effects of feedback physics 
-using detailed models in two distinct regimes: cluster formation in giant molecular clouds (led by co-PI Wall), and
-star formation histories of low mass dwarf galaxies (led by co-PI Emerick). 
-% AE: made parenthetical consistency 
-
-Both projects represent novel endeavors in their respective sub-fields. The cluster formation simulations combine stellar dynamics and evolution with a detailed feedback model in a hybrid hydrodynamics/N-body simulation reaching down to resolutions of hundreds of AU.  Our dwarf galaxy simulations also include feedback at a coarser scale of 1.5~pc in a model tracking individual stars---unique on galactic scales---while also tracking stellar yields to trace both gas and stellar phase abundances for a dozen distinct metal species. Each project is supervised by PI M-M. Mac Low, with collaborator S. McMillan co-advising the cluster project, and collaborator G. Bryan co-advising the dwarf galaxy project. We summarize the science motivation for each of these projects below, while justifying our resource request. We note that each of these projects is central to the PhD thesis of each of the co-PIs.
-% AE: changed "one" to "each" in the above.... I am assuming this is for Josh's thesis work as well?
-% Wall (GMC's) and co-PI Emerick (dwarf galaxies).
-
-\subsection{Star Cluster Formation in Giant Molecular Clouds}
-
-Star cluster formation theory is at an exciting threshold. Over the last decade, theorists studying the interstellar medium (ISM) have conducted increasingly sophisticated simulations of molecular cloud formation and evolution, increasing both the dynamic range of simulations and the number of physical effects modeled. Simulations of molecular clouds now include supernovae, flux frozen magnetic fields, and detailed chemistry all in a single simulation \citep{Klessen_2000_GasDynTurb,MacLow2004,Joung2006,Hill2012,Ibanez-Mejia2016,haid_supernova-blast_2016,Walch_SILLC1}. Simultaneously, the size and physical complexity of star cluster simulations has also increased, with the first million body simulation of a star cluster recently performed \citep{Dragon_Wang}, which included stellar evolution, binary formation and mass transfer, and GPU accelerated integration of stellar motion. 
-
-The intersection of these two fields comes when newly formed stars interact with the surrounding gas through the effects of winds, radiation, and supernovae, collectively described as stellar feedback, while the inhomogeneous gas exerts tidal forces on the newly forming cluster. Numerical algorithms modeling stellar feedback have seen a great deal of recent attention. Supernova methods have become increasingly better at reproducing observations at all times, with recent kinetic energy injection models capturing the temperature and density evolution from pre-Sedov phase to cold remnant \citep{Simpson2015,Kim_Ostriker_2015ApJ}. Winds have been modeled often in stellar feedback simulations as either pure thermal energy injection or actual kinetic particle injection \citep{Pelupessy_embedded_SC,Dale_winds_2013}. Finally radiation has been modeled with numerous different algorithms such as ray tracing and the M1 closure and including either thermal heating, radiation momentum pressure, or both \citep{Dale_Winds_and_H2,WiseAbel2011,RAMSES-RT,Raskutti_Ostriker_2016}.
-
-However simulating star cluster formation is a complex problem. While many of the above simulations contain the specific physics of one or two forms of feedback, all three forms are expected to be present during the first 10--15~Myr %\SIrange{10}{15}{Myr} 
-of a new cluster's existence \citep{Krumholz2014}. Complex N-body dynamics also occur, forming and dissolving binaries that can lead to mass transfer and altered stellar evolution in the system \citep{PortegiesZwart2007}. Finally, many of the simulations of star cluster formation cited above start from idealized initial conditions. This usually consists of a spherical density distribution with a turbulent velocity spectrum \citep{Dale_Winds_and_H2,Raskutti_Ostriker_2016}, instead of gravitationally-formed filamentary structures \citep{Ibanez-Mejia2016} that are subjected to ongoing external stellar feedback from supernovae \citep{Hill2012} and other mechanisms. For simulations that do start with more realistic initial gas distributions, stars are generally not individually resolved but are represented in groups of stars by cluster particles \citep{Gatto_Walch_SILCC3_2016,dobbs_properties_2016}.
+This renewal proposal describes our proposed research for the coming year, focusing on using a new, detailed model for stellar feedback physics to understand the dynamical and chemical evolution of low mass dwarf galaxies. This project is a novel endeavor in galaxy-scale simulations as our method uses particles to trace individual stars in our galaxy, rather than whole stellar populations. This allows us to follow the feedback physics of individual stars in unprecedented detail -- including models for stellar winds, supernovae, diffusive stellar heating, and radiative transfer -- with high grid resolution ($\sim$ 1.5 pc). In addition, this new formalism allows us to trace stellar yields from individual stars, allowing us to trace stochastic variations in local and galactic scale chemical abundances in over a dozen different elements. The PI of this proposal (M-M. Mac Low) is PI on NSF grant AST11-09395 and co-PI Emerick is supported by a NSF Graduate Research Fellowship (DGE-16-44869); this project is co-advised by collaborator G. Bryan. We summarize the science motivation for each of these projects below, while justifying our resource request. We note that each of this project is central to the PhD thesis of co-PI Emerick.
 
 \subsection{Star Formation, Feedback, and Chemodynamics of Galaxies}
 
@@ -85,34 +67,6 @@ We provide a discussion of the feedback physics and associated models we propose
 
 \section{Technical Goals}
 
-\subsection{Towards More Realistic Star Cluster Formation}
-
-To conduct more realistic star cluster simulations we have integrated the (R)MHD code Flash into the Astrophysical Multipurpose Software Environment(AMUSE) \citep{AMUSE}, an astrophysics software package that contains community codes for hydrodynamics, N-body dynamics, stellar evolution and radiative transport. This allows us to include accurate N-body dynamics for the stars using the GPU accelerated code ph4 \citep{ph4}. We have also augmented the publicly available version of Flash itself to include modules for radiation (momentum and heating), winds and supernova. Radiation is tracked using an improved version of the FERVENT module \citep{baczynski_fervent:_2015}. For supernovae, we have implemented the kinetic energy injection method of \citet{Simpson2015}, and for winds we use our own adaptation of the \cite{Simpson2015} method, injecting winds as a mixture of both kinetic and thermal energy. We will use this more realistic model of stellar feedback to study the impact of newly formed stars on their environment by analyzing how stellar formation efficiency evolves near natal clusters, how turbulence is driven by feedback, and whether any ejected or impacted gas can lead to or disrupt further star formation. 
-
-%JW Moved this section to be with the other explaination of star cluster methods. The jump in the middle for Andrew's work was too jarring/confusing.
-%\subsection{Gravity Bridge}
-
-To couple Flash (RMHD) to ph4 (N-body), we have implemented a momentum and energy conserving gravity bridge \citep{Fujii_Makino_bridge} which is a symplectic second order method first used to integrate the solar system \citep{Wisdom_Holman_1991}. This allows the two codes to evolve independently for multiple hydrodynamic and dozens or hundreds of N-body timesteps (a ``drift"), after which the mass in each code gives a gravitational acceleration to the other (a ``kick"). Both codes evolve independently in parallel during the drift, with the N-body portion (ph4) running on GPUs, and Flash on CPUs.
-
-% AE: This paragraph isn't entirely clear.. I'd reword, but I'm not entirely sure what it should say
-% JW: Its essentially explaining that the gravity bridge still conserves momentum and energy (to the order of the integrator), something that is always tested in N-body methods.
-We have tested the conservation of both energy and momentum of the gravity bridge. Figure \ref{fig:ener} shows energy conservation to follow the behavior of the 4th order Hermite method of ph4 \citep{binney2011galactic}, with global error on the order of 0.5\%. The momentum error is dominated by other factors in the code such as accretion onto sink particles in Flash, and is globally on the order of 1\% (Fig \ref{fig:mommod}).
-
-\begin{figure}
-\centering
-\includegraphics[width=0.75\linewidth]{ener_mod}
-\caption{\small Energy error of the Flash/ph4 gravity bridge via AMUSE for the orbit of three sink particles through a stationary isothermal gas sphere. The bridge timestep was set such that the outer particle received 100 kicks per orbit.}
-\label{fig:ener}
-\end{figure}
-
-\begin{figure}
-\hspace{-1.0cm}
-\centering
-\includegraphics[width=0.75\linewidth]{mom_mod}
-\caption{\small The total momentum and momentum error for a simulation starting with a spherical gas clound and a sink using the Flash/ph4 gravity bridge via AMUSE. The gas cloud collapses and forms a second sink during the run. Note the y axis scaling: the maximum error is two orders of magnitude smaller than the total momentum. The primary error comes from accretion onto the newly formed sink particle which is a worst case scenario for our code.}
-\label{fig:mommod}
-\end{figure}
-
 \subsection{Galactic Feedback Physics}
 
 The following physics will be identical in each galactic simulation: 1) gas self-gravity to capture gas collapse and subsequent star formation in dense regions, 2) a nine-species, non-equilibrium chemistry solver, following electrons, and H, He, and H$_{2}$ and their ionization states \citep{Anninos1997, Abel1997}, 3) associated heating / cooling as followed in the \texttt{Grackle} library (Smith et al.\ in prep), including heating from a metagalactic UV background \citep{HM2012} and tabulated metal line cooling from \texttt{Cloudy} \citep{Cloudy2013}, 4) approximate H and He gas self-shielding of the UV background \citep{Rahmati2013}, 5) a metagalactic Lyman-Werner (LW) flux from \cite{HM2012} to properly model H$_{2}$ dissociation, as well as an optically thin LW flux from each of our stars to account for local fluctuations in the LW field, and 6) a collisionless N-body solver to evolve the dynamics of the formed star particles. In every simulation, we form stars from dense gas on the most refined parts of the grid (with resolution of 1.5~pc) following a stochastic star formation scheme from \cite{Goldbaum2015, Goldbaum2016}, modified to sample individual stellar masses from an input IMF \citep[e.g.][]{Salpeter1955}. Each star is chemically tagged by the local gas abundances, and assigned stellar properties from a grid of stellar evolution tracks \citep{Bressan2012}, which ultimately govern the radiative properties of the stars (if radiation feedback is used), the stellar wind velocity, and the star's lifetime. We follow the mass loss of each particle via stellar winds and supernovae over time as determined by our stellar yield model.
@@ -123,81 +77,7 @@ Accounting for the effects of CRs in galaxy scale simulations has only been poss
 
 Radiation from massive stars provides a substantial additional source of feedback in galaxies \citep[\eg][]{Agertz2013}. Including radiative feedback has a significant affect on galaxy dynamical and morphological structure \citep[\eg][]{WiseAbel2012, Kim2013a, Kim2013b, Roskar2014, Rosdahl2015}. Radiation fluxes for each of our stars are computed using the \texttt{OSTAR2002} grid of stellar atmosphere models \citep{Lanz2003}; for stars with effective temperatures below those sampled on the \texttt{OSTAR2002} grid, we compute radiation rates assuming a black body spectrum, scaled to be consistent with the \texttt{OSTAR2002} models. In this proposal, we include radiative feedback in two distinct forms: 1) H and He ionizing radiation from massive stars, and 2) local FUV flux from all stars that contributes to photoelectric heating within the ISM. Separating these physics will allow us to directly address recent disagreement in the role of photoelectric heating in dwarf galaxies \citep{Hu2016, Forbes2016}. We use \texttt{Enzo}'s radiative transfer capabilities \citep{Wise2012a,WiseAbel2012,Wise2014} to track ionizing radiation directly, coupling the ionizing / heating rates to the \texttt{Grackle} chemistry solver, and accounting directly for the effects of Hydrogen radiation pressure. We assume the FUV radiation to be everywhere optically thin and apply a photoelectric heating rate model from \cite{BakesTielens1994} and \cite{Wolfire2003} that scales with local density, temperature, and metallicity.
 
-%\section{Computational Methods}
-
-%\subsection{Flash}
-
-%Flash is a magnetohydrodynamics (MHD) code with adaptive grid refinement \citep{FLASH}. Magnetohydrodynamics is an approximation to solving the full charged, multi-species fluid problem. The problem is assumed to be electrically neutral on any scale large enough to be relevant to the simulation. But there can be flows of charged particles in different directions (known as the one fluid model) which act like a current and result in magnetic fields. These fields in turn effect the fluid and evolve in time according to the MHD equations. FLASH solves the conservative MHD equations given as (shown here in dimensionless form with extensive variables being per unit mass)
-
-
-%\begin{widetext}
-%\begin{eqnarray}
-%\frac{\partial \rho}{\partial t} + \nabla \cdot \left(\rho \vec{v} \right) &=& 0 \\
-%\frac{\partial \rho \vec{v}}{\partial t} + \nabla \cdot \left(\rho \vec{v} \vec{v} - \vec{B} \vec{B} \right) + \nabla p_{tot} &=& \rho \vec{g} + \nabla \cdot \tau \\
-%\frac{\partial \rho E}{\partial t} + \nabla \cdot \left[\vec{v} \left(\rho E + p_{tot} \right) - \vec{B} \left(\vec{v} \cdot \vec{B}\right)\right] &=& \rho \vec{g} \cdot \vec{v} + \nabla \cdot \left(\vec{v} \cdot \tau + \sigma \nabla T \right) + \nabla \cdot \left[ \vec{B} \times \left( \eta \nabla \times \vec{B} \right) \right] \\
-%\frac{\partial \vec{B}}{\partial t} + \nabla \cdot \left(\vec{v} \vec{B} - \vec{B} \vec{v}\right) &=& - \nabla \times \left(\eta \nabla \times \vec{B}\right) 
-%\end{eqnarray}
-%\end{widetext}
-
-%\noindent
-%where
-
-%\begin{eqnarray}
-%p_{tot} &=& p + \frac{B^2}{2} \\
-%E &=& \frac{1}{2}v^2 + \epsilon + \frac{B^2}{2 \rho} \\
-%\tau &=& \mu\left[\nabla \vec{v} + \left(\nabla \vec{v}\right)^T - \frac{2}{3}\left(\nabla \cdot \vec{v}\right) \mathbf{I} \right]
-%\end{eqnarray}
-
-%\noindent
-%gives the total pressure (thermal plus magnetic), the total energy, and the viscous stress respectively and $\mathbf{I}$ is the identity matrix, $\epsilon$ is the specific internal energy and $\vec{g}$ is the body force per unit mass due to gravity (or other forces if present). Note that in determining magnetic fields in GMCs usually the plasma $\beta$ is given
-
-%\begin{equation}
-%\beta = \frac{2p}{B^2}
-%\end{equation}
-
-%\noindent
-%which is the ratio of the thermal pressure to the magnetic pressure. For GMCs this value is $\sim$ 0.04 \citep{Crutcher_1999}. We can then use this value to estimate the initial magnetic field in a GMC from the pressure.
-
-%The simulation domain is represented in Cartesian coordinates as a grid of blocks, where each block is constructed of a cube of cells. Refinement occurs at the block level when a refinement criterion is met, such as the gradient in density of the fluid across two cells becoming too large. If the criterion are satisfied, the refined block is divided into eight blocks, (for a 3 dimensional grid) since the block is split in two in each dimension. Refinements are nested, with the newly created child blocks connected to the parent blocks in a tree structure for interpolation and prolongation across refinement levels.
-
-%\subsection{ph4}
-
-%For the N-body dynamics we have chosen the GPU accelerated parallel code ph4 \citep{ph4}, which combines the direct summation of the gravitational acceleration with a 4th order Hermite integration. This method predicts the acceleration and jerk analytically, then applies a corrector to the acceleration and jerk with Hermite interpolation of the second and third derivatives of the acceleration \citep{Makino4thHermite}. This method is more accurate than the basic leap frog integrator contained in FLASH, which will allow us to resolve close encounters.
-
-
-%When two (or more) bodies do have a close encounter in PH4, the encounter will be handed off the Multiples module in AMUSE \citep{AMUSE}, which solves the few body problem for the interaction as a separate process. Once the encounter resolves, both objects will then integrated back into PH4 either as a single object if a binary formed, or two separate objects with the proper trajectories if they did not. Finally, stellar and binary evolution in the simulation will be obtained from the code SeBa \citep{Portegies_SeBa}. This will give the location of each star on the main sequence, allowing us to then input radiation and winds into FLASH for each star accurately, as well as detect when a supernova event occurs and simulate this in FLASH appropriately.
-
-
 \section{Model Descriptions}
-\subsection{Stellar Clusters}
-
-We will be zooming in on high fidelity ISM simulations described by \citet{Ibanez-Mejia2016}. These MHD simulations start with a $1\times 1\times 40$~kpc elongated box representing a slice of a stratified disk in a spiral galaxy. Initially the gas is stirred by clustered and random supernova explosions for approximately 200~Myr, neglecting self-gravity but including a background potential from both stars and dark matter. Then %both 
-self gravity
-%mm [NFW is on from the start!] and a \citet{NFW} dark matter background are 
-    is
-switched on and molecular clouds and cloud complexes form. These clouds have densities and velocity dispersions consistent with observations, 
-%mm with many
-     and are all 
-undergoing collapse that should lead to star formation. Several molecular clouds from these simulations would be appropriate for our study, ranging in mass from %\SIrange{1e3}{1e6}{\msun}.
-$10^3$--$10^6$~\msun. 
-%JW: 1) I don't actually have Juan's zoom in code. I independently developed my own zoom in code (because I didn't have access to Juan's at the time)
-%JW: 2) I don't have a citation for Juan's second paper in 2016. But since I was intending on using my zoom in code, I'm not sure it matters?
- %\citet{Ibanez-Mejia2016b} 
- We developed code that zooms in on selected clouds gradually, allowing for the turbulent energy to naturally cascade down to the final resolution. We intend to zoom in further on %mm three 
-     one 
-of these clouds, with a mass of 
-%mm : One
-$8 \times 10^3$~{\msun} 
-%cloud, one $10^5$~{\msun} cloud, and one cloud complex that is $10^6$~{\msun}. 
-This cloud is shown in Fig \ref{fig:bullhead}.
-
-\begin{figure}
-\centering
-\includegraphics[width=0.7\linewidth]{bullheadmod}
-\caption{\small Integrated column density of the ``Bullhead" cloud, which is $8 \times 10^3$~{\msun}. The contour shown is at $n~=~10^3~{\rm cm}^{-3}$}
-\label{fig:bullhead}
-\end{figure}
-
 
 \subsection{Dwarf Galaxies}
 Our dwarf galaxy simulations will be carried out using \texttt{Enzo}\footnote{www.enzo-project.org}, an adaptive mesh refinement (AMR) hydrodynamics and N-body code. \texttt{Enzo} is an entirely open-source code that is undergoing active development by many researchers across several institutions; its most recent stable release is version 2.5. This project involves a substantial amount of additional code development built on top of the development version of \texttt{Enzo} (version 2.X)\footnote{This version is also publicly available at www.bitbucket.org/aemerick/enzo-emerick}. \texttt{Enzo} has been well tested and extensively used in a variety of applications, including the ISM \citep{2005MNRAS.356..737S, 2008ApJ...673..810T}, the IGM \citep{2000ApJ...534...57B, 2001ApJ...561L..31F}, the first stars and galaxies \citep[\eg][]{Wise2012a, WiseAbel2012, Wise2014}, and the roles of various feedback methods in galaxies \citep[\eg][]{Simpson2015, SalemBryan2014, Goldbaum2016, Forbes2016}. We outline the methods employed in \texttt{Enzo} as relevant to our proposal; a detailed description of these methods can be found in the \texttt{Enzo} method paper \citep{Enzo2014}. 
@@ -229,82 +109,7 @@ Figure~\ref{fig:dwarf galaxy} shows the results from a low resolution (8 pc) pro
 \end{figure}
 
 \section{Computational Resources}
-We request a total of 17.1 million SU's, 23.1 TB of short term storage, and 24.4 TB of long term storage, as explained below for each of our projects. Analysis for each project will be conducted on local computing resources utilizing the open source analysis toolkit \texttt{yt} \citep{yt}, and is therefore not considered in the total SU expense.
-
-\subsection{Cluster Formation}
-
-%\subsubsection{Scaling of the Code}
-
-%The computational cost of our simulations is largely dominated by Flash, with our initial testing showing 10\% or less of the total simulation time spent outside of Flash. Specifically we expect our runs to be dominated by the ray tracing algorithm Fervent, which scales with the number of high mass stars (radiation sources) formed in the simulation. Fervent follows the original implementation by Wise and Abel \citep{wise_enzo+moray:_2011} by using asynchronous MPI calls where possible however. Our initial weak scaling of the code shows we are still getting speedup in Flash at 512 processors, and we expect to still scale well up to around 1K processors (Fig. \ref{fig:weakscale}).
-
-%\subsubsection{Proposed Runs}
-
-The cost of a single zone MHD update in Flash is about 150~$\mu$s. When radiation is added, this cost doubles \citep{WiseAbel2011}. Using the zoom algorithm, zooming in on the Bullhead cloud (mass $8 \times 10^3$~{\msun}) from kiloparsec scales down to $\sim50$~pc leaves us with about 350 grids in the zoomed region. Further refinement levels each double the number of blocks from the previous level, since the volume filling factor is about 1/8. It takes 5 levels of refinement to cover the zoomed in region with enough cells to resolve the Jeans length (but only about 3500 grids total are needed for the initial zoom). It takes 9 additional levels of refinement to go from 50 pc down to 1256 AU, our smallest cell size. With $16^3$ cells per grid this gives about $4.2 \times 10^8$ cells total. The highest temperature on the grid, on the order of $10^6$~K, will usually be from the hot, shocked, stellar winds. Note at this resolution if we require 12 cells for a proper MHD Jeans length \citep{Heitsch2001} this means we can allow the gas to collapse down to densities $\sim 3 \times 10^5$ %\, n_H
-cm$^{-3}$. 
-%mm I get 34 yr!
-%*************************************
-This gives a timestep of about 40~yr,
-%mm
-%JW Courant number seems like a technical detail that may not matter to most people. Do we need it in here? The timing (i.e. result of Courant #) seems more important.
-%    for a Courant number of 0.3,
-so a simulation run for 10~Myr requires $\sim 2 \times 10^5$ steps, assuming during the first 2 Myr the gas is still collapsing and no stars have formed yet. This leads to an estimate of total number of CPU hours of $6.98 \times 10^6$ hrs. Conducting this same estimate without winds means the highest temperature on the grid is generally due to the radiation at $10^4$ K (this anticipates that supernova on the high density grid are brief and infrequent events in our simulation). This leads to a total of $4.38 \times 10^5$ hrs for a single run. We propose to do two runs for comparison, one with winds and one without.
-
-% Saving the stuff below in case we want to request runs with carved out winds, etc.
-
-%The cost of a single zone MHD update in Flash is about \SI{150}{\micro s}. When radiation is added, this cost doubles \citep{wise_enzo+moray:_2011}. Using the zoom algorithm, zooming in on the Bullhead cloud (mass \SI{8e3}{\msun})from \si{kpc} scales down to $\sim \SI{50}{pc}$ leaves us with about 2000 grids in the zoomed region. Further refinement levels each double the number of blocks from the previous level, since the volume filling factor is about 1/8th. It takes 9 levels of refinement to go from 50 pc to scales on the order of 1500 \si{AU}. With $16^3$ cells per grid this gives about \num{8.3e7} cells total. The highest temperature on the grid generally will be from the winds, on the order of \SI{e4}{K}. This gives a timestep of about \SI{100}{yr}, and for a simulation run for \SI{10}{Myr} requires \num{e5} steps. This leads to an estimate of total number of CPU hours at \SI{6.98e5}{hrs}.
-
-%If we make the rough approximation that a single cloud which is an order of magnitude more massive has double the radius (\SI{100}{pc} zoom in) and therefore about $2^3$ times as many initial grids, the same calculations lead us to estimate the number of CPU hours as \SI{1.4e6}{hrs}. With \num{1e4} processors, this run would take about 6 days on a large machine such as Stampede. For a cloud complex consisting of three clouds each of which is about \SI{2e5}{\msun} and contained inside a \SI{100}{pc} region, we can just assume the initial and zoomed number of grids is tripled, tripling the run time.
-
-%\begin{widetext}
-
-%\begin{tabular}{|c|c|c|c|}
-\begin{table}
-\centering
-%\footnotesize
-\begin{tabular}{|c|c|c|}
-\hline 
-Run \# & %Cloud & 
-             Description & SU's ($\times 10^6$) \\
-\hline 
-1 & %$8 \times 10^3$~{\msun} & Bullhead cloud collapse - 
-     All feedback          & 6.98 \\
-\hline 
-2 & %$8 \times 10^3$~{\msun} & Bullhead cloud collapse - 
-     Radiation and SN only & 0.44 \\
-\hline
-%3 &  Radiation only        & 0.22 \\
-%\hline
-%4 &  Winds only            & 3.49 \\
-%3 & \SI{8e3}{\msun} & Bullhead cloud collapse - Winds only & 700 \\
-%\hline 
-%4 & \SI{8e3}{\msun} & Bullhead cloud collapse - Supernova only & 7 \\
-%\hline 
-%5 & \SI{e5}{\msun} & Large cloud collapse with all feedback & 1400 \\
-%\hline 
-%6 & \SI{e6}{\msun} & 3 cloud complex collapse with all feedback & 4200 \\
-\hline
-%\multicolumn{3}{|c|}{Total Request} & 12200 \\
-\multicolumn{2}{|c|}{Total Request} & 7.42 \\ % or 11.13 if you want all 4 - JW
-
-\hline
-\end{tabular}
-\caption{\small Runs for the Flash/AMUSE combined simulations. One run with all forms of feedback will be run, along with a comparison run with only radiation and supernova.}
-\end{table}
-
-We will write out data files every 10,000 years and two checkpoint files on rotation in case of the need for a restart. A single data file contains all the information for the Flash grid and all the particles. Each grid zone has 33 variables, and we expect at most to have $\sim 4.2 \times 10^8$ cells in the simulation at maximum refinement. Further we expect about 10\% stellar formation efficiency, leading to $10^4$ stars, which also have 33 variable properties. Each variable is written in 64 bit, so for 100 data files we will need 10.2 TB for each run. For each checkpoint file the code also writes the ghost zones for each grid, with four zones in each direction. For our estimated run there are $\sim 101,400$ grids. This gives checkpoint files of 350 GB each when the grid structure and runtime parameters are also included. In total for both runs, we therefore require 21.8 TB of long term storage, and 10.9 TB of short term storage during each run. 
-
-
-%\end{widetext}
-
-%\begin{figure}
-%\centering
-%\includegraphics[width=1.0\linewidth]{weak_scale}
-%\caption{Weak scaling of Flash running under AMUSE with Fervent. We gain approximately 15\% effeciency at 512 processors and expect the curve to flatten out around 10K processors.}
-%\label{fig:weak}
-%\end{figure}
-
-
-\subsection{Feedback and Chemodynamics in Galaxies}
+We request a total of XXX million SU's, XXX TB of short term storage, and 24.4 TB of long term storage, as explained below for each of our projects. Analysis for each project will be conducted on local computing resources utilizing the open source analysis toolkit \texttt{yt} \citep{yt}, and is therefore not considered in the total SU expense.
 
 Our primary objective is to test the role various feedback processes play in the structural, dynamical, and chemical evolution of low mass dwarf galaxies. These simulations are tied to observable properties of nearby ultrafaint dwarf galaxies through star formation history, distribution and retention of chemical ejecta, and the spatial distribution and abundances of the individual stars. This is a pivotal test of whether or not widely used, approximate feedback methods are consistent with more physical descriptions of feedback, and more sensitive observational probes. The computational cost of these methods, and our requirement for high enough resolution to at least minimally resolve the feedback injection scales are the dominant grounds for the large number of SU's we require. From our test runs, a maximum resolution of 1.5 pc offers the best balance between resolving the feedback physics and available resources. These simulations will be vital for the understanding of feedback physics, and dwarf galaxy chemical and dynamical evolution, and can be used in future work to help implement physically motivated feedback methods in larger scale simulations. We outline the parameters and cost for each of our individual runs in Table~\ref{table:SU}, and discuss them in more detail below.
 
@@ -394,17 +199,11 @@ will supervise the work proposed here, ensuring completion and publication.
 
 \textbf{co-PI: Andrew Emerick} is a PhD student at Columbia University advised by both PI Mac Low and collaborator Greg Bryan. Emerick is the developer of the new star formation, feedback, and stellar yield models used in the isolated dwarf galaxy simulations and drafted these sections of the proposal. This work is central focus of his thesis research. Previously he has published research working with \texttt{ENZO}, making synthetic absorption observations of gas in simulated galaxy clusters \citep{Emerick2015}, and \texttt{FLASH}, studying gas stripping and feedback in low mass dwarf galaxy satellites of the Milky Way \citep{Emerick2016}.
 
-\textbf{co-PI: Joshua Wall} is a PhD student at Drexel University advised by both PI Mac Low and collaborator Stephen McMillan. Wall has developed the interface for Flash into AMUSE, the gravity bridge for Flash and the N-body code, the supernova and wind algorithms in Flash, and modified FERVENT to couple to sink particles and include radiation pressure. He has experience in programming and building MPI parallel computing applications on many different high performance clusters. Further he has worked on two previous computing resource grants, one from NASA's HEC program and a second at SurfSARA in the Netherlands. %Collaborator Wall is in his fourth year of his PhD and is anticipated to graduate in 2017.
-
 \textbf{Collaborator: Greg Bryan} is a professor at Columbia University and a Group Leader at the Simons Center for Computational Astrophysics at the Flatiron Institute. Bryan was the original author of the \texttt{Enzo} simulation code, and continues to play an active role in its development. % {\bf additional text / rewording TBD}.
-
-\textbf{Collaborator: Stephen McMillan} is a professor and acting chair of the Department of Physics at Drexel University.  He was the original author of the ph4 N-body code, and has been a central member of the collaboration developing the AMUSE framework from its inception.
 
 \section{Management}
 
 \subsection{Summary}
-
-Code development, production, and analysis of simulations of star cluster formation Flash + AMUSE will be led by co-PI Wall. This project is in collaboration with broader code development efforts at the Flash Center of the U. of Chicago, R. Klessen's group at the Institute for Theoretical Astrophysics of the University of Heidelberg, and S. Portegies-Zwart's group at Leiden University.  
 
 Code development, production, and analysis of simulations of star formation, feedback, and chemodynamics of isolation galaxies in \texttt{Enzo} will be led by co-PI Emerick. These simulations will be supervised by PI Mac Low and collaborator Greg Bryan. This project relies on collaboration and advice from many additional researchers, including Brian O'Shea (Michigan State), Benoit C{\^o}t{\'e} (Michigan State), Mary Putman (Columbia), Kathryn Johnston (Columbia), Britton Smith (Edinburgh), John Wise (Georgia Tech), and Simon Glover (ITA-Heidelberg).
 
@@ -414,15 +213,9 @@ The PI's group has an analysis workstation containing  2 AMD 6344 Abu Dhabi proc
 
 Through the Department of Astronomy at Columbia University, co-PI Emerick has partial access to Yeti, a 2762 core (167 nodes with dual, 1.8 Ghz, 8 core processors) HPC cluster. A subset, 64, of these nodes are connected via Infiniband. Resources on this cluster are shared between several departments at Columbia on a department-by-department basis. The ease of access coupled with fairly short to no queue wait times makes this an ideal resource for code development, testing, and some analysis work. However, resource availability and ``fair-use'' principles make using Yeti for production level simulations prohibitive. Some short term storage is available on this cluster, but is severely limited; a total of 5 TB is shared between $\sim$ 50 users.
 
-Through the Physics Department at Drexel University, co-PI Wall as has partial access to a 24 node Beowulf cluster with 288 Westmere cores and 128 Nvidia GPUs. This cluster is shared among the seven graduate students of the computational astrophysics group at Drexel. All members of the group utilize the cluster for large parallel codes in hydrodynamics or N-body studies. Generally co-PI Wall has access to a few nodes (24-48 cores) on this machine for development of code. Drexel University also has a 2496 core mixed processor AMD / Intel cluster that is utilized university wide by all departments. Biology and a few other departments permanently reserve the use of a number of the nodes on this machine, and all other users are restricted to 512 cores for 48 hours of runtime at a time. The machine is heavily oversubscribed throughout the university, with queue times on the order of weeks. This prohibits usage for production level runs.
-
 \subsection{Other Supercomputing Support}
-
-Wall (project leader) and Mac Low are coinvestigators with S. Portegies-Zwart (PI), R. Klessen,  S. McMillan, and J. Ib\'a\~nez-Mej\'{\i}a on a 4M SBU allocation on the Dutch NWO supercomputer at SurfSARA.  We plan to use this allocation to do a model neglecting stellar winds of a cloud an order of magnitude more massive than the one proposed here.
-
-Wall (project leader) and Mac Low are also coinvestigators with S. McMillan (PI), and J. Ib\'a\~nez-Mej\'{\i}a on a NASA Science Mission Directorate HEC proposal for 5M CPU hours (409,000 Pleiades SBUs) to study the effects of gas ejection from natal clusters on the long term evolution of the cluster. Where we focus here on early evolution and star formation efficiency (up to about 10 Myr), on Pleiades we intend to run at lower resolution but for much longer to follow the post gas ejection evolution of the cluster.
  
-Emerick has completed an XSEDE startup grant, which supported some of his work on ram pressure stripping as noted in the progress report.
+co-PI Emerick has access to a (small?) fraction of computing time on Pleiades through collaborator G. Bryan on a XXXX grant (Grant Number) for a total time of 8M CPU hours. We intend to use the time available on this resource to conduct additional tests of our feedback and chemical evolution models to complement those proposed here.
 \clearpage
 \appendix
 
@@ -510,43 +303,12 @@ The left panel in Figure ~\ref{fig:radiation_and_scaling} illustrates the estima
 \centering
 \includegraphics[width=0.32\linewidth]{enzo_radiation}
 \includegraphics[width=0.32\linewidth]{enzo_scaling}
-\includegraphics[width=0.32\linewidth]{weak_fixed}
-\caption{\small Scaling properties for radiative particles (left) and strong scaling (middle) in \texttt{Enzo} and weak scaling in \texttt{FLASH} (right). We anticipate a factor of several to 10 slow down with typical radiating particle counts in production runs in both \texttt{Enzo} and \texttt{FLASH}. Our dwarf galaxy models in \texttt{Enzo} scale well to about 128 cores; we anticipate running at 128 cores. The right panel demonstrates scaling of the AMUSE/Flash run up to 562 cores with a constant 102,400 cells per processor.}
+
+\caption{\small Scaling properties for radiative particles (left) and strong scaling (right) in \texttt{Enzo}. We anticipate a factor of several to 10 slow down with typical radiating particle counts in production runs in both \texttt{Enzo} and \texttt{FLASH}. Our dwarf galaxy models in \texttt{Enzo} scale well to about 128 cores; we anticipate running at 128 cores.}
 \label{fig:radiation_and_scaling}
 \end{figure}
 
 We demonstrate weak scaling in Figure~\ref{fig:radiation_and_scaling} for our two test simulations, each run with a maximum of 6 and 7 levels of refinement, as compared to ideal scaling. Our simulations scale well up to about 128 processors, falling away from ideal at higher processor counts. However, this is in part because scaling in \texttt{Enzo} works best when the number of root grids on a side is greater than or equal to the number of cores. In this case, we don't expect perfect scaling much above 128 cores for our 128$^3$ simulations. For this reason, we anticipate to run all of our dwarf galaxy models on 128 or 256 cores depending on how the number of cells and particles varies throughout the simulation. We note that \texttt{Enzo} has been shown to scale well to at least 10$^3$ processors in a variety of contexts.
-
-\section{Integrated Codes for Star Cluster Formation}
-
-
-\subsection{Flash}
-
-Flash is a magnetohydrodynamics (MHD) code with adaptive grid refinement \citep{FLASH}. Flash includes numerous HD and MHD solvers, radiation transport methods and gravitational solvers. Here we choose to use the Waagan MHD solver \citep{Waagan2011} due to its robust nature, the Barnes and Hut tree gravity method of W\"{u}nsch (in preparation), and the radiation transport module FERVENT \citep{BaczynskiGloverKlessen2015}.
-
-\subsection{ph4}
-
-For the N-body dynamics we have chosen the GPU accelerated parallel code ph4 \citep{ph4}, which combines the direct summation of the gravitational acceleration with a 4th order Hermite integration. This method predicts the acceleration and jerk analytically, then applies a corrector to the acceleration and jerk with Hermite interpolation of the second and third derivatives of the acceleration \citep{Makino4thHermite}. This method is more accurate than the basic leap frog integrator contained in FLASH, which will allow us to resolve close encounters.
-
-\subsection{Multiples}
-
-When two (or more) bodies do have a close encounter in ph4, the encounter will be handed off the Multiples module in AMUSE \citep{AMUSE}, which solves the few body problem for the interaction as a separate process. Once the encounter resolves, both objects will then integrated back into ph4 either as a single object if a binary formed, or two separate objects with the proper trajectories if they did not. This also allows us to put in primordial binaries by hand, following the observation that most massive stars have a companion.
-
-\subsection{SeBa}
-
-Finally, stellar and binary evolution in the simulation will be obtained from the code SeBa \citep{Portegies_SeBa}. This will give the temperature, luminosity and mass loss rate of each star, allowing us to then input radiation and winds into FLASH accurately, as well as detect when a supernova event occurs and simulate this in FLASH appropriately. Further SeBa can accurately calculate mass transfer and binary evolution for binaries that are present in our simulation, allowing us to more accurately track supernova, winds and radiation feedback than simulations without binary evolution.
-
-\subsection{Scaling of the Code}
-
-The computational cost of our simulations is largely dominated by Flash, with our initial testing showing 10\% or less of the total simulation time spent outside of Flash (in python, ph4, SeBa, etc). Specifically we expect our runs to be dominated by the ray tracing algorithm FERVENT. FERVENT follows the RT methods used in \texttt{Enzo} closely, and scales with the number of high mass stars (radiation sources) formed in the simulation similarly. This scaling is well demonstrated in Fig. \ref{fig:radiation_and_scaling}. We have conducted preliminary weak scaling test of the fully coupled code with about 200 $8^3$ grids per processor on 12 core nodes (Fig. \ref{fig:radiation_and_scaling}), which shows we are still getting speedup in Flash of about 14\% at 562 processors, as far as we could test on our small local cluster. %We anticipate scaling to flatten off at around 1K processors, therefore we anticipate running with 1024 or 2048 cores for our simulations.
-
-%\begin{figure}
-%\centering
-%\includegraphics[width=0.5\linewidth]{weak}
-%\caption{Weak scaling of the combined AMUSE/Flash run with up to 562 cores.}
-%\label{fig:weak}
-%\end{figure}
-
 
 \clearpage
 \bibliographystyle{apj}
