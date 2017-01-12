@@ -233,7 +233,7 @@ co-PI Emerick has an active 1000 SU trial allocation on the XSEDE resource Comet
 
 \section{Introduction}
 
-We determine the performance and scaling properties of \texttt{Enzo} in the context of the typical computational loads of our intended isolated dwarf galaxy simulations. In this situation, we are concerned with the weak scaling properties and efficiencies of \texttt{Enzo}. This analysis makes use of case studies of our dwarf galaxy model run at our intended resolution of 1.5 pc, and is based on past experience with 1.0 pc, 2.0 pc, and 8.0 pc resolution tests. Unless otherwise noted, these tests ran on 128 processors on the TACC Stampede cluster, our proposed allocation resource.
+We determine the performance and scaling properties of \texttt{Enzo} in the context of the typical computational loads of our intended isolated dwarf galaxy simulations. In this situation, we are concerned with the strong scaling properties and efficiencies of \texttt{Enzo}. This analysis makes use of case studies of our dwarf galaxy model run at our intended resolution of 1.5 pc, and is based on past experience with 1.0 pc, 2.0 pc, and 8.0 pc resolution tests. Unless otherwise noted, these tests ran on 128 processors on the TACC Stampede cluster, our proposed allocation resource.
 
 \subsection{Computational Methodology and Algorithms}
 
@@ -313,11 +313,11 @@ Figure~\ref{fig:levels} demonstrates the level-by-level break down of a single c
 %\includegraphics[width=0.32\linewidth]{enzo_radiation}
 \includegraphics[width=0.32\linewidth]{enzo_scaling}
 
-\caption{\small \textbf{Strong scaling} properties in our most massive galaxy in \texttt{Enzo} run with 6 and 7 levels of refinement at 2.0 pc and 1.0 pc resolution. Note these scaling tests are from a different simulation set than those presented in Figure~\ref{fig:levels}. We expect scaling properties for our 1.5 pc simulations to be in between those shown here. Given this, we anticipate to run on 128 cores for all of our simulations.}
+\caption{\small Strong scaling properties in our most massive galaxy in \texttt{Enzo} run with 6 and 7 levels of refinement at 2.0 pc and 1.0 pc resolution. Note these scaling tests are from a different simulation set than those presented in Figure~\ref{fig:levels}. We expect scaling properties for our 1.5 pc simulations to be in between those shown here. Given this, we anticipate to run on 128 cores for all of our simulations.}
 \label{fig:radiation_and_scaling}
 \end{figure}
 
-We demonstrate \textbf{weak scaling} ({\it is this weak or strong scaling? }) in Figure~\ref{fig:radiation_and_scaling} for two test simulations, each run with a maximum of 6 and 7 levels of refinement, as compared to ideal scaling. Our simulations scale well up to about 128 processors, falling away from ideal at higher processor counts. However, this is in part because scaling in \texttt{Enzo} works best when the number of root grids on a side is greater than or equal to the number of cores. In this case, we don't expect perfect scaling much above 128 cores for our 128$^3$ simulations. For this reason, we anticipate to run all of our dwarf galaxy models on 128 cores. We note that \texttt{Enzo} has been shown to scale well to at least 10$^3$ processors in a variety of contexts, but the small physical size of our simulation and complexity of feedback physics do not lend themselves to scaling to very large processor counts.
+We demonstrate strong scaling in Figure~\ref{fig:radiation_and_scaling} for two test simulations, each run with a maximum of 6 and 7 levels of refinement, as compared to ideal scaling. Our simulations scale well up to about 128 processors, falling away from ideal at higher processor counts. However, this is in part because scaling in \texttt{Enzo} works best when the number of root grids on a side is greater than or equal to the number of cores. In this case, we don't expect perfect scaling much above 128 cores for our 128$^3$ simulations. For this reason, we anticipate to run all of our dwarf galaxy models on 128 cores. We note that \texttt{Enzo} has been shown to scale well to at least 10$^3$ processors in a variety of contexts, but the small physical size of our simulation and complexity of feedback physics do not lend themselves to scaling to very large processor counts.
 
 \clearpage
 \bibliographystyle{apj}
