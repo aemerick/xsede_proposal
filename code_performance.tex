@@ -35,21 +35,21 @@
 %{\bf general introduction goes here... pending Josh's side}
 
 
-\section{\texttt{Enzo}}
+\section{Introduction}}
 
 We determine the performance and scaling properties of \texttt{Enzo} in the context of the typical computational loads of our intended isolated dwarf galaxy simulations. In this situation, we are concerned with how \texttt{Enzo} scales in parallel with adaptive mesh refinement (AMR), ignoring its scaling properties for uniform, static grids, and presenting only weak scaling tests at our fiducial resolution. We use three case studies to determine the performance and scaling properties of \texttt{Enzo}, two of which are isolated dwarf galaxy simulations conducted at and just below our intended resolution, and the third is a lower resolution run intended to characterize how including radiative transfer affects performance. Each of these case studies were run with 128 processors (unless otherwise specified) on the TACC Stampede cluster, our proposed allocation resource. We begin first by outlining \texttt{Enzo}'s numerical methods.
 
-\subsection{Computational Methodology and Algorithms}
+\section{Computational Methodology and Algorithms}
 
 \texttt{Enzo} is a parallel, cosmological, AMR hydrodynamics + N-body code that has been well tested and used in a variety of applications, as discussed in more detail in the main document. Below, we outline the code methodology for each piece of \texttt{Enzo} relevant to this present work. We note \texttt{Enzo} has a much broader range of numerical methods and capabilities than discussed below \citep[see ][ for a detailed description of all methods]{Enzo2014}. 
 
-\subsubsection{Hydrodynamics and Gravity}
+\subsection{Hydrodynamics and Gravity}
 
 \texttt{Enzo} is equipped with multiple, distinct hydrodynamics solvers. For this work we employ a direct-Eulerian piecewise parabolic method \citep{ColellaWoodward1984, Bryan1995}. This is an explicit, higher-order accurate version of Godunov's method for ideal gas hydrodynamics that uses spatially third-order accurate piecewise parabolic monotonic interpolation. Shock capturing is handled with a nonlinear Riemann solver. This base method is extended to multiple dimensions using directional splitting, resulting in a final algorithm that is second-order accurate in space and time; we explicitly conserve mass, linear momentum, and energy \citep{Hawley1984, NormanWinkler1986}. We use a dual energy formalism to track the total energy and thermal energy separately, preventing substantial numerical errors that arise when the thermal energy is very small compared to the total energy (i.e. when the kinetic energy is large). We default to using the two-shock approximate Riemann solver \citep{Toro1997}, with progressive fallback to more diffusive approximate Riemann solvers when higher order methods produce negative densities or energies \citep{LemasterStone2009}. In this situation, we fall back to either the Harten-Lax-van Leer (HLL) \citep{Toro1997} method with contact discontinuities -- a three-wave, four-state solver -- or the basic HLL -- a two-state, three-wave solver. The hydrodynamics time step is set by the Courant-Friedrichs-Levy (CFL) condition for stability, scaling linearly with cell size ($\Delta x$) and inversely proportional to the sum of the bulk velocity and sound speed in each cell in a given direction. The multidimensional CFL limited time step is the harmonic average of the limiting CFL time step in each dimension. 
 
 Gas self-gravity and the gravitational forces of the massive star particles are computed together to compute the gravitational acceleration on each cell and particle. On the root grid, we use a cloud-in-cell (CIC) method \citep{HockneyEastwood1988} to map particles to a time-centered density field, including the effects of particles across sub-grids and neighboring domains; a similar time-centered density field is computed for the baryons in each grid cell. The gravitational potential is solved for using a fast Fourier transform (FFT) in isolated boundary conditions \citep{James1977}; accelerations are computed with a two-point centered difference scheme using the transformed real-space potential. For accuracy on sub-grids, we employ the seven-point, second-order finite difference approximation to Poisson's equation, solving the given Dirichlet boundary conditions with multigrid relaxation. Unwanted oscillations and errors across grids are reduced using expanded buffer zones around each grid, coupled with an iterative relaxation process between sibling grids. Particle accelerations are computed from the grid potential using linear CIC mapping. \texttt{Enzo} employs the particle-mesh N-body method from \cite{HockneyEastwood1988} to evolve the colissionless star particles with an effective force resolution of approximately 2$\Delta x$.
 
-\subsubsection{Grid Hierarchy and Parallelization Strategy}
+\subsection{Grid Hierarchy and Parallelization Strategy}
 
 \texttt{Enzo} AMR simulations begin with a defined rectilinear root grid encompassing the computational domain. Additional levels of refinement take the form of child sub-grids nested within the root grid, generating a nested tree comprised of grid parents, children, and siblings; for our purposes, additional sub-grids increase resolution by a factor of two. Each grid is comprised of active zones and ghost zones that store boundary information from sibling grids. Each level in this tree is evolved on independent time steps, reducing unneeded computation on lower levels of refinement.
 
@@ -57,15 +57,15 @@ Using grid objects as fundamental units that exist entirely on a single processo
 
 Each processor contains a copy of the entire grid hierarchy meta data, allowing for easy non-blocking communication across processors; the additional memory overhead of storing this data on each processor is negligible. In addition, all star particle information is stored on each processor (again, with negligible memory overhead), removing the need for communication when injecting feedback from stars close to grid boundaries.
 
-\subsubsection{Radiative Transfer Methods}
+\subsection{Radiative Transfer Methods}
 
 \cite{WiseAbel2011} implemented radiative transfer capabilities in \texttt{Enzo}, performing rigorous tests of its capabilities, and has been used in a variety of applications \citep[e.g.][]{Wise2012a,WiseAbel2012,Wise2014, Smith2015, OShea2015, Koh2016, Regan2016a, Regan2016b}. The equations of radiative transfer are solved directly on the computational domain following directly traced rays from individual point sources. This is an inherently computationally expensive process. To improve efficiency \texttt{Enzo} employs an adaptive ray tracing method \citep{AbelWandelt2002} where rays are mapped from a point source to HEALPix pixels surrounding the source. The resulting rays are advanced through the grid, progressively refining rays by splitting them into child rays once the ratio of the cell face area to ray solid angle drops sufficiently. In a given time step, rays propagate a distance $c\times dt$, or until they either leave the computational domain or their flux drops by 99.99\% or more in a single cell. If the rays still exist at the end of the ray tracing step, their evolution is halted and stored for the next time step. The resulting ionization and heating rates due to the radiation field are computed assuming the photo-ionization and absorption rate are equal, ensuring photon conservation \citep{Abel1999, Mellema2006}. These are passed to the \texttt{Grackle} chemistry solver to update the correct ionization, chemical, and energy states in each cell.
 
-\subsubsection{Cosmic Ray Transport}
+\subsection{Cosmic Ray Transport}
 
 Cosmic ray (CR) feedback and transport was implemented in \texttt{Enzo} in \cite{SalemBryan2014}, and has since been used in multiple studies of its effects on galaxy evolution \citep{SalemBryanHummels, SalemBryanCorlies, Chen2016}. CR's are modeled with a two-fluid method \citep{Drury1985, DruryFalle1986,Jun1994}; the CR fluid is evolved as a $\gamma = 4/3$ ideal gas as usual, yet is coupled directly to the thermal gas hydrodynamics via an additional pressure term. CR energy density is allowed to diffuse at a rate controlled by an input diffusion coefficient, $\kappa_{\rm CR}$. This equation is solved using an explicit finite-difference scheme, creating a $\Delta x^2$ dependence on the limiting time step size for CR evolution. At high resolution, this restriction can be a factor of a few to several times smaller than the limiting hydrodynamics time step. To mitigate this slow down, CR evolution is sub-cycled on each grid for either a full hydrodynamics time step, or up until communication across grids would be required (controlled by the number of boundary ghost zones used on each grid). This ultimately limits the effectiveness of sub-cycling, but still shows an improvement by a factor of 2-5 in run time as compared to non sub-cycled simulations.
 
-\subsection{Performance and Scaling of AMR Simulations}
+\section{Performance and Scaling of AMR Simulations}
 
 Profiling the exact scaling and performance properties of an AMR simulation is challenging, as the total number of computational grids can vary significantly over the course of the simulation run. In the case of our dwarf galaxy simulations, the number of grids will initially be relatively insignificant, but will grow substantially once the gas collapses to high densities and forms stars. Based on our test simulations, we expect the number of grid cells to be roughly consistent from this point onward, fluctuating around some mean value. Given a roughly constant cell count, code performance (number of cell updates per second per processor) will be roughly consistent, with computational expense (SU per simulation Myr) set by the size of each time step. As discussed above, time steps are set independently on each refinement level; in general the hydrodynamics time step will be the limiting constraint due to the presence of hot, fast moving gas from stellar winds and supernovae. The additional expense of following radiative transfer correlates with the number of ionizing sources, yet depends on how these sources are clustered spatially (clustering limits how evenly these sources can be distributed among processors). We refer to the main document for further details on how this affects the anticipated cost of our simulations.
 
@@ -93,7 +93,7 @@ The left panel in Figure ~\ref{fig:radiation_and_scaling} illustrates the estima
 
 %We demonstrate the effects of including radiative transfer as a function of the number of ionizing particles in the left panel of Figure~\ref{fig:radiation_and_scaling} for a test with a maximum refinement level of 4 (8.0 pc resolution) on 64 processors. Shown is the slow down of a given cycle as a function of the number of ionizing sources. We compute this as the number of cell updates per second per particle, normalized to the zero particle case. This implicitly assumes that any decrease in performance is due solely to the number of sources, and no other factors. To be clear, the additional computational time incurred by including radiation is split in into three parts, 1) evolving the photon packages through the grid cells, 2) ray tracing from each source to deposit the photon packages, and 3) communication time communicating photon packages between processors. For this reason, the additional cost also depends upon the nature of the sources themselves, their clustering, and the details of the medium the photons propagate through.
 
-\subsection{Scaling Tests}
+\section{Scaling Tests}
 
 % AE: this will be a three panel plot with rad scaling, Enzo scaling, and Flash scaling
 \begin{figure}
@@ -113,35 +113,36 @@ The left panel in Figure ~\ref{fig:radiation_and_scaling} illustrates the estima
 
 We demonstrate weak scaling in Figure~\ref{fig:radiation_and_scaling} for our two test simulations, each run with a maximum of 6 and 7 levels of refinement, as compared to ideal scaling. Our simulations scale well up to about 128 processors, falling away from ideal at higher processor counts. However, this is in part because scaling in \texttt{Enzo} works best when the number of root grids on a side is greater than or equal to the number of cores. In this case, we don't expect perfect scaling much above 128 cores for our 128$^3$ simulations. For this reason, we anticipate to run all of our dwarf galaxy models on 128 or 256 cores depending on how the number of cells and particles varies throughout the simulation. We note that \texttt{Enzo} has been shown to scale well to at least 10$^3$ processors in a variety of contexts.
 
-\section{Integrated Codes for Star Cluster Formation}
+%mm
+%\section{Integrated Codes for Star Cluster Formation}
 
 
-\subsection{Flash}
+% \subsection{Flash}
 
-Flash is a magnetohydrodynamics (MHD) code with adaptive grid refinement \citep{FLASH}. Flash includes numerous HD and MHD solvers, radiation transport methods and gravitational solvers. Here we choose to use the Waagan MHD solver \citep{Waagan2011} due to its robust nature, the Barnes and Hut tree gravity method of W\"{u}nsch (in preparation), and the radiation transport module FERVENT.
+% Flash is a magnetohydrodynamics (MHD) code with adaptive grid refinement \citep{FLASH}. Flash includes numerous HD and MHD solvers, radiation transport methods and gravitational solvers. Here we choose to use the Waagan MHD solver \citep{Waagan2011} due to its robust nature, the Barnes and Hut tree gravity method of W\"{u}nsch (in preparation), and the radiation transport module FERVENT.
 
-\subsection{ph4}
+% \subsection{ph4}
 
-For the N-body dynamics we have chosen the GPU accelerated parallel code ph4 \citep{ph4}, which combines the direct summation of the gravitational acceleration with a 4th order Hermite integration. This method predicts the acceleration and jerk analytically, then applies a corrector to the acceleration and jerk with Hermite interpolation of the second and third derivatives of the acceleration \citep{Makino4thHermite}. This method is more accurate than the basic leap frog integrator contained in FLASH, which will allow us to resolve close encounters.
+% For the N-body dynamics we have chosen the GPU accelerated parallel code ph4 \citep{ph4}, which combines the direct summation of the gravitational acceleration with a 4th order Hermite integration. This method predicts the acceleration and jerk analytically, then applies a corrector to the acceleration and jerk with Hermite interpolation of the second and third derivatives of the acceleration \citep{Makino4thHermite}. This method is more accurate than the basic leap frog integrator contained in FLASH, which will allow us to resolve close encounters.
 
-\subsection{Multiples}
+% \subsection{Multiples}
 
-When two (or more) bodies do have a close encounter in PH4, the encounter will be handed off the Multiples module in AMUSE \citep{AMUSE}, which solves the few body problem for the interaction as a separate process. Once the encounter resolves, both objects will then integrated back into PH4 either as a single object if a binary formed, or two separate objects with the proper trajectories if they did not. 
+% When two (or more) bodies do have a close encounter in PH4, the encounter will be handed off the Multiples module in AMUSE \citep{AMUSE}, which solves the few body problem for the interaction as a separate process. Once the encounter resolves, both objects will then integrated back into PH4 either as a single object if a binary formed, or two separate objects with the proper trajectories if they did not. 
 
-\subsection{SeBa}
+% \subsection{SeBa}
 
-Finally, stellar and binary evolution in the simulation will be obtained from the code SeBa \citep{Portegies_SeBa}. This will give the temperature, luminosity and mass loss rate of each star, allowing us to then input radiation and winds into FLASH accurately, as well as detect when a supernova event occurs and simulate this in FLASH appropriately.
+% Finally, stellar and binary evolution in the simulation will be obtained from the code SeBa \citep{Portegies_SeBa}. This will give the temperature, luminosity and mass loss rate of each star, allowing us to then input radiation and winds into FLASH accurately, as well as detect when a supernova event occurs and simulate this in FLASH appropriately.
 
-\subsection{Scaling of the Code}
+% \subsection{Scaling of the Code}
 
-The computational cost of our simulations is largely dominated by Flash, with our initial testing showing 10\% or less of the total simulation time spent outside of Flash (in python, ph4, SeBa, etc). Specifically we expect our runs to be dominated by the ray tracing algorithm FERVENT. FERVENT follows the original implementation by Wise and Abel \citep{WiseAbel2011} closely, and scales with the number of high mass stars (radiation sources) formed in the simulation in the same way as ENZO. This scaling is well demonstrated in Fig. \ref{fig:radiation_and_scaling}. We have conducted preliminary weak scaling test of the fully coupled code with about 200 $8^3$ grids per processor on 12 core nodes (Fig. \ref{fig:weak}), which shows we are still getting speedup in Flash of about 14\% at 562 processors, as far as we could test on our small local cluster.
+% The computational cost of our simulations is largely dominated by Flash, with our initial testing showing 10\% or less of the total simulation time spent outside of Flash (in python, ph4, SeBa, etc). Specifically we expect our runs to be dominated by the ray tracing algorithm FERVENT. FERVENT follows the original implementation by Wise and Abel \citep{WiseAbel2011} closely, and scales with the number of high mass stars (radiation sources) formed in the simulation in the same way as ENZO. This scaling is well demonstrated in Fig. \ref{fig:radiation_and_scaling}. We have conducted preliminary weak scaling test of the fully coupled code with about 200 $8^3$ grids per processor on 12 core nodes (Fig. \ref{fig:weak}), which shows we are still getting speedup in Flash of about 14\% at 562 processors, as far as we could test on our small local cluster.
 
-\begin{figure}
-\centering
-\includegraphics[width=0.6\linewidth]{weak}
-\caption{Weak scaling of the combined AMUSE/Flash run with up to 562 cores.}
-\label{fig:weak}
-\end{figure}
+% \begin{figure}
+% \centering
+% \includegraphics[width=0.6\linewidth]{weak}
+% \caption{Weak scaling of the combined AMUSE/Flash run with up to 562 cores.}
+% \label{fig:weak}
+% \end{figure}
 
 
 \bibliographystyle{apj}
