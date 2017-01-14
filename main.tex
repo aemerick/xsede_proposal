@@ -115,7 +115,7 @@ Figure~\ref{fig:dwarf galaxy} shows the results from two low resolution (8 pc) p
 \end{figure}
 
 \section{Computational Resources}
-We request a total of 2.56 million SU's, 10.08 TB of short term storage, and 2.52 TB of long term storage, as explained below, for our six fiducial simulations and two additional simulations we intend to use as a resolution study. Analysis for each project will be conducted on local computing resources utilizing the open source analysis toolkit \texttt{yt} \citep{yt}, and is therefore not considered in the total SU expense.
+We request a total of 2.56 million SU's and 10.08 TB of storage, as explained below, for our six fiducial simulations and two additional simulations we intend to use as a resolution study. Analysis for each project will be conducted on local computing resources utilizing the open source analysis toolkit \texttt{yt} \citep{yt}, and is therefore not considered in the total SU expense.
 
 Our primary objective is to test the role various feedback processes play in the structural, dynamical, and chemical evolution of low mass dwarf galaxies. These simulations are tied to observable properties of nearby ultrafaint dwarf galaxies through star formation history, distribution and retention of chemical ejecta, and the spatial distribution and abundances of the individual stars. This is a pivotal test of whether or not widely used, approximate feedback methods are consistent with more physical descriptions of feedback. The computational cost of these methods, and our requirement for high enough resolution to at least minimally resolve the feedback injection scales are dominant sources of computational expense. From our test runs, a maximum grid resolution of 1.5 pc offers the best balance between resolving the feedback physics and computational feasibility. These simulations will be vital for the understanding of feedback physics, and dwarf galaxy chemical and dynamical evolution, and can be used in future work to help implement physically motivated feedback methods in larger scale simulations. For example, we intend to use the results of these simulations to improve feedback prescriptions in lower resolution simulations, which will allow us to run models for Gyr time scales to better probe long term chemical evolution. We outline the parameters and cost for each of our individual runs in Table~\ref{table:SU}, and discuss them in more detail below.
 
@@ -135,8 +135,8 @@ Our primary objective is to test the role various feedback processes play in the
   4 & 5 & N & 1.5 & 1.4 & 200 & 0.28 \\
   5 & 10 & Y & 1.5 & 4.0 & 200 & 0.8 \\
   6 & 10 & N & 1.5 & 4.0 & 200 & 0.8 \\
-  7 & 5 & Y & 3.0 & X & 200 & 0.09 \\
-  8 & 5 & Y & 6.0 & X & 200 & 0.03 \\
+  7 & 5 & Y & 3.0 & 0.45 & 200 & 0.09 \\
+  8 & 5 & Y & 6.0 & 0.15 & 200 & 0.03 \\
   \hline
   Total & - & - & - & - & - & 2.56 \\
   \hline
@@ -151,21 +151,21 @@ Our primary objective is to test the role various feedback processes play in the
  \footnotesize
  \begin{tabular}{| R | R | R | R | R | R | R | R  | R }
  \hline
- \multicolumn{1}{|m{1.5cm}|}{Model Number} & \multicolumn{1}{m{1cm}|}{Number of Fields} & \multicolumn{1}{m{2.25 cm}|}{Number of Particle Fields} & \multicolumn{1}{m{2.0cm}}{Est. Number of Cells (10$^6$)} & \multicolumn{1}{m{2.0cm}|}{Memory Per Output (Gb)} & \multicolumn{1}{m{1.75 cm}|}{Short / Long Term Cadence (Myr)} & \multicolumn{1}{m{1.5cm}|}{Short Term Storage (TB)} & \multicolumn{1}{m{1.5cm}|}{Long Term Storage (TB)} \\
+ \multicolumn{1}{|m{1.5cm}|}{Model Number} & \multicolumn{1}{m{1cm}|}{Number of Fields} & \multicolumn{1}{m{2.25 cm}|}{Number of Particle Fields} & \multicolumn{1}{m{2.0cm}|}{Est. Number of Cells (10$^6$)} & \multicolumn{1}{m{2.0cm}|}{Memory Per Output (GB)} & \multicolumn{1}{m{1.75 cm}|}{Output Cadence (Myr)} & \multicolumn{1}{m{1.5cm}|}{Required Storage (TB)} \\
  \hline
-  1 & 36 & 25 & 5   & 1.4  &  0.25 / 1 & 1.12 & 0.28 \\
-  2 & 43 & 25 & 5   & 1.7  &  0.25 / 1 & 1.36 & 0.34  \\  
-  3 & 36 & 25 & 5.4 & 1.6  &  0.25 / 1 & 1.28 & 0.32  \\
-  4 & 43 & 25 & 5.4 & 1.9  &  0.25 / 1 & 1.52 & 0.38  \\
-  5 & 36 & 25 & 6   & 1.7  &  0.25 / 1 & 1.36 & 0.34  \\
-  6 & 43 & 25 & 6   & 2.1  &  0.25 / 1 & 1.68 & 0.42  \\
-  7 & 43 & 25 & 3.7 & 1.3  &  0.25 / 1 & 1.04 & 0.26  \\
-  8 & 43 & 25 & 2.4 & 0.9  &  0.25 / 1 & 0.72 & 0.18  \\
+  1 & 36 & 25 & 5   & 1.4  &  0.25 & 1.12 \\
+  2 & 43 & 25 & 5   & 1.7  &  0.25 & 1.36 \\  
+  3 & 36 & 25 & 5.4 & 1.6  &  0.25 & 1.28 \\
+  4 & 43 & 25 & 5.4 & 1.9  &  0.25 & 1.52 \\
+  5 & 36 & 25 & 6   & 1.7  &  0.25 & 1.36 \\
+  6 & 43 & 25 & 6   & 2.1  &  0.25 & 1.68 \\
+  7 & 43 & 25 & 3.7 & 1.3  &  0.25 & 1.04 \\
+  8 & 43 & 25 & 2.4 & 0.9  &  0.25 & 0.72 \\
   \hline
-  TOTAL & - & - & - & - & - & 10.08 & 2.52 \\
+  TOTAL & - & - & - & - & - & 10.08 \\
  \hline
  \end{tabular}
- \caption{\small The estimated short and long term memory storage requirements for each of our dwarf galaxy simulations, and the total storage requested for this portion of our project. Each of the above grid and particle fields are stored as a 64 bit float. The above calculations were made assuming the number of grid cells shone in each simulation, along with assuming a total number of stars each would produce assuming 2\% of the initial gas mass is converted into stars.}
+ \caption{\small The estimated memory storage requirements for each of our dwarf galaxy simulations, and the total storage requested for this portion of our project. Each of the above grid and particle fields are stored as a 64 bit float. The above calculations were made assuming a total number of particles present corresponding to 2\% of the initial gas mass. We note that uncertainty in this estimate does not strongly affect the total storage request as the memory needed to store the grid information dominates over the particles.}
  \label{table:storage}
 \end{table}
 
@@ -179,7 +179,7 @@ Although using radiative transfer does incur substantial additional cost, radiat
 
 %Tracking CR energy density adds little additional computational cost per timestep, but will decrease the typical timestep by a factor of about 5, thus increasing the total cost by about 5. 
 
-We plan to run each simulation for 200 Myr, saving data dumps every 0.25 Myr. This cadence is necessary to provide access to a few data dumps within a single job submission, each of which can be used as a restart point. Rapid analysis of this high cadence will allow us to understand the short timescale variance of dwarf galaxy chemodynamics; these will also be used to make high time resolution movies of our simulation set. The memory required for each dump varies depending on the physics used, as follows. Each simulation dump will contain 12 fields associated with the hydrodynamics and 22 fields associated with the primordial chemistry and metal abundance tracers, for a base total of 34. Radiative transfer (ionizing radiation) simulations will contain an additional 7, while photoelectric heating and Lyman Werner radiation add an additional 2, for a total of 43 fields per cell in our full simulations. In addition, each particle keeps track of 25 properties, 15 of which are abundances (metallicity, H, He, and metal tracers), while the rest include position (3), velocity (3), current mass, birth mass, lifetime, and formation time; we expect on order of 10$^{4}$ to a few by $10^{5}$ star particles in our dwarf galaxies at the end of 200 Myr. Taking into account these values, our output cadence, the expected number of grid cells in each simulation, and the expected number of star particles, we present our estimated memory storage requirements in Table~\ref{table:storage}. \texttt{Enzo} operates in double precision; to ensure accuracy during restarts and to prevent loss of precision, each of our output dumps will also be in double precision.
+We plan to run each simulation for 200 Myr, saving data dumps every 0.25 Myr. This cadence is necessary to provide access to a few data dumps within a single job submission, each of which can be used as a restart point. The memory required for each dump varies depending on the physics used, as follows. Each simulation dump will contain 12 fields associated with the hydrodynamics and 22 fields associated with the primordial chemistry and metal abundance tracers, for a base total of 34. Radiative transfer (ionizing radiation) simulations will contain an additional 7, while photoelectric heating and Lyman Werner radiation add an additional 2, for a total of 43 fields per cell in our full simulations. In addition, each particle keeps track of 25 properties, 15 of which are abundances (metallicity, H, He, and metal tracers), while the rest include position (3), velocity (3), current mass, birth mass, lifetime, and formation time; we expect on order of 10$^{4}$ to a few by $10^{5}$ star particles in our dwarf galaxies at the end of 200 Myr. Taking into account these values, our output cadence, the expected number of grid cells in each simulation, and the expected number of star particles, we present our estimated memory storage requirements in Table~\ref{table:storage}. \texttt{Enzo} operates in double precision; to ensure accuracy during restarts and to prevent loss of precision, each of our output dumps will also be in double precision.
 
 \section{Project team qualifications}
 
