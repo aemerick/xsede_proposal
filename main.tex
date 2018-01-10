@@ -149,23 +149,23 @@ Our primary objective is to test the role various feedback processes play in the
 \begin{table}
  \centering
  \footnotesize
- \begin{tabular}{| R | R | R | R | R | R | R | R  | R }
+ \begin{tabular}{| R | R | R | R | R | R | R || R }
  \hline
- \multicolumn{1}{|m{1.5cm}|}{Model Number} & \multicolumn{1}{m{1cm}|}{Number of Fields} & \multicolumn{1}{m{2.25 cm}|}{Number of Particle Fields} & \multicolumn{1}{m{2.0cm}|}{Est. Number of Cells (10$^6$)} & \multicolumn{1}{m{2.0cm}|}{Memory Per Output (GB)} & \multicolumn{1}{m{1.75 cm}|}{Output Cadence (Myr)} & \multicolumn{1}{m{1.5cm}|}{Required Storage (TB)} \\
+ \multicolumn{1}{|m{1.5cm}|}{Model Number} & \multicolumn{1}{m{1cm}|}{Number of Fields} & \multicolumn{1}{m{2.25 cm}|}{Number of Particle Fields} & \multicolumn{1}{m{2.0cm}|}{Est. Number of Cells (10$^6$)} & \multicolumn{1}{m{2.0cm}|}{Memory Per Output (GB)} & \multicolumn{1}{m{1.5cm}|}{Required Storage (TB)} \\
  \hline
-  1 & 36 & 25 & 5   & 1.4  &  0.25 & 1.12 \\
-  2 & 43 & 25 & 5   & 1.7  &  0.25 & 1.36 \\  
-  3 & 36 & 25 & 5.4 & 1.6  &  0.25 & 1.28 \\
-  4 & 43 & 25 & 5.4 & 1.9  &  0.25 & 1.52 \\
-  5 & 36 & 25 & 6   & 1.7  &  0.25 & 1.36 \\
-  6 & 43 & 25 & 6   & 2.1  &  0.25 & 1.68 \\
-  7 & 43 & 25 & 3.7 & 1.3  &  0.25 & 1.04 \\
-  8 & 43 & 25 & 2.4 & 0.9  &  0.25 & 0.72 \\
+  1 & 36 & 25 & 5   & 1.4  & 1.12 \\
+  2 & 43 & 25 & 5   & 1.7  & 1.36 \\  
+  3 & 36 & 25 & 5.4 & 1.6  & 1.28 \\
+  4 & 43 & 25 & 5.4 & 1.9  & 1.52 \\
+  5 & 36 & 25 & 6   & 1.7  & 1.36 \\
+  6 & 43 & 25 & 6   & 2.1  & 1.68 \\
+  7 & 43 & 25 & 3.7 & 1.3  & 1.04 \\
+  8 & 43 & 25 & 2.4 & 0.9  & 0.72 \\
   \hline
-  TOTAL & - & - & - & - & - & 10.08 \\
+  TOTAL & - & - & - & - & 10.08 \\
  \hline
  \end{tabular}
- \caption{\small The estimated memory storage requirements for each of our dwarf galaxy simulations, and the total storage requested for this portion of our project. Each of the above grid and particle fields are stored as a 64 bit float. The above calculations were made assuming a total number of particles present corresponding to 2\% of the initial gas mass. We note that uncertainty in this estimate does not strongly affect the total storage request as the memory needed to store the grid information dominates over the particles.}
+ \caption{\small The estimated memory storage requirements for each of our dwarf galaxy simulations, and the total storage requested for this portion of our project, with an output cadence of 0.25 Myr. Each of the above grid and particle fields are stored as a 64 bit float. The above calculations were made assuming a total number of particles present corresponding to 2\% of the initial gas mass. We note that uncertainty in this estimate does not strongly affect the total storage request as the memory needed to store the grid information dominates over the particles.}
  \label{table:storage}
 \end{table}
 

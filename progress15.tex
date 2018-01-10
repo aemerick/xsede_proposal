@@ -1,0 +1,25 @@
+\documentclass[12pt,preprint]{aastex}
+\textheight 9in
+\textwidth 6.5in
+\topmargin -0.5in
+\oddsidemargin 0in 
+\evensidemargin 0in
+
+\title{Progress Report}
+
+\begin{document}
+\maketitle
+We currently have an allocation of 3.8M SU on Stampede, expiring on 31 December 2015 (Grant TG-MCA99S024).  We have remaining 12\% of the allocation, 0.49M SU on Stampede, which we are actively using, and expect to exhaust by the expiration date of our allocation.  In the last year five refereed papers were published based on work supported under this allocation, and another is currently in final draft stage.
+
+At the largest scales, we studied whether galactic fountain models could explain observed X-ray emission from the halo of our Galaxy (Henley et al.\ 2015).  We performed simulated observations of models that we ran with the Flash AMR code of the supernova-driven galactic fountain (Hill et al.\ 2012).  We found that, although we got the temperature of the emission roughly correct with the fountain model, the predicted column density of the X-ray emitting gas was more than an order of magnitude smaller than the observed value.  We speculate that this result indicates that including only the thermal energy from the supernovae is insufficeint.  Instead, cosmic rays may have to be included as well, lifting additional gas into the halo. (My collaborators and I have submitted work supporting this final hypothesis, using supercomputing time provided by the Max Planck Society; Girichidis et al. (2015), Peters et al. (2015)).
+ 
+Models of interstellar molecular clouds including turbulence and a chemical network have been analyzed to determine how statistical measures of real clouds compare to the simulated clouds.  This serves two purposes: it allows understanding of first, how the statistical measures reflect the true three-dimensional structure of the flow, and second, how well the models reproduce the observed behavior.  The first statistical measure used is the delta variance, a wavelet transform directly related to the spectral power law (Bertram et al. 2015a), while the second measure is the structure function of the centroid of the velocity along each line of sight (Bertram et al. 2015b).  Substantial differences were found in these works between the actual density structure and the material traced by the CO emission that forms the primary observable in molecular clouds, as molecular hydrogen can self-shield better than CO, and thus fills greater volume.
+
+Oishi et al.\ (2015)  used the Enzo AMR MHD code to study the behavior of reconnecting magnetic fields in three dimensions in the resistive MHD approximation. In two dimensions, a reconnection layer has been found to be subject to plasmoid instabilities. We found that in three dimensions, however, the reconnecting layer is subject to a new instability that drives turbulence in the layer and dissipates energy at a rate that appears independent of Lundquist number (akin to the magnetic Reynolds number, but with the Alfv\'en velocity as the characteristic velocity scale) over two orders of magnitude in that dimensionless parameter.  This result relied on using a nested grid to focus resolution on the thin reconnection layer, particularly at low resistivity (high Lundquist number), where the layer is thinnest.
+
+Turning to protoplanetary disks, we used two-dimensional models with the Pencil code to study the behavior of migrating, massive planets in non-isothermal disks (Richert et al. 2015; XSEDE acknowledgment unfortunately missing).  We found that relaxing the assumption of isothermality resulted in turbulence driven by the passage of the planet. Apparently the tidal shock raised by the planet heats the gas sufficiently to result in buoyant motions radially for planets with masses exceeding about 10 times that of Jupiter.  The resulting turbulence increases the diffusion rate of angular momentum in the disk, potentially causing the gas in the disk to quickly accrete once any embedded planet reaches the critical mass.  Three dimensional models of this process have been submitted for publication (Lyra et al. 2015) using the first author's XSEDE allocation.
+
+The bulk of the current year's allocation has been spent on initial runs of the project proposed here, preparing the non-self-gravitating flow with a fully-developed galactic fountain at high midplane resolution, and beginning computation of self-gravitating cloud collapse models in zoom-in regions.  The first paper based on this work is in final draft form as of this writing (Iba\~nez-Mej\'{\i}a, Mac Low, Klessen, \& Baczynski 2015 in prep.). It demonstrates that external supernova explosions alone are insufficient to explain observed molecular cloud dynamics, while gravitational collapse results in dynamics consistent with the observations. This provides evidence in support of the paradigm that molecular clouds are hierarchically collapsing objects whose lives are terminated by star formation, rather than equilibrium structures.
+
+
+\end{document}
